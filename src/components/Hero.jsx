@@ -10,10 +10,9 @@ export default function Hero({ onOpenModal }) {
       className="relative overflow-hidden"
       style={{
         background: "linear-gradient(110deg, #f0faf3 0%, #f6fcf8 40%, #eef8f2 70%, #e8f5ec 100%)",
-        minHeight: "380px",
       }}
     >
-      {/* Decorative leaf — top-left */}
+      {/* Decorative leaf — top-left, hidden on mobile */}
       <div
         className="absolute pointer-events-none select-none hidden lg:block z-0"
         style={{ top: "-20px", left: "-22px", width: "200px", height: "260px" }}
@@ -30,16 +29,11 @@ export default function Hero({ onOpenModal }) {
 
       {/* Main container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div
-          className="flex flex-col lg:flex-row items-stretch justify-between"
-          style={{ minHeight: "380px" }}
-        >
+        <div className="flex flex-col lg:flex-row items-stretch justify-between min-h-[380px]">
 
-          {/* LEFT COLUMN */}
-          <div
-            className="flex-1 flex flex-col justify-center py-8 lg:py-10 text-left lg:pr-6 xl:pr-10"
-            style={{ maxWidth: "480px" }}
-          >
+          {/* ── LEFT COLUMN ── */}
+          <div className="flex-1 flex flex-col justify-center py-10 lg:py-8 text-left lg:pr-6 xl:pr-10 max-w-full lg:max-w-[490px]">
+
             {/* Pill badge */}
             <div
               className="inline-flex items-center gap-2 mb-4 self-start px-3.5 py-1.5 rounded-full border text-[12.5px] font-semibold text-gray-700"
@@ -58,7 +52,7 @@ export default function Hero({ onOpenModal }) {
             <h1
               className="font-extrabold text-gray-900 tracking-tight mb-3"
               style={{
-                fontSize: "clamp(26px, 3.2vw, 42px)",
+                fontSize: "clamp(28px, 4vw, 42px)",
                 lineHeight: 1.12,
                 letterSpacing: "-0.018em",
                 fontFamily: "var(--font-sans)",
@@ -73,8 +67,8 @@ export default function Hero({ onOpenModal }) {
             <p
               className="text-gray-500 leading-relaxed mb-6"
               style={{
-                fontSize: "clamp(13px, 1vw, 14.5px)",
-                maxWidth: "400px",
+                fontSize: "clamp(13.5px, 1.2vw, 15px)",
+                maxWidth: "420px",
                 fontFamily: "var(--font-sans)",
               }}
             >
@@ -87,7 +81,7 @@ export default function Hero({ onOpenModal }) {
               <button
                 id="hero-get-diet-plan"
                 onClick={() => onOpenModal?.("diet-plan")}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white text-[13.5px] transition-all hover:opacity-90 hover:shadow-lg active:scale-95 cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-white text-[13.5px] transition-all hover:opacity-90 hover:shadow-lg active:scale-95 cursor-pointer"
                 style={{
                   background: "#10793f",
                   boxShadow: "0 5px 18px rgba(16,121,63,0.32)",
@@ -99,7 +93,7 @@ export default function Hero({ onOpenModal }) {
               <button
                 id="hero-book-consultation"
                 onClick={() => onOpenModal?.("consultation")}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-gray-700 text-[13.5px] border transition-all hover:bg-white hover:border-gray-400 cursor-pointer"
+                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-gray-700 text-[13.5px] border transition-all hover:bg-white hover:border-gray-400 cursor-pointer"
                 style={{
                   background: "rgba(255,255,255,0.85)",
                   borderColor: "#d1d5db",
@@ -131,20 +125,21 @@ export default function Hero({ onOpenModal }) {
             </div>
           </div>
 
-          {/* RIGHT COLUMN */}
+          {/* ── RIGHT COLUMN — hidden on mobile, shown lg+ ── */}
           <div
             className="relative flex-shrink-0 hidden lg:block self-stretch"
-            style={{ width: "580px" }}
+            style={{ width: "min(580px, 48%)" }}
           >
-            {/* Green oval blob — centered behind doctor */}
+            {/* Green circle blob — behind doctor */}
             <div
               className="absolute pointer-events-none z-0"
               style={{
-                width: "340px",
-                height: "340px",
+                width: "58%",
+                height: "0",
+                paddingBottom: "58%",
                 background: "radial-gradient(circle at 50% 50%, #6dc535 0%, #73c43c 60%, #5aad28 100%)",
                 borderRadius: "50%",
-                top: "14px",
+                top: "12px",
                 left: "50%",
                 transform: "translateX(-55%)",
                 boxShadow: "0 10px 40px rgba(115,196,60,0.25)",
@@ -153,10 +148,11 @@ export default function Hero({ onOpenModal }) {
 
             {/* Ambient glow */}
             <div
-              className="absolute pointer-events-none rounded-full blur-3xl opacity-25 z-0"
+              className="absolute pointer-events-none rounded-full blur-3xl opacity-20 z-0"
               style={{
-                width: "380px",
-                height: "380px",
+                width: "65%",
+                height: "0",
+                paddingBottom: "65%",
                 background: "radial-gradient(circle, #7bc850 0%, #c5e8a8 60%, transparent 80%)",
                 top: "0px",
                 left: "50%",
@@ -168,9 +164,9 @@ export default function Hero({ onOpenModal }) {
             <div
               className="absolute z-20 bg-white rounded-2xl animate-float-card"
               style={{
-                top: "22px",
+                top: "18px",
                 right: "0px",
-                width: "200px",
+                width: "clamp(170px, 35%, 210px)",
                 padding: "14px 16px",
                 boxShadow: "0 12px 40px rgba(0,0,0,0.14)",
                 border: "1px solid rgba(230,230,230,0.9)",
@@ -178,7 +174,7 @@ export default function Hero({ onOpenModal }) {
             >
               <div
                 className="font-extrabold text-gray-900 mb-2.5 tracking-tight"
-                style={{ fontSize: "13px", fontFamily: "var(--font-sans)" }}
+                style={{ fontSize: "clamp(11px, 1.1vw, 13px)", fontFamily: "var(--font-sans)" }}
               >
                 Your Personalized Plan
               </div>
@@ -195,7 +191,7 @@ export default function Hero({ onOpenModal }) {
                     </div>
                     <span
                       className="font-semibold text-gray-800 leading-tight"
-                      style={{ fontSize: "11px", fontFamily: "var(--font-sans)" }}
+                      style={{ fontSize: "clamp(10px, 0.9vw, 11.5px)", fontFamily: "var(--font-sans)" }}
                     >
                       {item}
                     </span>
@@ -204,7 +200,7 @@ export default function Hero({ onOpenModal }) {
               </div>
             </div>
 
-            {/* Desk surface */}
+            {/* Desk surface strip */}
             <div
               className="absolute bottom-0 left-0 right-0 z-[15]"
               style={{
@@ -214,15 +210,15 @@ export default function Hero({ onOpenModal }) {
               }}
             />
 
-            {/* Doctor Cutout Image — centered */}
+            {/* Doctor image — centered */}
             <div
               className="absolute z-10 pointer-events-none"
               style={{
                 bottom: "0px",
                 left: "50%",
                 transform: "translateX(-62%)",
-                width: "420px",
-                height: "370px",
+                width: "72%",
+                height: "95%",
               }}
             >
               <div className="relative w-full h-full">
@@ -237,14 +233,14 @@ export default function Hero({ onOpenModal }) {
               </div>
             </div>
 
-            {/* Fresh Vegetable Medley — bottom right */}
+            {/* Vegetable medley — bottom right */}
             <div
               className="absolute z-30 pointer-events-none"
               style={{
                 bottom: "0px",
                 right: "0px",
-                width: "280px",
-                height: "175px",
+                width: "50%",
+                height: "46%",
               }}
             >
               <div className="relative w-full h-full">
@@ -255,6 +251,48 @@ export default function Hero({ onOpenModal }) {
                   priority
                   unoptimized
                   className="object-contain object-bottom-right drop-shadow-xl"
+                />
+              </div>
+            </div>
+          </div>
+
+          {/* ── MOBILE HERO IMAGE (sm and below) — simple centered image ── */}
+          <div className="relative block lg:hidden w-full mt-6 mb-2" style={{ height: "260px" }}>
+            {/* Green blob */}
+            <div
+              className="absolute inset-x-1/4 pointer-events-none z-0 rounded-full"
+              style={{
+                top: "10px",
+                bottom: "20px",
+                background: "radial-gradient(circle, #6dc535 0%, #73c43c 70%)",
+                borderRadius: "50%",
+                opacity: 0.9,
+              }}
+            />
+            {/* Doctor */}
+            <div className="absolute inset-0 z-10 pointer-events-none">
+              <Image
+                src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                alt="DietNexa Expert Dietitian"
+                fill
+                priority
+                unoptimized
+                className="object-contain object-bottom"
+              />
+            </div>
+            {/* Vegetables */}
+            <div
+              className="absolute z-20 pointer-events-none"
+              style={{ bottom: 0, right: "5%", width: "45%", height: "55%" }}
+            >
+              <div className="relative w-full h-full">
+                <Image
+                  src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                  alt="Fresh Vegetable Medley"
+                  fill
+                  priority
+                  unoptimized
+                  className="object-contain object-bottom-right drop-shadow-lg"
                 />
               </div>
             </div>
