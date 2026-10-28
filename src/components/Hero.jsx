@@ -1,7 +1,7 @@
-﻿"use client";
+"use client";
 
 import Image from "next/image";
-import { ArrowRight, Leaf, Sprout, Star } from "lucide-react";
+import { ArrowRight, Leaf, Sprout, Star, Check, Sparkles, Activity } from "lucide-react";
 
 export default function Hero({ onOpenModal }) {
   return (
@@ -9,13 +9,13 @@ export default function Hero({ onOpenModal }) {
       id="home"
       className="relative overflow-hidden"
       style={{
-        background: "linear-gradient(110deg, #f0faf3 0%, #f6fcf8 40%, #eef8f2 70%, #e8f5ec 100%)",
+        background: "linear-gradient(115deg, #f2faf4 0%, #f7fcf9 40%, #edf8f1 75%, #e6f5eb 100%)",
       }}
     >
       {/* Decorative leaf — top-left, hidden on mobile */}
       <div
         className="absolute pointer-events-none select-none hidden lg:block z-0"
-        style={{ top: "-20px", left: "-22px", width: "200px", height: "260px" }}
+        style={{ top: "-20px", left: "-22px", width: "220px", height: "270px" }}
       >
         <Image
           src="/image/Dewy Green Leafy Branch.png"
@@ -23,52 +23,82 @@ export default function Hero({ onOpenModal }) {
           fill
           unoptimized
           priority
-          className="object-contain object-left-top opacity-55"
+          className="object-contain object-left-top opacity-50"
         />
       </div>
 
+      {/* Subtle modern background glow */}
+      <div
+        className="absolute top-1/4 right-1/4 w-[450px] h-[450px] rounded-full pointer-events-none z-0 blur-3xl opacity-35"
+        style={{
+          background: "radial-gradient(circle, #bbf7d0 0%, #86efac 40%, transparent 70%)",
+        }}
+      />
+
       {/* Main container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="flex flex-col lg:flex-row items-stretch justify-between min-h-[380px]">
+        <div className="flex flex-col lg:flex-row items-center lg:items-stretch justify-between min-h-[460px] lg:min-h-[480px]">
 
           {/* ── LEFT COLUMN ── */}
-          <div className="flex-1 flex flex-col justify-center py-10 lg:py-8 text-left lg:pr-6 xl:pr-10 max-w-full lg:max-w-[490px]">
+          <div className="flex-1 flex flex-col justify-center py-10 lg:py-12 text-left lg:pr-6 xl:pr-10 max-w-full lg:max-w-[510px]">
 
-            {/* Pill badge */}
+            {/* Redesigned "Online Dietitian Consultation" Badge */}
             <div
-              className="inline-flex items-center gap-2 mb-4 self-start px-3.5 py-1.5 rounded-full border text-[12.5px] font-semibold text-gray-700"
+              className="inline-flex items-center gap-2.5 mb-5 self-start px-4 py-1.5 rounded-full border transition-all duration-300 hover:scale-[1.02] cursor-default shadow-xs"
               style={{
-                background: "rgba(255,255,255,0.90)",
-                borderColor: "#d1d5db",
-                boxShadow: "0 1px 4px rgba(0,0,0,0.06)",
-                fontFamily: "var(--font-sans)",
+                background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,253,244,0.95) 100%)",
+                borderColor: "rgba(16,121,63,0.22)",
+                boxShadow: "0 4px 18px -2px rgba(16,121,63,0.12), 0 1px 3px rgba(0,0,0,0.04)",
+                backdropFilter: "blur(10px)",
               }}
             >
-              <span className="w-2 h-2 rounded-full flex-shrink-0" style={{ background: "#10793f" }} />
-              Online Dietitian Consultation
+              {/* Pulsing Live Beacon */}
+              <span className="relative flex h-2.5 w-2.5 shrink-0">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10793f]"></span>
+              </span>
+
+              {/* Sparkles Icon */}
+              <Sparkles className="w-3.5 h-3.5 text-[#10793f] shrink-0" />
+
+              {/* Text */}
+              <span className="text-[12.5px] sm:text-[13px] font-bold text-gray-800 tracking-tight">
+                Online Dietitian Consultation
+              </span>
+
+              {/* AI-Powered Tag */}
+              <span
+                className="hidden sm:inline-flex items-center text-[10.5px] font-bold text-[#10793f] px-2 py-0.5 rounded-full border"
+                style={{
+                  background: "rgba(16,121,63,0.08)",
+                  borderColor: "rgba(16,121,63,0.18)",
+                }}
+              >
+                AI-Powered
+              </span>
             </div>
 
             {/* Headline */}
             <h1
-              className="font-extrabold text-gray-900 tracking-tight mb-3"
+              className="font-extrabold text-gray-900 tracking-tight mb-4"
               style={{
-                fontSize: "clamp(28px, 4vw, 42px)",
-                lineHeight: 1.12,
-                letterSpacing: "-0.018em",
+                fontSize: "clamp(30px, 3.8vw, 45px)",
+                lineHeight: 1.14,
+                letterSpacing: "-0.02em",
                 fontFamily: "var(--font-sans)",
               }}
             >
               Personalized Nutrition
-              <br />
-              for a Healthier You
+              <span className="block mt-1 bg-gradient-to-r from-[#10793f] via-[#15803d] to-[#16a34a] bg-clip-text text-transparent">
+                for a Healthier You
+              </span>
             </h1>
 
             {/* Sub-text */}
             <p
-              className="text-gray-500 leading-relaxed mb-6"
+              className="text-gray-600 leading-relaxed mb-7 max-w-[440px]"
               style={{
-                fontSize: "clamp(13.5px, 1.2vw, 15px)",
-                maxWidth: "420px",
+                fontSize: "clamp(14px, 1.15vw, 15.5px)",
                 fontFamily: "var(--font-sans)",
               }}
             >
@@ -77,25 +107,26 @@ export default function Hero({ onOpenModal }) {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-3 mb-7">
+            <div className="flex flex-wrap items-center gap-3.5 mb-8">
               <button
                 id="hero-get-diet-plan"
                 onClick={() => onOpenModal?.("diet-plan")}
-                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-white text-[13.5px] transition-all hover:opacity-90 hover:shadow-lg active:scale-95 cursor-pointer"
+                className="group inline-flex items-center gap-2.5 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-bold text-white text-[14px] transition-all duration-200 hover:opacity-95 hover:shadow-xl active:scale-95 cursor-pointer"
                 style={{
-                  background: "#10793f",
-                  boxShadow: "0 5px 18px rgba(16,121,63,0.32)",
+                  background: "linear-gradient(135deg, #10793f 0%, #0d6534 100%)",
+                  boxShadow: "0 8px 24px -4px rgba(16,121,63,0.42)",
                   fontFamily: "var(--font-sans)",
                 }}
               >
-                Get My Diet Plan <ArrowRight className="w-4 h-4" />
+                Get My Diet Plan{" "}
+                <ArrowRight className="w-4 h-4 transition-transform group-hover:translate-x-1" />
               </button>
               <button
                 id="hero-book-consultation"
                 onClick={() => onOpenModal?.("consultation")}
-                className="inline-flex items-center gap-2 px-5 sm:px-6 py-2.5 sm:py-3 rounded-full font-semibold text-gray-700 text-[13.5px] border transition-all hover:bg-white hover:border-gray-400 cursor-pointer"
+                className="inline-flex items-center gap-2 px-6 sm:px-7 py-3 sm:py-3.5 rounded-full font-bold text-gray-800 text-[14px] border transition-all duration-200 hover:bg-white hover:border-[#10793f]/40 hover:text-[#10793f] hover:shadow-md active:scale-95 cursor-pointer"
                 style={{
-                  background: "rgba(255,255,255,0.85)",
+                  background: "rgba(255,255,255,0.92)",
                   borderColor: "#d1d5db",
                   fontFamily: "var(--font-sans)",
                 }}
@@ -106,92 +137,119 @@ export default function Hero({ onOpenModal }) {
 
             {/* Trust Metrics */}
             <div
-              className="flex flex-wrap items-center gap-5 sm:gap-7 pt-4"
-              style={{ borderTop: "1px solid rgba(0,0,0,0.08)" }}
+              className="flex flex-wrap items-center gap-5 sm:gap-7 pt-5"
+              style={{ borderTop: "1px solid rgba(16,121,63,0.12)" }}
             >
               {[
-                { icon: <Leaf className="w-4 h-4 text-[#10793f]" strokeWidth={2} />, value: "500+", label: "Expert Dietitians" },
-                { icon: <Sprout className="w-4 h-4 text-[#10793f]" strokeWidth={2} />, value: "100K+", label: "Happy Users" },
-                { icon: <Star className="w-4 h-4 text-[#10793f]" strokeWidth={2} fill="none" />, value: "4.9/5", label: "User Rating" },
+                {
+                  icon: <Leaf className="w-4 h-4 text-[#10793f]" strokeWidth={2.2} />,
+                  value: "500+",
+                  label: "Expert Dietitians",
+                },
+                {
+                  icon: <Sprout className="w-4 h-4 text-[#10793f]" strokeWidth={2.2} />,
+                  value: "100K+",
+                  label: "Happy Users",
+                },
+                {
+                  icon: <Star className="w-4 h-4 text-amber-500 fill-amber-400" strokeWidth={1.5} />,
+                  value: "4.9/5",
+                  label: "User Rating",
+                },
               ].map((m) => (
-                <div key={m.label} className="flex items-center gap-1.5">
-                  <div className="shrink-0">{m.icon}</div>
+                <div key={m.label} className="flex items-center gap-2.5">
+                  <div
+                    className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                    style={{
+                      background: "rgba(16,121,63,0.08)",
+                      border: "1px solid rgba(16,121,63,0.16)",
+                    }}
+                  >
+                    {m.icon}
+                  </div>
                   <div>
-                    <div className="font-bold text-gray-900 leading-none" style={{ fontSize: "14px", fontFamily: "var(--font-sans)" }}>{m.value}</div>
-                    <div className="text-gray-500 font-medium mt-0.5" style={{ fontSize: "11px", fontFamily: "var(--font-sans)" }}>{m.label}</div>
+                    <div
+                      className="font-extrabold text-gray-900 leading-tight"
+                      style={{ fontSize: "14.5px", fontFamily: "var(--font-sans)" }}
+                    >
+                      {m.value}
+                    </div>
+                    <div
+                      className="text-gray-500 font-medium text-[11.5px] mt-0.5"
+                      style={{ fontFamily: "var(--font-sans)" }}
+                    >
+                      {m.label}
+                    </div>
                   </div>
                 </div>
               ))}
             </div>
           </div>
 
-          {/* ── RIGHT COLUMN — hidden on mobile, shown lg+ ── */}
+          {/* ── RIGHT COLUMN: Desktop Layout (lg+) ── */}
           <div
             className="relative flex-shrink-0 hidden lg:block self-stretch"
-            style={{ width: "min(580px, 48%)" }}
+            style={{ width: "min(590px, 49%)" }}
           >
-            {/* Green circle blob — behind doctor */}
+            {/* Concentric subtle AI halo */}
             <div
-              className="absolute pointer-events-none z-0"
+              className="absolute pointer-events-none rounded-full border border-emerald-400/25 z-0"
               style={{
-                width: "58%",
-                height: "0",
-                paddingBottom: "58%",
-                background: "radial-gradient(circle at 50% 50%, #6dc535 0%, #73c43c 60%, #5aad28 100%)",
-                borderRadius: "50%",
+                width: "410px",
+                height: "410px",
                 top: "12px",
-                left: "50%",
-                transform: "translateX(-55%)",
-                boxShadow: "0 10px 40px rgba(115,196,60,0.25)",
-              }}
-            />
-
-            {/* Ambient glow */}
-            <div
-              className="absolute pointer-events-none rounded-full blur-3xl opacity-20 z-0"
-              style={{
-                width: "65%",
-                height: "0",
-                paddingBottom: "65%",
-                background: "radial-gradient(circle, #7bc850 0%, #c5e8a8 60%, transparent 80%)",
-                top: "0px",
-                left: "50%",
+                left: "48%",
                 transform: "translateX(-50%)",
               }}
             />
 
-            {/* Your Personalized Plan card */}
+            {/* Vibrant green circle blob — behind doctor */}
             <div
-              className="absolute z-20 bg-white rounded-2xl animate-float-card"
+              className="absolute pointer-events-none z-0 rounded-full"
               style={{
-                top: "18px",
+                width: "350px",
+                height: "350px",
+                background: "radial-gradient(circle at 45% 45%, #7ed338 0%, #68bf2b 60%, #4f9f1e 100%)",
+                top: "28px",
+                left: "48%",
+                transform: "translateX(-50%)",
+                boxShadow: "0 18px 50px rgba(104,191,43,0.28)",
+              }}
+            />
+
+            {/* Floating Card: Your Personalized Plan */}
+            <div
+              className="absolute z-20 bg-white/95 backdrop-blur-md rounded-2xl animate-float-card"
+              style={{
+                top: "24px",
                 right: "0px",
-                width: "clamp(170px, 35%, 210px)",
+                width: "clamp(180px, 35%, 215px)",
                 padding: "14px 16px",
-                boxShadow: "0 12px 40px rgba(0,0,0,0.14)",
-                border: "1px solid rgba(230,230,230,0.9)",
+                boxShadow: "0 16px 40px -8px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04)",
+                border: "1px solid rgba(220,240,230,0.9)",
               }}
             >
-              <div
-                className="font-extrabold text-gray-900 mb-2.5 tracking-tight"
-                style={{ fontSize: "clamp(11px, 1.1vw, 13px)", fontFamily: "var(--font-sans)" }}
-              >
-                Your Personalized Plan
+              <div className="flex items-center justify-between mb-2.5">
+                <div
+                  className="font-extrabold text-gray-900 tracking-tight"
+                  style={{ fontSize: "12.5px", fontFamily: "var(--font-sans)" }}
+                >
+                  Your Personalized Plan
+                </div>
+                <span className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse" />
               </div>
               <div className="space-y-2">
                 {["Custom Meal Plan", "Nutrition Tracking", "Regular Follow-ups", "Lifestyle Guidance"].map((item) => (
                   <div key={item} className="flex items-center gap-2">
                     <div
-                      className="w-3.5 h-3.5 rounded-full flex items-center justify-center flex-shrink-0"
+                      className="w-4 h-4 rounded-full flex items-center justify-center shrink-0"
                       style={{ background: "#10793f" }}
                     >
-                      <svg className="w-2 h-2 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3.5}>
-                        <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-                      </svg>
+                      <Check className="w-2.5 h-2.5 text-white" strokeWidth={3.5} />
                     </div>
                     <span
                       className="font-semibold text-gray-800 leading-tight"
-                      style={{ fontSize: "clamp(10px, 0.9vw, 11.5px)", fontFamily: "var(--font-sans)" }}
+                      style={{ fontSize: "11px", fontFamily: "var(--font-sans)" }}
                     >
                       {item}
                     </span>
@@ -200,25 +258,38 @@ export default function Hero({ onOpenModal }) {
               </div>
             </div>
 
-            {/* Desk surface strip */}
+            {/* Floating Micro Badge: Nutrition Score */}
             <div
-              className="absolute bottom-0 left-0 right-0 z-[15]"
+              className="absolute z-20 bg-white/95 backdrop-blur-md rounded-xl px-3.5 py-2 hidden xl:flex items-center gap-2.5"
               style={{
-                height: "22px",
-                background: "linear-gradient(to bottom, #f0ebe0 0%, #e3d8c8 50%, #d2c6ae 100%)",
-                borderTop: "1.5px solid #dcd0bb",
+                bottom: "55px",
+                left: "-10px",
+                boxShadow: "0 14px 30px -6px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.04)",
+                border: "1px solid rgba(220,240,230,0.9)",
+                animation: "float-card 4s ease-in-out infinite 1.2s",
               }}
-            />
+            >
+              <div
+                className="w-8 h-8 rounded-lg flex items-center justify-center text-[#10793f]"
+                style={{ background: "rgba(16,121,63,0.1)" }}
+              >
+                <Activity className="w-4 h-4" />
+              </div>
+              <div>
+                <div className="text-[10px] font-semibold text-gray-500 leading-tight">Nutrition Score</div>
+                <div className="text-[12.5px] font-extrabold text-gray-900 leading-tight">98% Optimal</div>
+              </div>
+            </div>
 
-            {/* Doctor image — centered */}
+            {/* Doctor image — anchored cleanly at bottom */}
             <div
               className="absolute z-10 pointer-events-none"
               style={{
                 bottom: "0px",
-                left: "50%",
+                left: "48%",
                 transform: "translateX(-62%)",
-                width: "72%",
-                height: "95%",
+                width: "74%",
+                height: "96%",
               }}
             >
               <div className="relative w-full h-full">
@@ -233,14 +304,14 @@ export default function Hero({ onOpenModal }) {
               </div>
             </div>
 
-            {/* Vegetable medley — bottom right */}
+            {/* Vegetable medley — bottom right foreground */}
             <div
               className="absolute z-30 pointer-events-none"
               style={{
                 bottom: "0px",
                 right: "0px",
-                width: "50%",
-                height: "46%",
+                width: "52%",
+                height: "48%",
               }}
             >
               <div className="relative w-full h-full">
@@ -256,17 +327,19 @@ export default function Hero({ onOpenModal }) {
             </div>
           </div>
 
-          {/* ── MOBILE HERO IMAGE (sm and below) — simple centered image ── */}
-          <div className="relative block lg:hidden w-full mt-6 mb-2" style={{ height: "260px" }}>
+          {/* ── MOBILE HERO IMAGE (< lg) ── */}
+          <div className="relative block lg:hidden w-full mt-6 mb-4" style={{ height: "290px" }}>
             {/* Green blob */}
             <div
-              className="absolute inset-x-1/4 pointer-events-none z-0 rounded-full"
+              className="absolute pointer-events-none z-0 rounded-full"
               style={{
+                width: "230px",
+                height: "230px",
                 top: "10px",
-                bottom: "20px",
-                background: "radial-gradient(circle, #6dc535 0%, #73c43c 70%)",
-                borderRadius: "50%",
-                opacity: 0.9,
+                left: "50%",
+                transform: "translateX(-50%)",
+                background: "radial-gradient(circle at 45% 45%, #7ed338 0%, #68bf2b 60%, #4f9f1e 100%)",
+                boxShadow: "0 12px 35px rgba(104,191,43,0.25)",
               }}
             />
             {/* Doctor */}
@@ -283,7 +356,7 @@ export default function Hero({ onOpenModal }) {
             {/* Vegetables */}
             <div
               className="absolute z-20 pointer-events-none"
-              style={{ bottom: 0, right: "5%", width: "45%", height: "55%" }}
+              style={{ bottom: "0px", right: "6%", width: "48%", height: "55%" }}
             >
               <div className="relative w-full h-full">
                 <Image
