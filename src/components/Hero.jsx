@@ -136,11 +136,11 @@ export default function Hero({ onOpenModal }) {
           {/* ── RIGHT COLUMN: Exact Doctor Artwork ── */}
           <div
             className="relative flex-shrink-0 flex items-end justify-center lg:justify-end self-end w-full lg:w-[560px] xl:w-[610px] mt-6 lg:mt-0"
-            style={{ height: "350px", maxHeight: "400px" }}
+            style={{ height: "380px" }}
           >
             <div className="relative w-full h-full">
               <Image
-                src="/image/hero_doctor_seamless.png"
+                src="/image/hero_doctor_perfect_blend.png"
                 alt="DietNexa Expert Dietitian with Personalized Plan"
                 fill
                 priority

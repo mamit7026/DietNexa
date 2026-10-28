@@ -40,8 +40,10 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
   return (
     <section
       id="dietitians"
-      className="relative py-14 lg:py-20 overflow-hidden"
-      style={{ background: "#f8fbf9" }}
+      className="relative py-14 lg:py-20 overflow-hidden bg-white"
+      style={{
+        background: "radial-gradient(ellipse at 85% 50%, #edf7f1 0%, #f7fcf9 45%, #ffffff 75%)",
+      }}
     >
       {/* Decorative leaf — left side */}
       <div

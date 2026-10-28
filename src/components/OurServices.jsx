@@ -67,11 +67,14 @@ export default function OurServices({ onSelectService }) {
               <div
                 key={svc.id}
                 onClick={() => onSelectService?.(svc)}
-                className="group flex flex-col items-center text-center p-5 rounded-2xl border border-gray-200/90 bg-white hover:border-[#10793f]/40 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                className="group flex flex-col items-center text-center p-5 rounded-2xl border border-gray-100 bg-white hover:border-[#10793f]/40 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                style={{
+                  boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
+                }}
               >
                 {/* Icon circle */}
                 <div
-                  className="w-13 h-13 rounded-full flex items-center justify-center mb-3.5 transition-transform duration-300 group-hover:scale-108"
+                  className="w-13 h-13 rounded-full flex items-center justify-center mb-3.5 transition-transform duration-300 group-hover:scale-110"
                   style={{ background: "#edf7f1", color: "#10793f" }}
                 >
                   <Icon className="w-6 h-6 text-[#10793f]" strokeWidth={1.8} />

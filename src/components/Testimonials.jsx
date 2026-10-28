@@ -40,6 +40,7 @@ export default function Testimonials() {
           >
             What Our Users Say
           </h2>
+          <div className="w-14 h-1 rounded-full mx-auto mt-2.5" style={{ background: "#10793f" }} />
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-5 lg:gap-6">

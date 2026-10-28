@@ -8,11 +8,11 @@ export default function CtaBanner({ onOpenModal }) {
     <section className="py-10 sm:py-14 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div
-          className="relative overflow-hidden rounded-2xl sm:rounded-3xl flex flex-col md:flex-row items-center justify-between"
+          className="relative overflow-hidden rounded-2xl sm:rounded-3xl flex flex-col md:flex-row items-center justify-between shadow-xs"
           style={{
-            background: "linear-gradient(135deg, #e4f5ec 0%, #edf8f2 50%, #e0f3e8 100%)",
-            border: "1px solid #cce9d8",
-            minHeight: "180px",
+            background: "#edf7ee",
+            border: "1px solid #d2eade",
+            minHeight: "170px",
           }}
         >
           {/* Left: Text Content */}
