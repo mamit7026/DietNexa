@@ -6,10 +6,10 @@ import Link from "next/link";
 import { Globe, ChevronDown, Menu, X } from "lucide-react";
 
 const navLinks = [
-  { label: "Home", href: "#home", active: true },
+  { label: "Home", href: "/" },
   {
     label: "Services",
-    href: "#services",
+    href: "/#services",
     dropdown: [
       "Weight Loss Management",
       "Disease Management (Diabetes, PCOS)",
@@ -19,11 +19,11 @@ const navLinks = [
       "General Wellness",
     ],
   },
-  { label: "Dietitians", href: "#dietitians" },
-  { label: "Plans", href: "#why-dietnexa" },
+  { label: "Dietitians", href: "/#dietitians" },
+  { label: "Plans", href: "/#why-dietnexa" },
   {
     label: "Resources",
-    href: "#reviews",
+    href: "/#reviews",
     dropdown: [
       "Patient Stories",
       "Calorie Calculator",
@@ -31,7 +31,8 @@ const navLinks = [
       "Nutrition Guides",
     ],
   },
-  { label: "About Us", href: "#about" },
+  { label: "About Us", href: "/#about" },
+  { label: "Contact", href: "/contact" },
 ];
 
 export default function Navbar({ onOpenModal }) {
