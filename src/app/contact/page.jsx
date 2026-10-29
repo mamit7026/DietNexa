@@ -103,18 +103,34 @@ export default function ContactPage() {
 
       <main className="flex-1">
         {/* ══════════════════════════════════════════════════════════
-            1. HERO SECTION (Code-driven Seamless UI)
+            1. HERO SECTION
         ══════════════════════════════════════════════════════════ */}
         <section
-          className="relative overflow-hidden pt-8 pb-10 lg:pt-10 lg:pb-12"
-          style={{
-            background:
-              "linear-gradient(115deg, #f2faf4 0%, #f7fcf9 40%, #edf7f1 75%, #e6f5eb 100%)",
-          }}
+          className="relative overflow-hidden pt-6 pb-0 lg:pt-8 lg:pb-0"
         >
+          {/* Greenhouse Bokeh Background — Spreads edge-to-edge from left to right */}
+          <div className="absolute inset-0 z-0">
+            <Image
+              src="/image/Serene Greenhouse Bokeh Background.png"
+              alt="Clinic Greenhouse Setting"
+              fill
+              priority
+              unoptimized
+              className="object-cover object-center"
+            />
+            {/* Soft gradient wash on left for maximum text contrast and readability */}
+            <div
+              className="absolute inset-0"
+              style={{
+                background:
+                  "linear-gradient(90deg, rgba(243, 250, 245, 0.97) 0%, rgba(247, 252, 249, 0.91) 40%, rgba(240, 250, 243, 0.45) 68%, rgba(240, 250, 243, 0.10) 100%)",
+              }}
+            />
+          </div>
+
           {/* Top-left decorative leaf branch */}
           <div
-            className="absolute -top-6 -left-6 pointer-events-none z-0 hidden lg:block w-[200px] h-[250px] opacity-50"
+            className="absolute -top-4 -left-4 pointer-events-none z-10 hidden sm:block w-[180px] h-[220px] opacity-70"
           >
             <Image
               src="/image/Dewy Green Leafy Branch.png"
@@ -126,288 +142,132 @@ export default function ContactPage() {
             />
           </div>
 
-          {/* Ambient soft glow */}
-          <div
-            className="absolute top-1/4 right-1/4 w-[420px] h-[420px] rounded-full pointer-events-none z-0 blur-3xl opacity-30"
-            style={{
-              background: "radial-gradient(circle, #bbf7d0 0%, #86efac 40%, transparent 70%)",
-            }}
-          />
-
           <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-            <div className="flex flex-col lg:flex-row items-center lg:items-stretch justify-between min-h-[440px] lg:min-h-[460px]">
+            <div className="flex flex-col lg:flex-row items-center justify-between min-h-[440px] lg:min-h-[460px] gap-8 lg:gap-4">
 
               {/* Left Text Column */}
-              <div className="flex-1 flex flex-col justify-center py-8 lg:py-10 text-left lg:pr-6 xl:pr-10 max-w-full lg:max-w-[520px]">
-                {/* Contact Us Pill Badge with Pulsing Beacon */}
+              <div className="flex-1 flex flex-col justify-center py-6 lg:py-8 text-left max-w-full lg:max-w-[500px] z-10">
+                {/* Contact Us Pill Badge */}
                 <div
-                  className="inline-flex items-center gap-2.5 mb-4 self-start px-3.5 py-1.5 rounded-full border transition-all duration-300 hover:scale-[1.02] cursor-default shadow-xs"
+                  className="inline-flex items-center mb-5 self-start px-4 py-1.5 rounded-full border bg-white/95 shadow-xs"
                   style={{
-                    background:
-                      "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,253,244,0.95) 100%)",
-                    borderColor: "rgba(16,121,63,0.22)",
-                    boxShadow: "0 4px 18px -2px rgba(16,121,63,0.12), 0 1px 3px rgba(0,0,0,0.04)",
-                    backdropFilter: "blur(10px)",
+                    borderColor: "rgba(16,121,63,0.18)",
+                    boxShadow: "0 2px 8px -1px rgba(0,0,0,0.04)",
                   }}
                 >
-                  <span className="relative flex h-2 w-2 shrink-0">
-                    <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                    <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10793f]"></span>
-                  </span>
                   <span className="text-[12.5px] font-bold text-gray-800 tracking-tight">
                     Contact Us
-                  </span>
-                  <span
-                    className="hidden sm:inline-flex items-center text-[10.5px] font-bold text-[#10793f] px-2 py-0.5 rounded-full border"
-                    style={{
-                      background: "rgba(16,121,63,0.08)",
-                      borderColor: "rgba(16,121,63,0.18)",
-                    }}
-                  >
-                    Active Support
                   </span>
                 </div>
 
                 {/* Headline */}
                 <h1
-                  className="font-extrabold text-gray-900 tracking-tight mb-4 text-left"
+                  className="font-extrabold text-[#0c3820] tracking-tight mb-4 text-left"
                   style={{
-                    fontSize: "clamp(34px, 4.4vw, 50px)",
+                    fontSize: "clamp(34px, 4.2vw, 48px)",
                     lineHeight: 1.14,
-                    letterSpacing: "-0.02em",
+                    letterSpacing: "-0.025em",
                     fontFamily: "var(--font-sans)",
                   }}
                 >
                   Get in Touch
-                  <span className="block mt-1 bg-gradient-to-r from-[#10793f] via-[#15803d] to-[#16a34a] bg-clip-text text-transparent">
+                  <span className="block mt-1 text-[#0c3820]">
                     with DietNexa
                   </span>
                 </h1>
 
                 {/* Subtext */}
                 <p
-                  className="text-gray-600 leading-relaxed mb-8 max-w-lg"
-                  style={{ fontSize: "clamp(14px, 1.15vw, 16px)", fontFamily: "var(--font-sans)" }}
+                  className="text-gray-600 leading-relaxed mb-8 max-w-md text-sm sm:text-base font-normal"
+                  style={{ fontFamily: "var(--font-sans)" }}
                 >
                   Have questions, need support, or want to speak with a dietitian?
                   We’re here to help you on your nutrition and wellness journey.
                 </p>
 
-                {/* 3 Trust Feature Chips */}
-                <div className="flex flex-wrap items-center gap-5 sm:gap-8 pt-4 border-t border-emerald-900/10">
+                {/* 3 Trust Feature Chips — horizontal icon+label layout */}
+                <div className="flex flex-wrap items-center gap-x-5 gap-y-3 pt-4 border-t border-gray-200">
+
+                  {/* Expert Support */}
                   <div className="flex items-center gap-2.5">
                     <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-[#10793f]"
-                      style={{
-                        background: "rgba(16,121,63,0.08)",
-                        border: "1px solid rgba(16,121,63,0.16)",
-                      }}
+                      className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                      style={{ background: "rgba(16,121,63,0.10)" }}
                     >
-                      <Headphones className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={2.2} />
+                      <Headphones className="w-[17px] h-[17px] text-[#10793f]" strokeWidth={2.2} />
                     </div>
-                    <div>
-                      <div className="text-[13px] font-extrabold text-gray-900 leading-tight">
-                        Expert Support
-                      </div>
-                      <div className="text-[11px] text-gray-500 font-medium">Certified Dietitians</div>
-                    </div>
+                    <span className="text-[13px] font-bold text-gray-800 whitespace-nowrap">Expert Support</span>
                   </div>
 
-                  <div className="h-7 w-px bg-gray-200 hidden sm:block" />
+                  <div className="h-5 w-px bg-gray-200 hidden sm:block shrink-0" />
 
+                  {/* Quick Response */}
                   <div className="flex items-center gap-2.5">
                     <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-[#10793f]"
-                      style={{
-                        background: "rgba(16,121,63,0.08)",
-                        border: "1px solid rgba(16,121,63,0.16)",
-                      }}
+                      className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                      style={{ background: "rgba(16,121,63,0.10)" }}
                     >
-                      <Zap className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={2.2} />
+                      <Zap className="w-[17px] h-[17px] text-[#10793f]" strokeWidth={2.2} />
                     </div>
-                    <div>
-                      <div className="text-[13px] font-extrabold text-gray-900 leading-tight">
-                        Quick Response
-                      </div>
-                      <div className="text-[11px] text-gray-500 font-medium">&lt; 15 Min Turnaround</div>
-                    </div>
+                    <span className="text-[13px] font-bold text-gray-800 whitespace-nowrap">Quick Response</span>
                   </div>
 
-                  <div className="h-7 w-px bg-gray-200 hidden sm:block" />
+                  <div className="h-5 w-px bg-gray-200 hidden sm:block shrink-0" />
 
+                  {/* Secure & Private */}
                   <div className="flex items-center gap-2.5">
                     <div
-                      className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0 text-[#10793f]"
-                      style={{
-                        background: "rgba(16,121,63,0.08)",
-                        border: "1px solid rgba(16,121,63,0.16)",
-                      }}
+                      className="w-8 h-8 rounded-full flex items-center justify-center shrink-0"
+                      style={{ background: "rgba(16,121,63,0.10)" }}
                     >
-                      <ShieldCheck className="w-4 h-4 sm:w-5 sm:h-5" strokeWidth={2.2} />
+                      <ShieldCheck className="w-[17px] h-[17px] text-[#10793f]" strokeWidth={2.2} />
                     </div>
-                    <div>
-                      <div className="text-[13px] font-extrabold text-gray-900 leading-tight">
-                        Secure &amp; Private
-                      </div>
-                      <div className="text-[11px] text-gray-500 font-medium">100% Confidential</div>
-                    </div>
+                    <span className="text-[13px] font-bold text-gray-800 whitespace-nowrap">Secure &amp; Private</span>
                   </div>
+
                 </div>
               </div>
 
-              {/* ── RIGHT COLUMN: Desktop Code-Driven Artwork (lg+) ── */}
+              {/* ── RIGHT COLUMN: Doctor + Fresh Veggies (lg+) ── */}
               <div
                 className="relative flex-shrink-0 hidden lg:block self-stretch"
-                style={{ width: "min(560px, 48%)" }}
+                style={{
+                  width: "min(600px, 50%)",
+                  minHeight: "460px",
+                }}
               >
-                {/* Concentric subtle AI halo */}
-                <div
-                  className="absolute pointer-events-none rounded-full border border-emerald-400/25 z-0"
-                  style={{
-                    width: "390px",
-                    height: "390px",
-                    top: "16px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                  }}
-                />
-
-                {/* Vibrant green circle blob — behind doctor */}
-                <div
-                  className="absolute pointer-events-none z-0 rounded-full"
-                  style={{
-                    width: "340px",
-                    height: "340px",
-                    background: "radial-gradient(circle at 45% 45%, #7ed338 0%, #68bf2b 60%, #4f9f1e 100%)",
-                    top: "28px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    boxShadow: "0 18px 50px rgba(104,191,43,0.28)",
-                  }}
-                />
-
-                {/* Floating Card: Support Team Online */}
-                <div
-                  className="absolute z-20 bg-white/95 backdrop-blur-md rounded-2xl animate-float-card"
-                  style={{
-                    top: "26px",
-                    right: "-5px",
-                    padding: "12px 16px",
-                    boxShadow: "0 16px 40px -8px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.04)",
-                    border: "1px solid rgba(220,240,230,0.9)",
-                  }}
-                >
-                  <div className="flex items-center gap-2 mb-1">
-                    <span className="relative flex h-2 w-2">
-                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-                      <span className="relative inline-flex rounded-full h-2 w-2 bg-[#10793f]"></span>
-                    </span>
-                    <span className="text-[12px] font-extrabold text-gray-900 tracking-tight">
-                      Support Team Online
-                    </span>
-                  </div>
-                  <div className="text-[10.5px] text-gray-500 font-medium">Ready to assist you today</div>
-                </div>
-
-                {/* Floating Micro Badge: Fast Response */}
-                <div
-                  className="absolute z-20 bg-white/95 backdrop-blur-md rounded-xl px-3.5 py-2 hidden xl:flex items-center gap-2.5"
-                  style={{
-                    bottom: "55px",
-                    left: "-10px",
-                    boxShadow: "0 14px 30px -6px rgba(0,0,0,0.1), 0 2px 6px rgba(0,0,0,0.04)",
-                    border: "1px solid rgba(220,240,230,0.9)",
-                    animation: "float-card 4s ease-in-out infinite 1.2s",
-                  }}
-                >
-                  <div
-                    className="w-8 h-8 rounded-lg flex items-center justify-center text-[#10793f]"
-                    style={{ background: "rgba(16,121,63,0.1)" }}
-                  >
-                    <Zap className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-semibold text-gray-500 leading-tight">Avg Response</div>
-                    <div className="text-[12.5px] font-extrabold text-gray-900 leading-tight">&lt; 15 Minutes</div>
-                  </div>
-                </div>
-
-                {/* Doctor image cutout — anchored cleanly at bottom */}
+                {/* Doctor Image Cutout */}
                 <div
                   className="absolute z-10 pointer-events-none"
                   style={{
                     bottom: "0px",
-                    left: "50%",
-                    transform: "translateX(-62%)",
-                    width: "75%",
-                    height: "96%",
+                    left: "46%",
+                    transform: "translateX(-50%)",
+                    width: "82%",
+                    height: "98%",
                   }}
                 >
                   <div className="relative w-full h-full">
                     <Image
                       src="/image/hero section Smiling Doctor in Green Scrubs.png"
-                      alt="DietNexa Support Team"
+                      alt="DietNexa Doctor"
                       fill
                       priority
                       unoptimized
-                      className="object-contain object-bottom"
+                      className="object-contain object-bottom drop-shadow-sm"
                     />
                   </div>
                 </div>
 
-                {/* Vegetable medley cutout — bottom right foreground */}
-                <div
-                  className="absolute z-30 pointer-events-none"
-                  style={{
-                    bottom: "0px",
-                    right: "0px",
-                    width: "52%",
-                    height: "48%",
-                  }}
-                >
-                  <div className="relative w-full h-full">
-                    <Image
-                      src="/image/hero sectionFresh Vegetable Medley Cutout.png"
-                      alt="Fresh Produce"
-                      fill
-                      priority
-                      unoptimized
-                      className="object-contain object-bottom-right drop-shadow-xl"
-                    />
-                  </div>
-                </div>
-              </div>
-
-              {/* ── MOBILE HERO VISUAL (< lg) ── */}
-              <div className="relative block lg:hidden w-full mt-6 mb-4" style={{ height: "280px" }}>
-                {/* Green blob */}
-                <div
-                  className="absolute pointer-events-none z-0 rounded-full"
-                  style={{
-                    width: "220px",
-                    height: "220px",
-                    top: "10px",
-                    left: "50%",
-                    transform: "translateX(-50%)",
-                    background: "radial-gradient(circle at 45% 45%, #7ed338 0%, #68bf2b 60%, #4f9f1e 100%)",
-                    boxShadow: "0 12px 35px rgba(104,191,43,0.25)",
-                  }}
-                />
-                {/* Doctor */}
-                <div className="absolute inset-0 z-10 pointer-events-none">
-                  <Image
-                    src="/image/hero section Smiling Doctor in Green Scrubs.png"
-                    alt="DietNexa Support Team"
-                    fill
-                    priority
-                    unoptimized
-                    className="object-contain object-bottom"
-                  />
-                </div>
-                {/* Vegetables */}
+                {/* Fresh Vegetable Medley Cutout on the right */}
                 <div
                   className="absolute z-20 pointer-events-none"
-                  style={{ bottom: "0px", right: "6%", width: "48%", height: "55%" }}
+                  style={{
+                    bottom: "0px",
+                    right: "-10px",
+                    width: "58%",
+                    height: "52%",
+                  }}
                 >
                   <div className="relative w-full h-full">
                     <Image
@@ -417,6 +277,57 @@ export default function ContactPage() {
                       priority
                       unoptimized
                       className="object-contain object-bottom-right drop-shadow-lg"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* ── MOBILE HERO VISUAL (< lg) ── */}
+              <div
+                className="relative block lg:hidden w-full mt-4"
+                style={{ height: "300px" }}
+              >
+                {/* Doctor */}
+                <div
+                  className="absolute z-10 pointer-events-none"
+                  style={{
+                    bottom: "0px",
+                    left: "45%",
+                    transform: "translateX(-50%)",
+                    width: "84%",
+                    height: "98%",
+                  }}
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                      alt="DietNexa Doctor"
+                      fill
+                      priority
+                      unoptimized
+                      className="object-contain object-bottom"
+                    />
+                  </div>
+                </div>
+
+                {/* Vegetables */}
+                <div
+                  className="absolute z-20 pointer-events-none"
+                  style={{
+                    bottom: "0px",
+                    right: "0px",
+                    width: "56%",
+                    height: "52%",
+                  }}
+                >
+                  <div className="relative w-full h-full">
+                    <Image
+                      src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                      alt="Fresh Produce"
+                      fill
+                      priority
+                      unoptimized
+                      className="object-contain object-bottom-right drop-shadow-md"
                     />
                   </div>
                 </div>
