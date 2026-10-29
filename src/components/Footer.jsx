@@ -89,27 +89,27 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm text-emerald-100/75">
               <li>
-                <Link href="#home" className="hover:text-white transition-colors">
+                <Link href="/" className="hover:text-white transition-colors">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="#services" className="hover:text-white transition-colors">
+                <Link href="/#services" className="hover:text-white transition-colors">
                   Services
                 </Link>
               </li>
               <li>
-                <Link href="#dietitians" className="hover:text-white transition-colors">
+                <Link href="/#dietitians" className="hover:text-white transition-colors">
                   Dietitians
                 </Link>
               </li>
               <li>
-                <Link href="#why-dietnexa" className="hover:text-white transition-colors">
+                <Link href="/#why-dietnexa" className="hover:text-white transition-colors">
                   Plans
                 </Link>
               </li>
               <li>
-                <Link href="#about" className="hover:text-white transition-colors">
+                <Link href="/#about" className="hover:text-white transition-colors">
                   About Us
                 </Link>
               </li>
@@ -123,27 +123,27 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm text-emerald-100/75">
               <li>
-                <Link href="#services" className="hover:text-white transition-colors">
+                <Link href="/#services" className="hover:text-white transition-colors">
                   Weight Loss
                 </Link>
               </li>
               <li>
-                <Link href="#services" className="hover:text-white transition-colors">
+                <Link href="/#services" className="hover:text-white transition-colors">
                   Disease Management
                 </Link>
               </li>
               <li>
-                <Link href="#services" className="hover:text-white transition-colors">
+                <Link href="/#services" className="hover:text-white transition-colors">
                   Sports Nutrition
                 </Link>
               </li>
               <li>
-                <Link href="#services" className="hover:text-white transition-colors">
+                <Link href="/#services" className="hover:text-white transition-colors">
                   Pregnancy Nutrition
                 </Link>
               </li>
               <li>
-                <Link href="#services" className="hover:text-white transition-colors">
+                <Link href="/#services" className="hover:text-white transition-colors">
                   General Wellness
                 </Link>
               </li>
@@ -157,22 +157,22 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2.5 text-sm text-emerald-100/75">
               <li>
-                <Link href="#resources" className="hover:text-white transition-colors">
+                <Link href="/#reviews" className="hover:text-white transition-colors">
                   Blog
                 </Link>
               </li>
               <li>
-                <Link href="#resources" className="hover:text-white transition-colors">
+                <Link href="/#reviews" className="hover:text-white transition-colors">
                   Nutrition Guides
                 </Link>
               </li>
               <li>
-                <Link href="#faqs" className="hover:text-white transition-colors">
+                <Link href="/#faqs" className="hover:text-white transition-colors">
                   FAQs
                 </Link>
               </li>
               <li>
-                <Link href="#reviews" className="hover:text-white transition-colors">
+                <Link href="/#reviews" className="hover:text-white transition-colors">
                   Success Stories
                 </Link>
               </li>
@@ -223,11 +223,11 @@ export default function Footer() {
         <div className="pt-8 flex flex-col sm:flex-row items-center justify-between text-xs text-emerald-100/60 gap-4">
           <p>© 2026 DietNexa. All rights reserved.</p>
           <div className="flex items-center gap-4 sm:gap-6">
-            <a href="#privacy" className="hover:text-white transition-colors">Privacy Policy</a>
+            <Link href="/#privacy" className="hover:text-white transition-colors">Privacy Policy</Link>
             <span>|</span>
-            <a href="#terms" className="hover:text-white transition-colors">Terms of Service</a>
+            <Link href="/#terms" className="hover:text-white transition-colors">Terms of Service</Link>
             <span>|</span>
-            <a href="#contact" className="hover:text-white transition-colors">Contact Us</a>
+            <Link href="/contact" className="hover:text-white transition-colors">Contact Us</Link>
           </div>
         </div>
       </div>

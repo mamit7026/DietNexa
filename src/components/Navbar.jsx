@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 import { Globe, ChevronDown, Menu, X } from "lucide-react";
 
 const navLinks = [
@@ -38,6 +39,7 @@ const navLinks = [
 export default function Navbar({ onOpenModal }) {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [openDropdown, setOpenDropdown] = useState(null);
+  const pathname = usePathname();
 
   return (
     <header
@@ -68,62 +70,68 @@ export default function Navbar({ onOpenModal }) {
 
           {/* Desktop nav */}
           <nav className="hidden md:flex items-center gap-6 lg:gap-8">
-            {navLinks.map((link) => (
-              <div
-                key={link.label}
-                className="relative py-2"
-                onMouseEnter={() => link.dropdown && setOpenDropdown(link.label)}
-                onMouseLeave={() => setOpenDropdown(null)}
-              >
-                <a
-                  href={link.href}
-                  className="relative flex items-center gap-1 text-[14px] font-semibold transition-colors cursor-pointer"
-                  style={{
-                    color: link.active ? "#10793f" : "#374151",
-                  }}
-                  onMouseOver={(e) => {
-                    if (!link.active) e.currentTarget.style.color = "#10793f";
-                  }}
-                  onMouseOut={(e) => {
-                    if (!link.active) e.currentTarget.style.color = "#374151";
-                  }}
-                >
-                  {link.label}
-                  {link.dropdown && (
-                    <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
-                  )}
-                  {link.active && (
-                    <span
-                      className="absolute -bottom-2 left-0 right-0 h-[2.5px] rounded-full"
-                      style={{ background: "#10793f" }}
-                    />
-                  )}
-                </a>
+            {navLinks.map((link) => {
+              const isActive =
+                pathname === link.href ||
+                (link.href === "/" && pathname === "/");
 
-                {/* Dropdown */}
-                {link.dropdown && openDropdown === link.label && (
-                  <div
-                    className="absolute top-full left-0 mt-1 py-2 rounded-xl z-50"
+              return (
+                <div
+                  key={link.label}
+                  className="relative py-2"
+                  onMouseEnter={() => link.dropdown && setOpenDropdown(link.label)}
+                  onMouseLeave={() => setOpenDropdown(null)}
+                >
+                  <Link
+                    href={link.href}
+                    className="relative flex items-center gap-1 text-[14px] font-semibold transition-colors cursor-pointer"
                     style={{
-                      background: "#fff",
-                      border: "1px solid #e5e7eb",
-                      boxShadow: "0 8px 30px rgba(0,0,0,0.12)",
-                      minWidth: "220px",
+                      color: isActive ? "#10793f" : "#374151",
+                    }}
+                    onMouseOver={(e) => {
+                      if (!isActive) e.currentTarget.style.color = "#10793f";
+                    }}
+                    onMouseOut={(e) => {
+                      if (!isActive) e.currentTarget.style.color = "#374151";
                     }}
                   >
-                    {link.dropdown.map((item) => (
-                      <a
-                        key={item}
-                        href={link.href}
-                        className="block px-4 py-2.5 text-[13px] font-medium text-gray-700 hover:bg-[#f0f9f4] hover:text-[#10793f] transition-colors"
-                      >
-                        {item}
-                      </a>
-                    ))}
-                  </div>
-                )}
-              </div>
-            ))}
+                    {link.label}
+                    {link.dropdown && (
+                      <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+                    )}
+                    {isActive && (
+                      <span
+                        className="absolute -bottom-2 left-0 right-0 h-[2.5px] rounded-full"
+                        style={{ background: "#10793f" }}
+                      />
+                    )}
+                  </Link>
+
+                  {/* Dropdown */}
+                  {link.dropdown && openDropdown === link.label && (
+                    <div
+                      className="absolute top-full left-0 mt-1 py-2 rounded-xl z-50"
+                      style={{
+                        background: "#fff",
+                        border: "1px solid #e5e7eb",
+                        boxShadow: "0 8px 30px rgba(0,0,0,0.12)",
+                        minWidth: "220px",
+                      }}
+                    >
+                      {link.dropdown.map((item) => (
+                        <Link
+                          key={item}
+                          href={link.href}
+                          className="block px-4 py-2.5 text-[13px] font-medium text-gray-700 hover:bg-[#f0f9f4] hover:text-[#10793f] transition-colors"
+                        >
+                          {item}
+                        </Link>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
           </nav>
 
           {/* Right actions */}
@@ -178,17 +186,23 @@ export default function Navbar({ onOpenModal }) {
       {/* Mobile Drawer */}
       {mobileOpen && (
         <div className="md:hidden bg-white border-t border-gray-100 px-5 pt-2 pb-6 shadow-xl">
-          {navLinks.map((link) => (
-            <a
-              key={link.label}
-              href={link.href}
-              onClick={() => setMobileOpen(false)}
-              className="block py-3 border-b border-gray-100 text-[15px] font-semibold"
-              style={{ color: link.active ? "#10793f" : "#374151" }}
-            >
-              {link.label}
-            </a>
-          ))}
+          {navLinks.map((link) => {
+            const isActive =
+              pathname === link.href ||
+              (link.href === "/" && pathname === "/");
+
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                onClick={() => setMobileOpen(false)}
+                className="block py-3 border-b border-gray-100 text-[15px] font-semibold"
+                style={{ color: isActive ? "#10793f" : "#374151" }}
+              >
+                {link.label}
+              </Link>
+            );
+          })}
           <div className="flex gap-3 mt-5">
             <button
               onClick={() => { setMobileOpen(false); onOpenModal?.("login"); }}
