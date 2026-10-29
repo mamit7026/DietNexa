@@ -634,65 +634,19 @@ export default function ContactPage() {
                 />
               </div>
 
-              {/* Map Illustration Box (Left 7 Cols) */}
-              <div className="lg:col-span-7 relative w-full h-[240px] sm:h-[280px] rounded-2xl overflow-hidden shadow-xs border border-gray-200 bg-[#eef5f0]">
-                {/* Stylized vector street grid */}
-                <svg
-                  className="w-full h-full object-cover"
-                  viewBox="0 0 600 300"
-                  fill="none"
-                  preserveAspectRatio="xMidYMid slice"
-                >
-                  <rect width="600" height="300" fill="#f4faf5" />
-                  {/* Water River Curve */}
-                  <path
-                    d="M-20,40 C120,60 180,180 260,320 L200,320 C140,180 80,80 -20,60 Z"
-                    fill="#bfe2f7"
-                  />
-                  {/* Parks / Green Areas */}
-                  <rect x="70" y="210" width="80" height="70" rx="12" fill="#cbebd3" />
-                  <rect x="480" y="180" width="100" height="80" rx="16" fill="#cbebd3" />
-                  <circle cx="510" cy="80" r="40" fill="#d2f0da" />
-
-                  {/* Main Arterial Roads */}
-                  <path d="M0,120 L600,160" stroke="#ffffff" strokeWidth="22" />
-                  <path d="M0,120 L600,160" stroke="#e0ece3" strokeWidth="18" />
-                  <path d="M220,0 L320,300" stroke="#ffffff" strokeWidth="20" />
-                  <path d="M220,0 L320,300" stroke="#e0ece3" strokeWidth="16" />
-                  <path d="M380,0 L420,300" stroke="#ffffff" strokeWidth="16" />
-                  <path d="M380,0 L420,300" stroke="#e0ece3" strokeWidth="12" />
-                  <path d="M120,0 L180,300" stroke="#ffffff" strokeWidth="14" />
-                  <path d="M120,0 L180,300" stroke="#e0ece3" strokeWidth="10" />
-                  <path d="M0,230 L600,210" stroke="#ffffff" strokeWidth="18" />
-                  <path d="M0,230 L600,210" stroke="#e0ece3" strokeWidth="14" />
-                  <path d="M0,40 L600,60" stroke="#ffffff" strokeWidth="14" />
-                  <path d="M0,40 L600,60" stroke="#e0ece3" strokeWidth="10" />
-
-                  {/* Cross Streets */}
-                  <path d="M50,0 L50,300" stroke="#ffffff" strokeWidth="8" />
-                  <path d="M460,0 L460,300" stroke="#ffffff" strokeWidth="8" />
-                  <path d="M540,0 L540,300" stroke="#ffffff" strokeWidth="8" />
-                </svg>
-
-                {/* Floating Office Pin Badge */}
-                <div
-                  className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 z-20 flex items-center gap-3 bg-white/96 backdrop-blur-md px-4 py-3 rounded-2xl border border-gray-200/90"
-                  style={{
-                    boxShadow: "0 10px 28px -4px rgba(0,0,0,0.18)",
-                  }}
-                >
-                  <div className="w-10 h-10 rounded-full bg-[#10793f] flex items-center justify-center text-white shrink-0 shadow-md">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-sm font-extrabold text-gray-900 leading-tight">
-                      DietNexa Office
-                    </div>
-                    <div className="text-xs font-semibold text-gray-500 leading-tight mt-0.5">
-                      Kolkata, West Bengal
-                    </div>
-                  </div>
-                </div>
+              {/* Map Box (Left 7 Cols) — Real Google Map with Theme-based Frame */}
+              <div className="lg:col-span-7 relative w-full h-[280px] sm:h-[340px] lg:h-[360px] rounded-2xl overflow-hidden shadow-sm border border-emerald-200/90 bg-white ring-4 ring-[#10793f]/5">
+                <iframe
+                  src="https://www.google.com/maps/embed?pb=!1m17!1m12!1m3!1d1847.6355210289087!2d87.92621240529176!3d22.153752479401945!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m2!1m1!2zMjLCsDA5JzEzLjUiTiA4N8KwNTUnMzkuMCJF!5e0!3m2!1sen!2sin!4v1793267420008!5m2!1sen!2sin"
+                  width="100%"
+                  height="100%"
+                  style={{ border: 0 }}
+                  allowFullScreen=""
+                  loading="lazy"
+                  referrerPolicy="strict-origin-when-cross-origin"
+                  className="w-full h-full"
+                  title="DietNexa Location Map"
+                />
               </div>
 
               {/* Find Us Here Content (Right 5 Cols) */}
@@ -701,16 +655,23 @@ export default function ContactPage() {
                   Find Us Here
                 </h2>
 
-                <div className="flex items-center gap-2 text-gray-700 font-semibold mb-6 text-sm sm:text-base">
+                <div className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-sm sm:text-base">
                   <MapPin className="w-5 h-5 text-[#10793f] shrink-0" />
                   <span>Kolkata, West Bengal, India</span>
                 </div>
 
+                <p className="text-gray-500 text-xs sm:text-sm mb-6 leading-relaxed">
+                  Visit our consultation center for in-person dietitian assessments and personalized wellness guidance.
+                </p>
+
                 <a
-                  href="https://maps.google.com/?q=Kolkata,+West+Bengal,+India"
+                  href="https://www.google.com/maps?q=22.153752479401945,87.92621240529176"
                   target="_blank"
                   rel="noreferrer"
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-gray-800 text-sm border border-gray-300 hover:border-[#10793f] hover:text-[#10793f] hover:bg-white transition-all shadow-2xs hover:shadow-sm active:scale-95"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-bold text-white text-sm transition-all shadow-md hover:shadow-lg active:scale-95"
+                  style={{
+                    background: "linear-gradient(135deg, #10793f 0%, #0d6534 100%)",
+                  }}
                 >
                   <span>Get Directions</span>
                   <ExternalLink className="w-4 h-4" />
