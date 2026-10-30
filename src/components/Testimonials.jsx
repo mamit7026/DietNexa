@@ -31,9 +31,9 @@ const reviews = [
 
 export default function Testimonials() {
   return (
-    <section id="reviews" className="py-14 lg:py-20 bg-white">
+    <section id="reviews" className="py-8 lg:py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="text-center mb-10 sm:mb-12">
+        <div className="text-center mb-7 sm:mb-9">
           <h2
             className="font-extrabold text-gray-900 tracking-tight"
             style={{ fontSize: "clamp(24px, 3vw, 36px)" }}
@@ -47,10 +47,10 @@ export default function Testimonials() {
           {reviews.map((r) => (
             <div
               key={r.id}
-              className="flex flex-col bg-white rounded-2xl border border-gray-200/80 p-6 sm:p-7 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
+              className="flex flex-col bg-white rounded-2xl border border-gray-200/80 p-5 sm:p-6 hover:shadow-xl hover:-translate-y-1 transition-all duration-300"
             >
               {/* Green Quote Mark */}
-              <div className="flex items-center mb-3">
+              <div className="flex items-center mb-2">
                 <span
                   className="font-serif text-3xl font-black leading-none select-none text-[#10793f]"
                 >
@@ -59,7 +59,7 @@ export default function Testimonials() {
               </div>
 
               {/* Review text */}
-              <p className="text-gray-600 text-[13.5px] leading-relaxed flex-1 mb-6">
+              <p className="text-gray-600 text-[13.5px] leading-relaxed flex-1 mb-4">
                 {r.text}
               </p>
 

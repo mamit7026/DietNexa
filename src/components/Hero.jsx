@@ -37,14 +37,14 @@ export default function Hero({ onOpenModal }) {
 
       {/* Main container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="flex flex-col lg:flex-row items-center lg:items-stretch justify-between min-h-[460px] lg:min-h-[480px]">
+        <div className="flex flex-col lg:flex-row items-center lg:items-stretch justify-between min-h-[400px] lg:min-h-[440px]">
 
           {/* ── LEFT COLUMN ── */}
-          <div className="flex-1 flex flex-col justify-center py-10 lg:py-12 text-left lg:pr-6 xl:pr-10 max-w-full lg:max-w-[510px]">
+          <div className="flex-1 flex flex-col justify-center py-7 lg:py-9 text-left lg:pr-6 xl:pr-10 max-w-full lg:max-w-[510px]">
 
             {/* Redesigned "Online Dietitian Consultation" Badge */}
             <div
-              className="inline-flex items-center gap-2.5 mb-5 self-start px-4 py-1.5 rounded-full border transition-all duration-300 hover:scale-[1.02] cursor-default shadow-xs"
+              className="inline-flex items-center gap-2.5 mb-4 self-start px-4 py-1.5 rounded-full border transition-all duration-300 hover:scale-[1.02] cursor-default shadow-xs"
               style={{
                 background: "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,253,244,0.95) 100%)",
                 borderColor: "rgba(16,121,63,0.22)",
@@ -80,7 +80,7 @@ export default function Hero({ onOpenModal }) {
 
             {/* Headline */}
             <h1
-              className="font-extrabold text-gray-900 tracking-tight mb-4"
+              className="font-extrabold text-gray-900 tracking-tight mb-3.5"
               style={{
                 fontSize: "clamp(30px, 3.8vw, 45px)",
                 lineHeight: 1.14,
@@ -96,7 +96,7 @@ export default function Hero({ onOpenModal }) {
 
             {/* Sub-text */}
             <p
-              className="text-gray-600 leading-relaxed mb-7 max-w-[440px]"
+              className="text-gray-600 leading-relaxed mb-5 max-w-[440px]"
               style={{
                 fontSize: "clamp(14px, 1.15vw, 15.5px)",
                 fontFamily: "var(--font-sans)",
@@ -107,7 +107,7 @@ export default function Hero({ onOpenModal }) {
             </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap items-center gap-3.5 mb-8">
+            <div className="flex flex-wrap items-center gap-3.5 mb-6">
               <button
                 id="hero-get-diet-plan"
                 onClick={() => onOpenModal?.("diet-plan")}
@@ -137,7 +137,7 @@ export default function Hero({ onOpenModal }) {
 
             {/* Trust Metrics */}
             <div
-              className="flex flex-wrap items-center gap-5 sm:gap-7 pt-5"
+              className="flex flex-wrap items-center gap-5 sm:gap-7 pt-4"
               style={{ borderTop: "1px solid rgba(16,121,63,0.12)" }}
             >
               {[
@@ -328,7 +328,7 @@ export default function Hero({ onOpenModal }) {
           </div>
 
           {/* ── MOBILE HERO IMAGE (< lg) ── */}
-          <div className="relative block lg:hidden w-full mt-6 mb-4" style={{ height: "290px" }}>
+          <div className="relative block lg:hidden w-full mt-3 mb-2" style={{ height: "260px" }}>
             {/* Green blob */}
             <div
               className="absolute pointer-events-none z-0 rounded-full"

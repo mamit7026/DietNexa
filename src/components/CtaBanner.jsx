@@ -5,7 +5,7 @@ import { ArrowRight } from "lucide-react";
 
 export default function CtaBanner({ onOpenModal }) {
   return (
-    <section className="py-10 sm:py-14 bg-white">
+    <section className="py-6 sm:py-8 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div
           className="relative overflow-hidden rounded-2xl sm:rounded-3xl flex flex-col md:flex-row items-center justify-between shadow-xs"
@@ -16,9 +16,9 @@ export default function CtaBanner({ onOpenModal }) {
           }}
         >
           {/* Left: Text Content */}
-          <div className="relative z-10 px-6 sm:px-10 py-8 md:py-10 text-left max-w-lg">
+          <div className="relative z-10 px-6 sm:px-10 py-6 md:py-8 text-left max-w-lg">
             <h2
-              className="font-extrabold text-gray-900 tracking-tight mb-2.5"
+              className="font-extrabold text-gray-900 tracking-tight mb-2"
               style={{ fontSize: "clamp(22px, 2.4vw, 32px)", lineHeight: 1.2 }}
             >
               Start Your Health Journey Today

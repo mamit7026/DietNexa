@@ -219,7 +219,7 @@ export default function ConsultationModal({ isOpen, onClose, initialType = "diet
                     >
                       <option value="Dr. Ananya Sen">Dr. Ananya Sen (Clinical)</option>
                       <option value="Ms. Riya Kapoor">Ms. Riya Kapoor (Sports)</option>
-                      <option value="Dr. Neha Malhotra">Dr. Neha Malhotra (Women's Health)</option>
+                      <option value="Dr. Neha Malhotra">Dr. Neha Malhotra (Women&apos;s Health)</option>
                     </select>
                   </div>
 

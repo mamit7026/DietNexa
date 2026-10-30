@@ -20,10 +20,10 @@ const categories = [
 
 export default function CategoriesBar({ onSelectCategory }) {
   return (
-    <section className="bg-white py-5 sm:py-6">
+    <section className="bg-white py-3 sm:py-4">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
         <div
-          className="rounded-2xl sm:rounded-3xl py-4 sm:py-5 px-3 sm:px-6 shadow-xs"
+          className="rounded-2xl sm:rounded-3xl py-3 sm:py-3.5 px-3 sm:px-6 shadow-xs"
           style={{
             background: "#f2f9ed",
             border: "1px solid #dfeed8",

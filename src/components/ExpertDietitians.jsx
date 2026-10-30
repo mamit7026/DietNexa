@@ -1,4 +1,4 @@
-﻿"use client";
+"use client";
 
 import { useState } from "react";
 import Image from "next/image";
@@ -40,7 +40,7 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
   return (
     <section
       id="dietitians"
-      className="relative py-12 lg:py-20 overflow-hidden"
+      className="relative py-8 lg:py-12 overflow-hidden"
       style={{
         background: "radial-gradient(ellipse at 85% 50%, #edf7f1 0%, #f7fcf9 45%, #ffffff 75%)",
       }}
@@ -57,17 +57,17 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
       </div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-        <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-12 xl:gap-16">
+        <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-10 xl:gap-14">
 
           {/* ── LEFT: Image + Heading + CTA ── */}
           <div className="flex-shrink-0 flex flex-col items-center lg:items-start text-center lg:text-left w-full lg:w-auto lg:max-w-[340px]">
 
             {/* Circular salad image */}
             <div
-              className="relative rounded-full overflow-hidden border-4 border-white mb-6 hover:scale-105 transition-transform duration-500"
+              className="relative rounded-full overflow-hidden border-4 border-white mb-4 hover:scale-105 transition-transform duration-500"
               style={{
-                width: "clamp(150px, 18vw, 200px)",
-                height: "clamp(150px, 18vw, 200px)",
+                width: "clamp(140px, 16vw, 190px)",
+                height: "clamp(140px, 16vw, 190px)",
                 boxShadow: "0 12px 40px rgba(0,0,0,0.14)",
               }}
             >
@@ -82,7 +82,7 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
             </div>
 
             <h2
-              className="font-extrabold text-gray-900 tracking-tight leading-tight mb-3"
+              className="font-extrabold text-gray-900 tracking-tight leading-tight mb-2"
               style={{
                 fontSize: "clamp(24px, 2.8vw, 38px)",
                 letterSpacing: "-0.015em",
@@ -93,7 +93,7 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
             </h2>
 
             <p
-              className="text-gray-500 leading-relaxed mb-6"
+              className="text-gray-500 leading-relaxed mb-4.5"
               style={{
                 fontSize: "clamp(13px, 1vw, 14.5px)",
                 maxWidth: "300px",

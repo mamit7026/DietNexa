@@ -43,18 +43,18 @@ const services = [
 
 export default function OurServices({ onSelectService }) {
   return (
-    <section id="services" className="py-14 lg:py-20 bg-white">
+    <section id="services" className="py-8 lg:py-12 bg-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
 
         {/* Heading */}
-        <div className="text-center mb-10 sm:mb-12">
+        <div className="text-center mb-7 sm:mb-8">
           <h2
             className="font-extrabold text-gray-900 tracking-tight"
             style={{ fontSize: "clamp(24px, 3vw, 36px)" }}
           >
             Our Services
           </h2>
-          <p className="text-gray-500 text-base mt-2">
+          <p className="text-gray-500 text-base mt-1.5">
             Professional nutrition support for every health goal
           </p>
         </div>
@@ -67,17 +67,17 @@ export default function OurServices({ onSelectService }) {
               <div
                 key={svc.id}
                 onClick={() => onSelectService?.(svc)}
-                className="group flex flex-col items-center text-center p-5 rounded-2xl border border-gray-100 bg-white hover:border-[#10793f]/40 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                className="group flex flex-col items-center text-center p-4 sm:p-4.5 rounded-2xl border border-gray-100 bg-white hover:border-[#10793f]/40 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
                 style={{
                   boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
                 }}
               >
                 {/* Icon circle */}
                 <div
-                  className="w-13 h-13 rounded-full flex items-center justify-center mb-3.5 transition-transform duration-300 group-hover:scale-110"
+                  className="w-12 h-12 rounded-full flex items-center justify-center mb-2.5 transition-transform duration-300 group-hover:scale-110"
                   style={{ background: "#edf7f1", color: "#10793f" }}
                 >
-                  <Icon className="w-6 h-6 text-[#10793f]" strokeWidth={1.8} />
+                  <Icon className="w-5.5 h-5.5 text-[#10793f]" strokeWidth={1.8} />
                 </div>
 
                 <h3 className="text-[14px] font-bold text-gray-900 mb-1.5 group-hover:text-[#10793f] transition-colors leading-snug">
