@@ -2,8 +2,11 @@
 
 import Image from "next/image";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
 
 export default function Footer() {
+  const pathname = usePathname();
+  const isAbout = pathname === "/about";
   return (
     <footer id="about" className="bg-[#07361e] text-white pt-10 pb-8 border-t border-[#0b4728]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -109,7 +112,19 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#about" className="hover:text-white transition-colors">
+                <Link href="/#reviews" className="hover:text-white transition-colors">
+                  Resources
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/about"
+                  className={
+                    isAbout
+                      ? "text-[#4ade80] font-semibold hover:text-white transition-colors"
+                      : "hover:text-white transition-colors"
+                  }
+                >
                   About Us
                 </Link>
               </li>

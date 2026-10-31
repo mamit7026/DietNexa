@@ -32,8 +32,7 @@ const navLinks = [
       "Nutrition Guides",
     ],
   },
-  { label: "About Us", href: "/#about" },
-  { label: "Contact", href: "/contact" },
+  { label: "About Us", href: "/about" },
 ];
 
 export default function Navbar({ onOpenModal }) {
