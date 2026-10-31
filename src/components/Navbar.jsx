@@ -12,12 +12,12 @@ const navLinks = [
     label: "Services",
     href: "/#services",
     dropdown: [
-      "Weight Loss Management",
-      "Disease Management (Diabetes, PCOS)",
-      "Sports Nutrition",
-      "Pregnancy & Lactation",
-      "Child & Teen Growth",
-      "General Wellness",
+      { label: "Weight Loss Management", href: "/services/weight-loss" },
+      { label: "Disease Management (Diabetes, PCOS)", href: "/#services" },
+      { label: "Sports Nutrition", href: "/#services" },
+      { label: "Pregnancy & Lactation", href: "/#services" },
+      { label: "Child & Teen Growth", href: "/#services" },
+      { label: "General Wellness", href: "/#services" },
     ],
   },
   { label: "Dietitians", href: "/#dietitians" },
@@ -26,10 +26,10 @@ const navLinks = [
     label: "Resources",
     href: "/#reviews",
     dropdown: [
-      "Patient Stories",
-      "Calorie Calculator",
-      "Health Blog",
-      "Nutrition Guides",
+      { label: "Patient Stories", href: "/#reviews" },
+      { label: "Calorie Calculator", href: "/#why-dietnexa" },
+      { label: "Health Blog", href: "/about" },
+      { label: "Nutrition Guides", href: "/#services" },
     ],
   },
   { label: "About Us", href: "/about" },
@@ -117,15 +117,19 @@ export default function Navbar({ onOpenModal }) {
                         minWidth: "220px",
                       }}
                     >
-                      {link.dropdown.map((item) => (
-                        <Link
-                          key={item}
-                          href={link.href}
-                          className="block px-4 py-2.5 text-[13px] font-medium text-gray-700 hover:bg-[#f0f9f4] hover:text-[#10793f] transition-colors"
-                        >
-                          {item}
-                        </Link>
-                      ))}
+                      {link.dropdown.map((item) => {
+                        const itemLabel = typeof item === "string" ? item : item.label;
+                        const itemHref = typeof item === "string" ? link.href : item.href;
+                        return (
+                          <Link
+                            key={itemLabel}
+                            href={itemHref}
+                            className="block px-4 py-2.5 text-[13px] font-medium text-gray-700 hover:bg-[#f0f9f4] hover:text-[#10793f] transition-colors"
+                          >
+                            {itemLabel}
+                          </Link>
+                        );
+                      })}
                     </div>
                   )}
                 </div>

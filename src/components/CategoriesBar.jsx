@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import {
   UtensilsCrossed,
   HeartPulse,
@@ -10,7 +11,7 @@ import {
 } from "lucide-react";
 
 const categories = [
-  { id: "weight", label: "Weight Management", icon: UtensilsCrossed },
+  { id: "weight", label: "Weight Management", icon: UtensilsCrossed, href: "/services/weight-loss" },
   { id: "disease", label: "Disease-Specific\nNutrition", icon: HeartPulse },
   { id: "meals", label: "Daily Meal Plans", icon: CalendarDays },
   { id: "reminders", label: "Reminders & Tracking", icon: BellRing },
@@ -32,12 +33,8 @@ export default function CategoriesBar({ onSelectCategory }) {
           <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 divide-y sm:divide-y-0 lg:divide-x divide-[#d6ecd0]">
             {categories.map((cat) => {
               const Icon = cat.icon;
-              return (
-                <button
-                  key={cat.id}
-                  onClick={() => onSelectCategory?.(cat.id)}
-                  className="group flex flex-col items-center justify-center gap-2 py-2.5 px-2 transition-all duration-200 cursor-pointer hover:bg-white/60 rounded-xl"
-                >
+              const content = (
+                <>
                   {/* Clean green line icon */}
                   <div className="h-9 flex items-center justify-center transition-transform duration-200 group-hover:scale-110">
                     <Icon
@@ -52,6 +49,28 @@ export default function CategoriesBar({ onSelectCategory }) {
                   >
                     {cat.label}
                   </span>
+                </>
+              );
+
+              if (cat.href) {
+                return (
+                  <Link
+                    key={cat.id}
+                    href={cat.href}
+                    className="group flex flex-col items-center justify-center gap-2 py-2.5 px-2 transition-all duration-200 cursor-pointer hover:bg-white/60 rounded-xl"
+                  >
+                    {content}
+                  </Link>
+                );
+              }
+
+              return (
+                <button
+                  key={cat.id}
+                  onClick={() => onSelectCategory?.(cat.id)}
+                  className="group flex flex-col items-center justify-center gap-2 py-2.5 px-2 transition-all duration-200 cursor-pointer hover:bg-white/60 rounded-xl"
+                >
+                  {content}
                 </button>
               );
             })}

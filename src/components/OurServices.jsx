@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { Scale, Activity, Zap, Baby, Smile, Apple } from "lucide-react";
 
 const services = [
@@ -8,6 +9,7 @@ const services = [
     title: "Weight Loss",
     description: "Sustainable and healthy weight management",
     icon: Scale,
+    href: "/services/weight-loss",
   },
   {
     id: "disease-management",
@@ -63,11 +65,9 @@ export default function OurServices({ onSelectService }) {
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3.5 sm:gap-4">
           {services.map((svc) => {
             const Icon = svc.icon;
-            return (
+            const CardContent = (
               <div
-                key={svc.id}
-                onClick={() => onSelectService?.(svc)}
-                className="group flex flex-col items-center text-center p-4 sm:p-4.5 rounded-2xl border border-gray-100 bg-white hover:border-[#10793f]/40 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer"
+                className="group flex flex-col items-center text-center p-4 sm:p-4.5 rounded-2xl border border-gray-100 bg-white hover:border-[#10793f]/40 hover:shadow-lg transition-all duration-300 hover:-translate-y-1 cursor-pointer h-full"
                 style={{
                   boxShadow: "0 2px 8px rgba(0,0,0,0.03)",
                 }}
@@ -86,6 +86,20 @@ export default function OurServices({ onSelectService }) {
                 <p className="text-[12px] text-gray-500 leading-relaxed">
                   {svc.description}
                 </p>
+              </div>
+            );
+
+            if (svc.href) {
+              return (
+                <Link key={svc.id} href={svc.href} className="block h-full">
+                  {CardContent}
+                </Link>
+              );
+            }
+
+            return (
+              <div key={svc.id} onClick={() => onSelectService?.(svc)}>
+                {CardContent}
               </div>
             );
           })}
