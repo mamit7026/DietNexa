@@ -291,19 +291,19 @@ export default function DietitiansPage() {
               </div>
 
               {/* RIGHT VISUAL COMPOSITION */}
-              <div className="lg:col-span-6 relative flex flex-col items-center justify-center lg:items-end">
-                <div className="relative w-full max-w-[560px] h-[340px] sm:h-[400px] md:h-[440px] flex items-center justify-center">
-
+              <div className="lg:col-span-6 relative flex flex-col items-center justify-center lg:items-end w-full">
+                {/* ── DESKTOP VISUAL (lg: >= 1024px) ── */}
+                <div className="hidden lg:block relative w-[540px] xl:w-[580px] h-[440px] xl:h-[460px]">
                   {/* 1. Vibrant Green Circle Backdrop Blob */}
                   <div
                     className="absolute pointer-events-none z-0 rounded-full"
                     style={{
-                      width: "clamp(240px, 32vw, 340px)",
-                      height: "clamp(240px, 32vw, 340px)",
+                      width: "350px",
+                      height: "350px",
                       background:
                         "radial-gradient(circle at 45% 45%, #7ed338 0%, #68bf2b 60%, #4f9f1e 100%)",
-                      top: "48%",
-                      left: "44%",
+                      top: "46%",
+                      left: "38%",
                       transform: "translate(-50%, -50%)",
                       boxShadow: "0 18px 45px rgba(104,191,43,0.28)",
                     }}
@@ -314,9 +314,9 @@ export default function DietitiansPage() {
                     className="absolute z-10 pointer-events-none"
                     style={{
                       bottom: "0px",
-                      left: "44%",
+                      left: "38%",
                       transform: "translateX(-50%)",
-                      width: "clamp(260px, 34vw, 380px)",
+                      width: "350px",
                       height: "98%",
                     }}
                   >
@@ -337,9 +337,9 @@ export default function DietitiansPage() {
                     className="absolute z-20 pointer-events-none"
                     style={{
                       bottom: "0px",
-                      right: "12%",
-                      width: "clamp(170px, 23vw, 250px)",
-                      height: "44%",
+                      left: "24%",
+                      width: "240px",
+                      height: "46%",
                     }}
                   >
                     <div className="relative w-full h-full">
@@ -354,8 +354,14 @@ export default function DietitiansPage() {
                     </div>
                   </div>
 
-                  {/* 4. Desktop Floating Feature Pills Stacked on Right (lg+) */}
-                  <div className="hidden lg:flex absolute right-0 top-3 flex-col gap-2.5 z-30 max-w-[220px]">
+                  {/* 4. Desktop Floating Feature Pills Stacked on Right (Vertically Centered) */}
+                  <div
+                    className="absolute right-0 flex flex-col gap-2.5 z-30 w-[215px]"
+                    style={{
+                      top: "50%",
+                      transform: "translateY(-50%)",
+                    }}
+                  >
                     <div
                       className="flex items-center gap-3 bg-white/95 backdrop-blur-md px-3.5 py-2.5 rounded-2xl border border-emerald-100 shadow-sm transition-transform duration-200 hover:scale-102"
                       style={{ boxShadow: "0 4px 16px rgba(0,0,0,0.06)" }}
@@ -404,48 +410,101 @@ export default function DietitiansPage() {
                       </span>
                     </div>
                   </div>
-
                 </div>
 
-                {/* Mobile / Tablet: 4 Feature Pills in a clean 2x2 grid (< lg) */}
-                <div className="grid grid-cols-2 gap-2.5 w-full mt-4 lg:hidden">
-                  <div className="flex items-center gap-2.5 bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl border border-emerald-100 shadow-2xs">
-                    <div className="w-7 h-7 rounded-lg bg-[#eaf6ee] flex items-center justify-center shrink-0 text-[#10793f]">
-                      <ShieldCheck className="w-3.5 h-3.5" />
+                {/* ── MOBILE & TABLET VISUAL (< lg: < 1024px) ── */}
+                <div className="block lg:hidden w-full max-w-[460px] mx-auto mt-4 sm:mt-6">
+                  {/* Doctor + Circle + Vegetables Centered Container */}
+                  <div className="relative w-full h-[270px] sm:h-[310px] mx-auto flex items-center justify-center">
+                    {/* Centered Green Circle Blob */}
+                    <div
+                      className="absolute pointer-events-none z-0 rounded-full"
+                      style={{
+                        width: "230px",
+                        height: "230px",
+                        background:
+                          "radial-gradient(circle at 45% 45%, #7ed338 0%, #68bf2b 60%, #4f9f1e 100%)",
+                        top: "16px",
+                        left: "50%",
+                        transform: "translateX(-50%)",
+                        boxShadow: "0 14px 40px rgba(104,191,43,0.26)",
+                      }}
+                    />
+
+                    {/* Centered Doctor Cutout */}
+                    <div className="absolute inset-0 z-10 pointer-events-none">
+                      <Image
+                        src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                        alt="DietNexa Certified Clinical Dietitian"
+                        fill
+                        priority
+                        unoptimized
+                        className="object-contain object-bottom"
+                      />
                     </div>
-                    <span className="text-xs font-bold text-gray-800 leading-tight">
-                      Certified & Experienced
-                    </span>
+
+                    {/* Foreground Fresh Vegetables */}
+                    <div
+                      className="absolute z-20 pointer-events-none"
+                      style={{
+                        bottom: "0px",
+                        right: "6%",
+                        width: "50%",
+                        height: "54%",
+                      }}
+                    >
+                      <div className="relative w-full h-full">
+                        <Image
+                          src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                          alt="Fresh Healthy Vegetables"
+                          fill
+                          priority
+                          unoptimized
+                          className="object-contain object-bottom-right drop-shadow-lg"
+                        />
+                      </div>
+                    </div>
                   </div>
 
-                  <div className="flex items-center gap-2.5 bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl border border-emerald-100 shadow-2xs">
-                    <div className="w-7 h-7 rounded-lg bg-[#eaf6ee] flex items-center justify-center shrink-0 text-[#10793f]">
-                      <Heart className="w-3.5 h-3.5" />
+                  {/* 4 Feature Pills in a Balanced 2x2 Grid */}
+                  <div className="grid grid-cols-2 gap-2.5 sm:gap-3 w-full mt-4">
+                    <div className="flex items-center gap-2.5 bg-white/95 backdrop-blur-md px-3 sm:px-3.5 py-2.5 rounded-xl sm:rounded-2xl border border-emerald-100 shadow-2xs">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-[#eaf6ee] flex items-center justify-center shrink-0 text-[#10793f]">
+                        <ShieldCheck className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </div>
+                      <span className="text-[11.5px] sm:text-xs font-bold text-gray-800 leading-tight">
+                        Certified & Experienced
+                      </span>
                     </div>
-                    <span className="text-xs font-bold text-gray-800 leading-tight">
-                      Personalized Nutrition
-                    </span>
-                  </div>
 
-                  <div className="flex items-center gap-2.5 bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl border border-emerald-100 shadow-2xs">
-                    <div className="w-7 h-7 rounded-lg bg-[#eaf6ee] flex items-center justify-center shrink-0 text-[#10793f]">
-                      <Leaf className="w-3.5 h-3.5" />
+                    <div className="flex items-center gap-2.5 bg-white/95 backdrop-blur-md px-3 sm:px-3.5 py-2.5 rounded-xl sm:rounded-2xl border border-emerald-100 shadow-2xs">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-[#eaf6ee] flex items-center justify-center shrink-0 text-[#10793f]">
+                        <Heart className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </div>
+                      <span className="text-[11.5px] sm:text-xs font-bold text-gray-800 leading-tight">
+                        Personalized Nutrition
+                      </span>
                     </div>
-                    <span className="text-xs font-bold text-gray-800 leading-tight">
-                      Evidence-Based Plans
-                    </span>
-                  </div>
 
-                  <div className="flex items-center gap-2.5 bg-white/95 backdrop-blur-md px-3 py-2 rounded-xl border border-emerald-100 shadow-2xs">
-                    <div className="w-7 h-7 rounded-lg bg-[#eaf6ee] flex items-center justify-center shrink-0 text-[#10793f]">
-                      <Headphones className="w-3.5 h-3.5" />
+                    <div className="flex items-center gap-2.5 bg-white/95 backdrop-blur-md px-3 sm:px-3.5 py-2.5 rounded-xl sm:rounded-2xl border border-emerald-100 shadow-2xs">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-[#eaf6ee] flex items-center justify-center shrink-0 text-[#10793f]">
+                        <Leaf className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </div>
+                      <span className="text-[11.5px] sm:text-xs font-bold text-gray-800 leading-tight">
+                        Evidence-Based Plans
+                      </span>
                     </div>
-                    <span className="text-xs font-bold text-gray-800 leading-tight">
-                      Ongoing Support
-                    </span>
+
+                    <div className="flex items-center gap-2.5 bg-white/95 backdrop-blur-md px-3 sm:px-3.5 py-2.5 rounded-xl sm:rounded-2xl border border-emerald-100 shadow-2xs">
+                      <div className="w-7 h-7 sm:w-8 sm:h-8 rounded-lg sm:rounded-xl bg-[#eaf6ee] flex items-center justify-center shrink-0 text-[#10793f]">
+                        <Headphones className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
+                      </div>
+                      <span className="text-[11.5px] sm:text-xs font-bold text-gray-800 leading-tight">
+                        Ongoing Support
+                      </span>
+                    </div>
                   </div>
                 </div>
-
               </div>
 
             </div>

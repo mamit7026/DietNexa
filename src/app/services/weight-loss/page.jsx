@@ -736,10 +736,11 @@ export default function WeightLossPage() {
                 <div className="md:col-span-4 flex justify-center md:justify-start">
                   <div className="relative w-[190px] sm:w-[220px] md:w-[240px] h-[150px] sm:h-[180px] drop-shadow-md">
                     <Image
-                      src="/image/Green Scale, Apple, and Measuring Tape.png"
+                      src="/image/green-scale-apple-measuring-tape.png"
                       alt="DietNexa Weight Loss Scale and Green Apple"
                       fill
                       unoptimized
+                      priority
                       className="object-contain"
                     />
                   </div>
