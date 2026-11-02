@@ -202,15 +202,36 @@ export default function WeightLossPage() {
         {/* 1. HERO SECTION: Weight Loss Management                        */}
         {/* Full-width seamless hero without extra padding/margins         */}
         {/* ============================================================== */}
-        <section
-          className="relative overflow-hidden pt-2 sm:pt-3 pb-0"
-          style={{
-            background:
-              "linear-gradient(180deg, #fbfefc 0%, #f2faf4 55%, #e9f5ed 100%)",
-          }}
-        >
+        <section className="relative overflow-hidden pt-2 sm:pt-3 pb-0">
+          {/* Serene Greenhouse Bokeh Background — Spreads edge-to-edge */}
+          <div className="absolute inset-0 z-0 pointer-events-none select-none">
+            <Image
+              src="/image/Serene Greenhouse Bokeh Background.png"
+              alt="Serene Greenhouse Setting"
+              fill
+              priority
+              unoptimized
+              className="object-cover object-center"
+            />
+            {/* Directional gradient wash: preserves maximum text readability on left while letting lush greenhouse bokeh show beautifully across the right */}
+            <div
+              className="absolute inset-0 hidden md:block"
+              style={{
+                background:
+                  "linear-gradient(90deg, rgba(243, 250, 245, 0.96) 0%, rgba(247, 252, 249, 0.90) 38%, rgba(240, 250, 243, 0.40) 68%, rgba(240, 250, 243, 0.15) 100%)",
+              }}
+            />
+            <div
+              className="absolute inset-0 md:hidden"
+              style={{
+                background:
+                  "linear-gradient(180deg, rgba(243, 250, 245, 0.95) 0%, rgba(247, 252, 249, 0.88) 45%, rgba(240, 250, 243, 0.35) 100%)",
+              }}
+            />
+          </div>
+
           {/* Subtle green leaves on the far left edge */}
-          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-50 z-0">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
               src="/image/Dewy Green Leafy Branch.png"
               alt=""
@@ -221,7 +242,7 @@ export default function WeightLossPage() {
           </div>
 
           {/* Subtle green leaves on the far right edge */}
-          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-50 z-0">
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
               src="/image/Glossy Green Leaf Branch.png"
               alt=""
