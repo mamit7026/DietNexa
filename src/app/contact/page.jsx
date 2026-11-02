@@ -519,7 +519,7 @@ export default function ContactPage() {
                 <div className="space-y-3.5">
                   {/* Call Us */}
                   <a
-                    href="tel:+919876543210"
+                    href="tel:+917319328962"
                     className="flex items-start gap-4 p-4 rounded-2xl border border-gray-100 transition-all hover:border-emerald-300 hover:shadow-xs group"
                     style={{ background: "#f4fbf6" }}
                   >
@@ -531,7 +531,7 @@ export default function ContactPage() {
                         Call Us
                       </div>
                       <div className="text-base font-extrabold text-gray-900 group-hover:text-[#10793f] transition-colors">
-                        +91 98765 43210
+                        +91 7319328962
                       </div>
                       <div className="text-xs text-gray-500 font-medium mt-0.5">
                         Mon – Sat, 9:00 AM – 7:00 PM (IST)
@@ -541,7 +541,7 @@ export default function ContactPage() {
 
                   {/* Email Us */}
                   <a
-                    href="mailto:support@dietnexa.com"
+                    href="mailto:info@dietnexa.com"
                     className="flex items-start gap-4 p-4 rounded-2xl border border-gray-100 transition-all hover:border-emerald-300 hover:shadow-xs group"
                     style={{ background: "#f4fbf6" }}
                   >
@@ -553,7 +553,7 @@ export default function ContactPage() {
                         Email Us
                       </div>
                       <div className="text-base font-extrabold text-gray-900 group-hover:text-[#10793f] transition-colors">
-                        support@dietnexa.com
+                        info@dietnexa.com
                       </div>
                       <div className="text-xs text-gray-500 font-medium mt-0.5">
                         We’ll respond within 24 hours.
@@ -563,7 +563,7 @@ export default function ContactPage() {
 
                   {/* Chat on WhatsApp */}
                   <a
-                    href="https://wa.me/919876543210?text=Hi%20DietNexa,%20I%20would%20like%20to%20consult%20a%20dietitian"
+                    href="https://wa.me/917319328962?text=Hi%20DietNexa,%20I%20would%20like%20to%20consult%20a%20dietitian"
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-start gap-4 p-4 rounded-2xl border border-gray-100 transition-all hover:border-emerald-300 hover:shadow-xs group"
@@ -577,7 +577,7 @@ export default function ContactPage() {
                         Chat on WhatsApp
                       </div>
                       <div className="text-base font-extrabold text-gray-900 group-hover:text-[#10793f] transition-colors">
-                        +91 98765 43210
+                        +91 7319328962
                       </div>
                       <div className="text-xs text-gray-500 font-medium mt-0.5">
                         Get quick assistance from our team.
@@ -598,7 +598,7 @@ export default function ContactPage() {
                         Our Office
                       </div>
                       <div className="text-base font-extrabold text-gray-900">
-                        Kolkata, West Bengal, India
+                        Nandakumar, West Bengal, India 721632
                       </div>
                       <div className="text-xs text-gray-500 font-medium mt-0.5">
                         Visit us by appointment only.
@@ -657,7 +657,7 @@ export default function ContactPage() {
 
                 <div className="flex items-center gap-2 text-gray-700 font-semibold mb-2 text-sm sm:text-base">
                   <MapPin className="w-5 h-5 text-[#10793f] shrink-0" />
-                  <span>Kolkata, West Bengal, India</span>
+                  <span>Nandakumar, West Bengal, India 721632</span>
                 </div>
 
                 <p className="text-gray-500 text-xs sm:text-sm mb-6 leading-relaxed">
