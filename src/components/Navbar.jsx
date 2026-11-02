@@ -7,7 +7,6 @@ import { usePathname } from "next/navigation";
 import { Globe, ChevronDown, Menu, X, ArrowRight, Sparkles } from "lucide-react";
 
 const navLinks = [
-  { label: "Home", href: "/" },
   {
     label: "Services",
     href: "/#services",
@@ -44,7 +43,7 @@ const navLinks = [
       },
     ],
   },
-  { label: "Dietitians", href: "/#dietitians" },
+  { label: "Dietitians", href: "/dietitians" },
   { label: "Plans", href: "/#why-dietnexa" },
   {
     label: "Resources",
