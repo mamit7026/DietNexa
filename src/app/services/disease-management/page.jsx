@@ -38,11 +38,7 @@ const programs = [
     title: "Diabetes Management",
     description: "Maintain healthy blood sugar levels with a balanced, practical diet plan.",
     image: "/image/dm_diabetes_glucometer.png",
-    fallbackImage: "/image/dm_diabetes_glucometer.jpg",
-    cardBg: "linear-gradient(135deg, #ffffff 0%, #fff7f5 100%)",
-    hoverBorder: "hover:border-red-200",
-    shadowColor: "rgba(239, 68, 68, 0.08)",
-    badgeColor: "bg-red-50 text-red-700 border-red-100",
+    cardBg: "#fff0ee",
     tag: "HbA1c & Glucose Control",
     overview:
       "Our clinical diabetes nutrition protocol combines low-glycemic carbohydrate cycling, meal timing precision, and balanced macro-nutrition to curb sugar spikes and reduce insulin resistance naturally.",
@@ -59,11 +55,7 @@ const programs = [
     title: "BP Management",
     description: "Support healthy blood pressure through a heart-friendly diet.",
     image: "/image/dm_bp_heart_monitor.png",
-    fallbackImage: "/image/dm_bp_heart_monitor.jpg",
-    cardBg: "linear-gradient(135deg, #ffffff 0%, #f0f7ff 100%)",
-    hoverBorder: "hover:border-blue-200",
-    shadowColor: "rgba(59, 130, 246, 0.08)",
-    badgeColor: "bg-blue-50 text-blue-700 border-blue-100",
+    cardBg: "#eef7ff",
     tag: "Cardiovascular Health",
     overview:
       "A scientifically formulated DASH-aligned diet tailored to balance sodium-potassium ratios, support endothelial dilation, and relieve arterial stiffness without tasteless or restrictive meals.",
@@ -80,11 +72,7 @@ const programs = [
     title: "Thyroid Nutrition",
     description: "Nutritional support for hypothyroidism and hyperthyroidism.",
     image: "/image/dm_thyroid_gland.png",
-    fallbackImage: "/image/dm_thyroid_gland.jpg",
-    cardBg: "linear-gradient(135deg, #ffffff 0%, #f7f3ff 100%)",
-    hoverBorder: "hover:border-purple-200",
-    shadowColor: "rgba(168, 85, 247, 0.08)",
-    badgeColor: "bg-purple-50 text-purple-700 border-purple-100",
+    cardBg: "#f6effb",
     tag: "Hormone & Metabolism",
     overview:
       "Thyroid disorders require specialized micronutrients to support conversion of T4 to active T3. Our clinical plans revitalize sluggish metabolism, alleviate fatigue, and counter stubborn weight gain.",
@@ -101,11 +89,7 @@ const programs = [
     title: "PCOS / PCOD Care",
     description: "Hormone-friendly diet plans to manage symptoms, support weight balance and improve metabolic health.",
     image: "/image/dm_pcos_uterus.png",
-    fallbackImage: "/image/dm_pcos_uterus.jpg",
-    cardBg: "linear-gradient(135deg, #ffffff 0%, #fff4f6 100%)",
-    hoverBorder: "hover:border-rose-200",
-    shadowColor: "rgba(244, 63, 94, 0.08)",
-    badgeColor: "bg-rose-50 text-rose-700 border-rose-100",
+    cardBg: "#fef2e9",
     tag: "Hormone Balance & Ovulation",
     overview:
       "Designed specifically for female reproductive and hormonal harmony. We target the root cause—hyperinsulinemia and inflammation—to restore regular cycles, balance androgens, and support fertility.",
@@ -122,11 +106,7 @@ const programs = [
     title: "Cholesterol Management",
     description: "Heart-healthy nutrition to manage cholesterol levels and support overall cardiovascular health.",
     image: "/image/dm_cholesterol_artery.png",
-    fallbackImage: "/image/dm_cholesterol_artery.jpg",
-    cardBg: "linear-gradient(135deg, #ffffff 0%, #f0faf4 100%)",
-    hoverBorder: "hover:border-emerald-200",
-    shadowColor: "rgba(16, 185, 129, 0.08)",
-    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-100",
+    cardBg: "#ecfaf1",
     tag: "Lipid Profile Optimization",
     overview:
       "Targeted culinary nutrition to bring down total cholesterol, bad LDL, and high triglycerides while elevating heart-protective HDL and shielding arteries against lipid plaque deposition.",
@@ -141,13 +121,9 @@ const programs = [
   {
     id: "more",
     title: "More Conditions",
-    description: "Personalized nutrition care for weight management, fatty liver, digestive issues, uric acid, and more.",
+    description: "Personalized nutrition care for weight management, fatty liver, Digestive issues, uric acid, and more.",
     image: "/image/dm_medical_shield.png",
-    fallbackImage: "/image/dm_medical_shield.jpg",
-    cardBg: "linear-gradient(135deg, #ffffff 0%, #eef8ff 100%)",
-    hoverBorder: "hover:border-sky-200",
-    shadowColor: "rgba(14, 165, 233, 0.08)",
-    badgeColor: "bg-sky-50 text-sky-700 border-sky-100",
+    cardBg: "#edf6fe",
     tag: "Comprehensive Clinical Care",
     overview:
       "Our senior team of licensed clinical dietitians crafts specialized medical meal plans for complex lifestyle and metabolic ailments, co-managed with your primary healthcare provider.",
@@ -474,83 +450,62 @@ export default function DiseaseManagementPage() {
         {/* ============================================================== */}
         <section
           id="disease-programs"
-          className="py-12 sm:py-16 bg-gradient-to-b from-white via-[#f7fbf8] to-white relative"
+          className="py-12 sm:py-16 bg-white relative"
         >
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-            {/* Section Heading & Subtitle */}
+            {/* Section Heading & Subtitle matching reference */}
             <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-12">
               <h2
-                className="font-extrabold text-gray-900 tracking-tight leading-tight relative inline-block"
-                style={{ fontSize: "clamp(24px, 3.2vw, 38px)" }}
+                className="font-extrabold text-[#0d2a1b] tracking-tight leading-tight"
+                style={{ fontSize: "clamp(26px, 3.2vw, 38px)" }}
               >
                 Our Disease Management Programs
-                {/* Green accent underline matching reference */}
-                <span className="block mx-auto mt-2 h-1 w-20 rounded-full bg-[#10793f]" />
               </h2>
-              <p className="text-gray-600 text-sm sm:text-base mt-3">
-                Expert-led, personalized nutrition plans for a range of lifestyle and
-                chronic conditions.
+              {/* Green accent underline matching reference */}
+              <div className="w-14 h-1.5 bg-[#10793f] rounded-full mx-auto my-2.5" />
+              <p className="text-gray-600 text-sm sm:text-base mt-2">
+                Expert-led, personalized nutrition plans for a range of lifestyle and chronic conditions.
               </p>
             </div>
 
-            {/* 6 Disease Program Cards Grid (3x2) */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
+            {/* 6 Disease Program Cards Grid (3x2) - Horizontal Layout */}
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6">
               {programs.map((prog) => (
                 <div
                   key={prog.id}
-                  className={`group relative rounded-3xl p-5 sm:p-6 border border-gray-100/90 transition-all duration-300 hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between overflow-hidden ${prog.hoverBorder}`}
+                  className="group rounded-[24px] p-5 sm:p-6 flex items-center gap-4 sm:gap-5 transition-all duration-300 hover:shadow-lg hover:-translate-y-1 cursor-pointer border border-black/[0.04]"
                   style={{
-                    background: prog.cardBg,
-                    boxShadow: `0 4px 20px -2px ${prog.shadowColor}, 0 2px 6px rgba(0,0,0,0.03)`,
+                    backgroundColor: prog.cardBg,
                   }}
                   onClick={() => handleOpenProgramModal(prog)}
                 >
-                  <div>
-                    {/* Header: 3D Illustration & Category Tag */}
-                    <div className="flex items-start justify-between gap-3 mb-4">
-                      {/* 3D Realistic Icon */}
-                      <div className="relative w-20 h-20 sm:w-22 sm:h-22 shrink-0 transition-transform duration-300 group-hover:scale-105">
-                        <Image
-                          src={prog.image}
-                          alt={prog.title}
-                          fill
-                          unoptimized
-                          className="object-contain"
-                        />
-                      </div>
-
-                      {/* Tag Badge */}
-                      <span
-                        className={`text-[10px] sm:text-[11px] font-bold px-2.5 py-1 rounded-full border ${prog.badgeColor}`}
-                      >
-                        {prog.tag}
-                      </span>
-                    </div>
-
-                    {/* Program Title */}
-                    <h3 className="text-lg sm:text-xl font-extrabold text-gray-950 mb-2 group-hover:text-[#10793f] transition-colors leading-snug">
-                      {prog.title}
-                    </h3>
-
-                    {/* Program Description */}
-                    <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
-                      {prog.description}
-                    </p>
+                  {/* Left: 3D Illustration Icon */}
+                  <div className="relative w-20 sm:w-24 h-20 sm:h-24 shrink-0 flex items-center justify-center transition-transform duration-300 group-hover:scale-105">
+                    <Image
+                      src={prog.image}
+                      alt={prog.title}
+                      fill
+                      unoptimized
+                      className="object-contain"
+                      style={{ mixBlendMode: "multiply" }}
+                    />
                   </div>
 
-                  {/* Learn More Action Link */}
-                  <div className="pt-2 flex items-center justify-between border-t border-gray-100/60">
+                  {/* Right: Title, Description, and Learn More Pill Button */}
+                  <div className="flex-1 flex flex-col items-start justify-center text-left">
+                    <h3 className="text-base sm:text-[18px] font-bold text-gray-950 mb-1.5 leading-snug">
+                      {prog.title}
+                    </h3>
+                    <p className="text-xs sm:text-[13px] text-gray-600 leading-relaxed mb-3.5">
+                      {prog.description}
+                    </p>
                     <button
                       type="button"
-                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-gray-900 group-hover:text-[#10793f] transition-colors"
+                      className="inline-flex items-center gap-1.5 px-4 py-1.5 rounded-full border border-[#10793f] bg-white text-[#10793f] text-xs font-semibold shadow-xs hover:bg-[#10793f] hover:text-white transition-all cursor-pointer"
                     >
                       <span>Learn More</span>
-                      <ArrowRight className="w-3.5 h-3.5 stroke-[2.5] transition-transform duration-200 group-hover:translate-x-1" />
+                      <span className="text-sm font-semibold leading-none">→</span>
                     </button>
-
-                    <span className="text-[11px] text-gray-400 group-hover:text-emerald-600 transition-colors">
-                      View Protocol
-                    </span>
                   </div>
                 </div>
               ))}
