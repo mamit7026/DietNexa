@@ -16,6 +16,7 @@ const services = [
     title: "Disease Management",
     description: "Diabetes, BP, thyroid, PCOS/PCOD and more",
     icon: Activity,
+    href: "/services/disease-management",
   },
   {
     id: "sports-nutrition",

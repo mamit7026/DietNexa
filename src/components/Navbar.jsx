@@ -18,7 +18,7 @@ const navLinks = [
       },
       {
         label: "Disease Management (Diabetes, PCOS)",
-        href: "/#services",
+        href: "/services/disease-management",
         description: "Hormone, blood sugar & metabolic care",
       },
       {
