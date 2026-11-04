@@ -547,9 +547,11 @@ export default function ChildTeenNutritionPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
               {/* Left Column: Pill Badge, Heading, Subtitle & Action Buttons */}
               <div className="lg:col-span-5 pb-6 sm:pb-10 z-10">
-                {/* Pill Badge matching reference design */}
+                {/* Pill Badge matching reference design with round icon */}
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e8f7ee] border border-[#cbeed7] text-[#10793f] text-xs font-bold mb-4 shadow-2xs">
-                  <ChildNutritionBadgeIcon className="w-4 h-4 text-[#10793f]" />
+                  <div className="w-5 h-5 rounded-full bg-[#10793f]/15 flex items-center justify-center shrink-0">
+                    <ChildNutritionBadgeIcon className="w-3.5 h-3.5 text-[#10793f]" />
+                  </div>
                   <span>Child &amp; Teen Nutrition</span>
                 </div>
 
@@ -600,23 +602,23 @@ export default function ChildTeenNutritionPage() {
               </div>
 
               {/* Right Column: Hero Visuals (Kids + Doodles + Food Arrangement) */}
-              <div className="lg:col-span-7 relative flex items-end justify-center self-end min-h-[380px] sm:min-h-[440px] lg:min-h-[480px]">
+              <div className="lg:col-span-7 relative flex items-end justify-center self-end min-h-[420px] sm:min-h-[490px] lg:min-h-[540px]">
                 {/* Organic Mint Backdrop Glow behind Kids */}
                 <div
-                  className="absolute w-[280px] sm:w-[340px] lg:w-[390px] h-[280px] sm:h-[340px] lg:h-[390px] rounded-full pointer-events-none"
+                  className="absolute w-[320px] sm:w-[400px] lg:w-[460px] h-[320px] sm:h-[400px] lg:h-[460px] rounded-full pointer-events-none"
                   style={{
                     background:
-                      "radial-gradient(circle, rgba(195, 241, 213, 0.85) 0%, rgba(220, 248, 232, 0.50) 55%, rgba(240, 252, 245, 0) 75%)",
-                    left: "24%",
+                      "radial-gradient(circle, rgba(195, 241, 213, 0.90) 0%, rgba(220, 248, 232, 0.55) 55%, rgba(240, 252, 245, 0) 75%)",
+                    left: "22%",
                     bottom: "20px",
                   }}
                 />
                 <div
-                  className="absolute w-[300px] sm:w-[360px] lg:w-[410px] h-[300px] sm:h-[360px] lg:h-[410px] rounded-full pointer-events-none"
+                  className="absolute w-[320px] sm:w-[420px] lg:w-[480px] h-[320px] sm:h-[420px] lg:h-[480px] rounded-full pointer-events-none"
                   style={{
                     background:
-                      "radial-gradient(circle, rgba(206, 244, 221, 0.75) 0%, rgba(228, 250, 237, 0.45) 55%, rgba(240, 252, 245, 0) 75%)",
-                    right: "6%",
+                      "radial-gradient(circle, rgba(206, 244, 221, 0.80) 0%, rgba(228, 250, 237, 0.50) 55%, rgba(240, 252, 245, 0) 75%)",
+                    right: "4%",
                     bottom: "35px",
                   }}
                 />
@@ -625,13 +627,13 @@ export default function ChildTeenNutritionPage() {
                 {/* 1. Radiating burst lines directly above boy's flexing fist */}
                 <svg
                   className="absolute z-20 text-[#10793f] pointer-events-none"
-                  style={{ left: "16%", top: "7%" }}
-                  width="44"
-                  height="36"
+                  style={{ left: "14%", top: "7%" }}
+                  width="48"
+                  height="38"
                   viewBox="0 0 44 36"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2.4"
+                  strokeWidth="2.5"
                   strokeLinecap="round"
                 >
                   <line x1="8" y1="28" x2="16" y2="14" />
@@ -724,8 +726,8 @@ export default function ChildTeenNutritionPage() {
                   </svg>
                 </div>
 
-                {/* Main Kids Image: Happy Siblings with Books and Strength */}
-                <div className="relative w-[390px] sm:w-[490px] lg:w-[550px] h-[350px] sm:h-[430px] lg:h-[475px] z-10 flex items-end justify-center">
+                {/* Main Kids Image: Large, prominent, and tall */}
+                <div className="relative w-[440px] sm:w-[560px] lg:w-[640px] h-[390px] sm:h-[480px] lg:h-[530px] z-10 flex items-end justify-center">
                   <Image
                     src="/image/Happy Siblings with Books and Strength.png"
                     alt="Happy Siblings with Books and Strength — Child & Teen Nutrition"
@@ -736,15 +738,15 @@ export default function ChildTeenNutritionPage() {
                   />
                 </div>
 
-                {/* Foreground Table Arrangement: Healthy Food Still Life Arrangement */}
-                {/* Rests centered across the bottom surface in front of the kids */}
+                {/* Foreground Table Arrangement: Compact, smaller sized healthy food & fruits */}
+                {/* Clean, smaller size resting on the bottom without overwhelming the kids */}
                 <div
                   className="absolute z-20 pointer-events-none"
                   style={{
-                    bottom: "0px",
-                    left: "5%",
-                    width: "clamp(340px, 45vw, 500px)",
-                    height: "clamp(135px, 18vw, 195px)",
+                    bottom: "-2px",
+                    left: "14%",
+                    width: "clamp(240px, 32vw, 360px)",
+                    height: "clamp(95px, 12vw, 145px)",
                   }}
                 >
                   <Image
@@ -777,7 +779,7 @@ export default function ChildTeenNutritionPage() {
                       idx !== 0 ? "pt-4 lg:pt-0" : ""
                     }`}
                   >
-                    <div className="w-11 h-11 rounded-2xl bg-[#eef8f2] flex items-center justify-center mb-2.5 group-hover:scale-105 transition-transform">
+                    <div className="w-12 h-12 rounded-full bg-[#eef8f2] border border-emerald-100/80 flex items-center justify-center mb-2.5 group-hover:scale-110 transition-transform shadow-2xs">
                       <IconComponent className="w-5 h-5 text-[#10793f]" />
                     </div>
                     <span className="text-xs sm:text-[13px] font-bold text-gray-800 leading-tight whitespace-pre-line">
