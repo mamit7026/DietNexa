@@ -253,6 +253,23 @@ const MilkCartonCalciumIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
   </svg>
 );
 
+const ChildNutritionBadgeIcon = ({ className = "w-4 h-4 text-[#10793f]" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="2"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <circle cx="12" cy="7" r="3.5" />
+    <path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2" />
+    <path d="M12 10.5v3" />
+    <path d="M10.5 12h3" />
+  </svg>
+);
+
 export default function ChildTeenNutritionPage() {
   const [modalOpen, setModalOpen] = useState(false);
   const [modalType, setModalType] = useState("consultation");
@@ -529,11 +546,11 @@ export default function ChildTeenNutritionPage() {
             {/* Main Hero Grid */}
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
               {/* Left Column: Pill Badge, Heading, Subtitle & Action Buttons */}
-              <div className="lg:col-span-6 pb-6 sm:pb-10 z-10">
-                {/* Pill Badge */}
+              <div className="lg:col-span-5 pb-6 sm:pb-10 z-10">
+                {/* Pill Badge matching reference design */}
                 <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e8f7ee] border border-[#cbeed7] text-[#10793f] text-xs font-bold mb-4 shadow-2xs">
-                  <SproutGrowthIcon className="w-4 h-4 text-[#10793f]" />
-                  <span>Child & Teen Nutrition</span>
+                  <ChildNutritionBadgeIcon className="w-4 h-4 text-[#10793f]" />
+                  <span>Child &amp; Teen Nutrition</span>
                 </div>
 
                 {/* Main Heading */}
@@ -543,7 +560,7 @@ export default function ChildTeenNutritionPage() {
                 >
                   Right Nutrition for
                   <br />
-                  <span className="text-[#10793f]">Healthy Growth &</span>
+                  <span className="text-[#10793f]">Healthy Growth &amp;</span>
                   <br />
                   <span className="text-[#10793f]">Brighter Future</span>
                 </h1>
@@ -575,7 +592,7 @@ export default function ChildTeenNutritionPage() {
 
                   <a
                     href="#focus-areas"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-gray-800 text-sm bg-white border border-gray-300 hover:border-gray-400 hover:bg-gray-50/90 transition-all duration-200 cursor-pointer shadow-xs hover:scale-[1.01]"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-gray-900 text-sm bg-white border border-gray-700/80 hover:border-gray-950 hover:bg-gray-50/90 transition-all duration-200 cursor-pointer shadow-xs hover:scale-[1.01]"
                   >
                     <span>Learn More</span>
                   </a>
@@ -583,97 +600,160 @@ export default function ChildTeenNutritionPage() {
               </div>
 
               {/* Right Column: Hero Visuals (Kids + Doodles + Food Arrangement) */}
-              <div className="lg:col-span-6 relative flex items-end justify-center self-end min-h-[380px] sm:min-h-[440px] lg:min-h-[470px]">
+              <div className="lg:col-span-7 relative flex items-end justify-center self-end min-h-[380px] sm:min-h-[440px] lg:min-h-[480px]">
                 {/* Organic Mint Backdrop Glow behind Kids */}
                 <div
-                  className="absolute w-[340px] sm:w-[420px] lg:w-[460px] h-[340px] sm:h-[420px] lg:h-[460px] rounded-full pointer-events-none"
+                  className="absolute w-[280px] sm:w-[340px] lg:w-[390px] h-[280px] sm:h-[340px] lg:h-[390px] rounded-full pointer-events-none"
                   style={{
                     background:
-                      "radial-gradient(circle, rgba(186, 238, 206, 0.90) 0%, rgba(214, 246, 228, 0.55) 55%, rgba(235, 252, 242, 0) 72%)",
-                    left: "50%",
+                      "radial-gradient(circle, rgba(195, 241, 213, 0.85) 0%, rgba(220, 248, 232, 0.50) 55%, rgba(240, 252, 245, 0) 75%)",
+                    left: "24%",
                     bottom: "20px",
-                    transform: "translateX(-48%)",
+                  }}
+                />
+                <div
+                  className="absolute w-[300px] sm:w-[360px] lg:w-[410px] h-[300px] sm:h-[360px] lg:h-[410px] rounded-full pointer-events-none"
+                  style={{
+                    background:
+                      "radial-gradient(circle, rgba(206, 244, 221, 0.75) 0%, rgba(228, 250, 237, 0.45) 55%, rgba(240, 252, 245, 0) 75%)",
+                    right: "6%",
+                    bottom: "35px",
                   }}
                 />
 
-                {/* Floating SVG Doodles matching the mockup */}
-                {/* Top-left: Radiating burst lines */}
+                {/* Hand-drawn Bare Green Outline Doodles matching reference image */}
+                {/* 1. Radiating burst lines directly above boy's flexing fist */}
                 <svg
-                  className="absolute top-10 left-6 sm:left-12 w-12 h-12 text-[#10793f] opacity-80 pointer-events-none animate-pulse"
-                  viewBox="0 0 40 40"
+                  className="absolute z-20 text-[#10793f] pointer-events-none"
+                  style={{ left: "16%", top: "7%" }}
+                  width="44"
+                  height="36"
+                  viewBox="0 0 44 36"
                   fill="none"
                   stroke="currentColor"
-                  strokeWidth="2.5"
+                  strokeWidth="2.4"
                   strokeLinecap="round"
                 >
-                  <line x1="8" y1="20" x2="2" y2="20" />
-                  <line x1="12" y1="12" x2="6" y2="6" />
-                  <line x1="20" y1="8" x2="20" y2="2" />
+                  <line x1="8" y1="28" x2="16" y2="14" />
+                  <line x1="22" y1="30" x2="22" y2="8" />
+                  <line x1="36" y1="28" x2="28" y2="14" />
                 </svg>
 
-                {/* Top-right: Upward growth chart with bar columns */}
-                <div className="absolute top-6 right-8 sm:right-14 z-10 pointer-events-none hidden sm:block">
-                  <div className="p-2.5 rounded-2xl bg-white/90 backdrop-blur-xs border border-emerald-100 shadow-sm">
-                    <svg
-                      className="w-8 h-8 text-[#10793f]"
-                      viewBox="0 0 32 32"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="2"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                    >
-                      {/* Bars */}
-                      <rect x="4" y="18" width="4" height="10" rx="1" fill="#cbeed7" stroke="#10793f" />
-                      <rect x="12" y="12" width="4" height="16" rx="1" fill="#a4e2ba" stroke="#10793f" />
-                      <rect x="20" y="6" width="4" height="22" rx="1" fill="#10793f" stroke="#10793f" />
-                      {/* Arrow */}
-                      <path d="M4 14l8-6 8 4 8-8" stroke="#10793f" strokeWidth="2.2" />
-                      <path d="M24 4h4v4" stroke="#10793f" strokeWidth="2.2" />
-                    </svg>
-                  </div>
+                {/* 2. Growth Chart with 3 bars & curved arrow on far right */}
+                <div
+                  className="absolute z-20 pointer-events-none hidden sm:block text-[#10793f]"
+                  style={{ right: "3%", top: "5%" }}
+                >
+                  <svg
+                    className="w-11 h-11 lg:w-12 lg:h-12"
+                    viewBox="0 0 48 48"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <rect x="6" y="28" width="6" height="14" rx="1.5" />
+                    <rect x="18" y="20" width="6" height="22" rx="1.5" />
+                    <rect x="30" y="12" width="6" height="30" rx="1.5" />
+                    <path d="M4 22 C 16 12, 28 9, 42 4" strokeWidth="2.5" />
+                    <path d="M34 4 H 42 V 12" strokeWidth="2.5" />
+                  </svg>
                 </div>
 
-                {/* Mid-right: Graduation cap doodle */}
-                <div className="absolute top-32 right-3 sm:right-6 z-10 pointer-events-none hidden sm:block">
-                  <div className="w-10 h-10 rounded-xl bg-white/85 backdrop-blur-xs border border-emerald-100 shadow-xs flex items-center justify-center text-[#10793f]">
-                    <GraduationCap className="w-5 h-5 stroke-[2]" />
-                  </div>
+                {/* 3. Graduation Cap Doodle */}
+                <div
+                  className="absolute z-20 pointer-events-none hidden sm:block text-[#10793f]"
+                  style={{ right: "1%", top: "27%" }}
+                >
+                  <svg
+                    className="w-10 h-10 lg:w-11 lg:h-11"
+                    viewBox="0 0 48 48"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M24 9 L44 18 L24 27 L4 18 Z" />
+                    <path d="M12 22 V 33 C 12 37, 36 37, 36 33 V 22" />
+                    <path d="M38 19.5 V 32" />
+                    <circle cx="38" cy="34" r="2" fill="currentColor" />
+                  </svg>
                 </div>
 
-                {/* Lower-right: Lightbulb doodle (Focus & Ideas) */}
-                <div className="absolute top-52 right-6 sm:right-10 z-10 pointer-events-none hidden sm:block">
-                  <div className="w-9 h-9 rounded-xl bg-white/85 backdrop-blur-xs border border-emerald-100 shadow-xs flex items-center justify-center text-[#10793f]">
-                    <Lightbulb className="w-4 h-4 stroke-[2]" />
-                  </div>
+                {/* 4. Lightbulb Doodle */}
+                <div
+                  className="absolute z-20 pointer-events-none hidden sm:block text-[#10793f]"
+                  style={{ right: "4%", top: "48%" }}
+                >
+                  <svg
+                    className="w-8 h-8 lg:w-9 lg:h-9"
+                    viewBox="0 0 40 40"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M14 26 C 11 23, 8 18, 8 13 C 8 6.4, 13.4 1, 20 1 C 26.6 1, 32 6.4, 32 13 C 32 18, 29 23, 26 26" />
+                    <path d="M14 26 H 26" />
+                    <path d="M15 30 H 25" />
+                    <path d="M17 34 H 23" />
+                    <line x1="2" y1="13" x2="5" y2="13" />
+                    <line x1="35" y1="13" x2="38" y2="13" />
+                    <line x1="7" y1="4" x2="10" y2="6" />
+                    <line x1="33" y1="4" x2="30" y2="6" />
+                  </svg>
                 </div>
 
-                {/* Stars / Sparkles */}
-                <Sparkles className="absolute top-20 left-16 w-5 h-5 text-emerald-500 opacity-70 pointer-events-none" />
-                <Sparkles className="absolute bottom-40 right-2 w-4 h-4 text-emerald-400 opacity-60 pointer-events-none" />
+                {/* 5. 4-pointed Star Sparkle */}
+                <div
+                  className="absolute z-20 pointer-events-none hidden sm:block text-[#10793f]"
+                  style={{ right: "1%", top: "67%" }}
+                >
+                  <svg
+                    className="w-5 h-5"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2.2"
+                    strokeLinecap="round"
+                  >
+                    <path d="M12 2 C 12 7, 17 12, 22 12 C 17 12, 12 17, 12 22 C 12 17, 7 12, 2 12 C 7 12, 12 7, 12 2 Z" />
+                  </svg>
+                </div>
 
                 {/* Main Kids Image: Happy Siblings with Books and Strength */}
-                <div className="relative w-[340px] sm:w-[440px] lg:w-[480px] h-[340px] sm:h-[410px] lg:h-[450px] z-10 flex items-end justify-center">
+                <div className="relative w-[390px] sm:w-[490px] lg:w-[550px] h-[350px] sm:h-[430px] lg:h-[475px] z-10 flex items-end justify-center">
                   <Image
                     src="/image/Happy Siblings with Books and Strength.png"
                     alt="Happy Siblings with Books and Strength — Child & Teen Nutrition"
                     fill
                     priority
                     unoptimized
-                    className="object-contain object-bottom drop-shadow-md"
+                    className="object-contain object-bottom drop-shadow-xs"
                   />
                 </div>
 
                 {/* Foreground Table Arrangement: Healthy Food Still Life Arrangement */}
-                {/* Spans across the bottom front of the kids */}
-                <div className="absolute -bottom-1 -left-2 sm:left-2 lg:left-4 w-[320px] sm:w-[400px] lg:w-[440px] h-[120px] sm:h-[150px] lg:h-[165px] z-20 pointer-events-none">
+                {/* Rests centered across the bottom surface in front of the kids */}
+                <div
+                  className="absolute z-20 pointer-events-none"
+                  style={{
+                    bottom: "0px",
+                    left: "5%",
+                    width: "clamp(340px, 45vw, 500px)",
+                    height: "clamp(135px, 18vw, 195px)",
+                  }}
+                >
                   <Image
                     src="/image/Healthy Food Still Life Arrangement.png"
                     alt="Healthy Food Still Life — Fresh Milk, Fruits & Balanced Nutrition"
                     fill
                     priority
                     unoptimized
-                    className="object-contain object-bottom drop-shadow-lg"
+                    className="object-contain object-bottom drop-shadow-md"
                   />
                 </div>
               </div>
