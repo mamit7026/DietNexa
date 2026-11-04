@@ -564,13 +564,6 @@ export default function Navbar({ onOpenModal }) {
               </button>
 
               <button
-                onClick={() => onOpenModal?.("login")}
-                className="px-4 py-2 rounded-full text-[14px] font-semibold text-gray-700 border border-gray-300 hover:border-[#10793f] hover:text-[#10793f] transition-all cursor-pointer shadow-2xs hover:shadow-xs"
-              >
-                Log In
-              </button>
-
-              <button
                 onClick={() => onOpenModal?.("get-started")}
                 className="px-5 py-2.5 rounded-full text-[14px] font-semibold text-white transition-all hover:opacity-95 active:scale-95 cursor-pointer shadow-md"
                 style={{
@@ -742,28 +735,20 @@ export default function Navbar({ onOpenModal }) {
               })}
 
               {/* Action buttons inside drawer */}
-              <div className="pt-4 mt-2 border-t border-gray-100 space-y-2.5">
-                <div className="flex gap-2.5">
-                  <button
-                    onClick={() => {
-                      setMobileOpen(false);
-                      onOpenModal?.("login");
-                    }}
-                    className="flex-1 py-2.5 rounded-full text-sm font-semibold text-gray-700 border border-gray-300 hover:border-[#10793f] hover:text-[#10793f] transition-all cursor-pointer"
-                  >
-                    Log In
-                  </button>
-                  <button
-                    onClick={() => {
-                      setMobileOpen(false);
-                      onOpenModal?.("get-started");
-                    }}
-                    className="flex-1 py-2.5 rounded-full text-sm font-semibold text-white transition-all cursor-pointer"
-                    style={{ background: "#10793f" }}
-                  >
-                    Get Started
-                  </button>
-                </div>
+              <div className="pt-4 mt-2 border-t border-gray-100">
+                <button
+                  onClick={() => {
+                    setMobileOpen(false);
+                    onOpenModal?.("get-started");
+                  }}
+                  className="w-full py-2.5 rounded-full text-sm font-semibold text-white transition-all cursor-pointer shadow-md"
+                  style={{
+                    background: "#10793f",
+                    boxShadow: "0 4px 14px rgba(16,121,63,0.25)",
+                  }}
+                >
+                  Get Started
+                </button>
               </div>
             </div>
           </div>

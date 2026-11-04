@@ -199,6 +199,15 @@ export default function DiseaseManagementPage() {
   const [selectedProgram, setSelectedProgram] = useState(null);
   const [faqOpen, setFaqOpen] = useState(null);
 
+  const benefits = [
+    { title: "Condition-Specific\nDiet Plans", icon: Target },
+    { title: "Blood Sugar\nControl", icon: Activity },
+    { title: "Healthy BP\nLevels", icon: Heart },
+    { title: "Hormone &\nPCOS Balance", icon: Sparkles },
+    { title: "Progress\nMonitoring", icon: BarChart3 },
+    { title: "Expert Dietitian\nSupport", icon: Headphones },
+  ];
+
   const handleOpenModal = (type = "consultation") => {
     setModalType(type);
     setModalOpen(true);
@@ -223,11 +232,11 @@ export default function DiseaseManagementPage() {
 
       <main className="flex-1">
         {/* ============================================================== */}
-        {/* 1. HERO SECTION: Personalized Nutrition for Better Disease Control */}
-        {/* Reference: Exact design matching user's mockup                  */}
+        {/* 1. HERO SECTION: Disease Management (Exact Weight-Loss Type)   */}
+        {/* Full-width seamless hero without extra padding/margins         */}
         {/* ============================================================== */}
-        <section className="relative overflow-hidden pt-3 sm:pt-4 pb-4 sm:pb-8">
-          {/* Greenhouse Bokeh Background — Spreads edge-to-edge */}
+        <section className="relative overflow-hidden pt-2 sm:pt-3 pb-0">
+          {/* Serene Greenhouse Bokeh Background — Spreads edge-to-edge */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
             <Image
               src="/image/Serene Greenhouse Bokeh Background.png"
@@ -237,35 +246,48 @@ export default function DiseaseManagementPage() {
               unoptimized
               className="object-cover object-center"
             />
-            {/* Directional gradient wash: preserves maximum text readability on left while letting lush greenhouse bokeh & green waves show beautifully across the right */}
+            {/* Directional gradient wash: preserves maximum text readability on left while letting lush greenhouse bokeh show beautifully across the right */}
             <div
               className="absolute inset-0 hidden md:block"
               style={{
                 background:
-                  "linear-gradient(90deg, rgba(244, 251, 246, 0.98) 0%, rgba(246, 252, 248, 0.94) 42%, rgba(240, 250, 243, 0.55) 72%, rgba(240, 250, 243, 0.20) 100%)",
+                  "linear-gradient(90deg, rgba(243, 250, 245, 0.96) 0%, rgba(247, 252, 249, 0.90) 38%, rgba(240, 250, 243, 0.40) 68%, rgba(240, 250, 243, 0.15) 100%)",
               }}
             />
             <div
               className="absolute inset-0 md:hidden"
               style={{
                 background:
-                  "linear-gradient(180deg, rgba(244, 251, 246, 0.98) 0%, rgba(246, 252, 248, 0.92) 50%, rgba(240, 250, 243, 0.40) 100%)",
+                  "linear-gradient(180deg, rgba(243, 250, 245, 0.95) 0%, rgba(247, 252, 249, 0.88) 45%, rgba(240, 250, 243, 0.35) 100%)",
               }}
             />
           </div>
 
-          {/* Organic glowing green waves behind the doctor */}
-          <div
-            className="absolute right-0 top-0 w-full md:w-3/5 h-full pointer-events-none z-0 opacity-70"
-            style={{
-              background:
-                "radial-gradient(ellipse 65% 55% at 75% 45%, rgba(186, 242, 206, 0.75) 0%, rgba(214, 246, 228, 0.35) 45%, rgba(255, 255, 255, 0) 80%)",
-            }}
-          />
+          {/* Subtle green leaves on the far left edge */}
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
+            <Image
+              src="/image/Dewy Green Leafy Branch.png"
+              alt=""
+              fill
+              unoptimized
+              className="object-contain object-left"
+            />
+          </div>
+
+          {/* Subtle green leaves on the far right edge */}
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
+            <Image
+              src="/image/Glossy Green Leaf Branch.png"
+              alt=""
+              fill
+              unoptimized
+              className="object-contain object-right"
+            />
+          </div>
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
             {/* Breadcrumb Navigation */}
-            <nav className="flex items-center gap-1.5 text-xs font-semibold mb-3">
+            <nav className="flex items-center gap-1.5 text-xs font-semibold mb-2">
               <Link
                 href="/#services"
                 className="text-gray-500 hover:text-[#10793f] transition-colors"
@@ -277,196 +299,134 @@ export default function DiseaseManagementPage() {
             </nav>
 
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-end">
-              {/* Left Column: Heading, Subtitle, Highlights & Action Button */}
-              <div className="lg:col-span-5 pb-4 sm:pb-8 z-10">
-                {/* Pill Badge matching mockup: green heart + Disease Management */}
-                <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-[#e8f7ee] border border-[#c1e8cf] text-[#0d6835] text-xs sm:text-sm font-bold mb-3 shadow-xs">
-                  <Heart className="w-3.5 h-3.5 fill-[#10793f] text-[#10793f]" />
-                  <span>Disease Management</span>
-                </div>
-
-                {/* Main Headline */}
+              {/* Left Column: Heading, Subtitle & Action Buttons */}
+              <div className="lg:col-span-5 pb-4 sm:pb-6 z-10">
                 <h1
-                  className="font-extrabold text-gray-950 tracking-tight leading-[1.14]"
-                  style={{ fontSize: "clamp(30px, 3.4vw, 48px)" }}
+                  className="font-extrabold text-gray-950 tracking-tight leading-[1.12]"
+                  style={{ fontSize: "clamp(30px, 3.4vw, 46px)" }}
                 >
-                  Personalized Nutrition
+                  Disease
                   <br />
-                  <span className="text-gray-950">for Better Disease Control</span>
+                  <span className="text-gray-950">Management</span>
                 </h1>
 
-                {/* Subtext */}
-                <p className="mt-2.5 sm:mt-3 text-gray-600 text-xs sm:text-sm sm:leading-relaxed max-w-xl">
+                <p className="mt-2 sm:mt-2.5 text-gray-600 text-xs sm:text-sm leading-relaxed max-w-md">
                   Evidence-based diet plans and continuous guidance to help you manage
                   chronic conditions, improve your health and live a more active life.
                 </p>
 
-                {/* 3 Bullet Feature Highlights matching reference mockup */}
-                <div className="mt-5 sm:mt-6 grid grid-cols-3 gap-2 sm:gap-3 max-w-lg">
-                  {/* Highlight 1: Condition-Specific Diet Plans */}
-                  <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#e8f7ee] text-[#10793f] mb-2 shadow-xs transition-transform hover:scale-105">
-                      <Target className="w-5 h-5 stroke-[2]" />
-                    </div>
-                    <span className="text-[11px] sm:text-xs font-bold text-gray-800 leading-tight">
-                      Condition-Specific
-                      <br className="hidden sm:inline" /> Diet Plans
-                    </span>
-                  </div>
-
-                  {/* Highlight 2: Progress Monitoring */}
-                  <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#e8f7ee] text-[#10793f] mb-2 shadow-xs transition-transform hover:scale-105">
-                      <BarChart3 className="w-5 h-5 stroke-[2]" />
-                    </div>
-                    <span className="text-[11px] sm:text-xs font-bold text-gray-800 leading-tight">
-                      Progress
-                      <br className="hidden sm:inline" /> Monitoring
-                    </span>
-                  </div>
-
-                  {/* Highlight 3: Expert Dietitian Support */}
-                  <div className="flex flex-col items-center sm:items-start text-center sm:text-left">
-                    <div className="w-10 h-10 rounded-full flex items-center justify-center bg-[#e8f7ee] text-[#10793f] mb-2 shadow-xs transition-transform hover:scale-105">
-                      <Headphones className="w-5 h-5 stroke-[2]" />
-                    </div>
-                    <span className="text-[11px] sm:text-xs font-bold text-gray-800 leading-tight">
-                      Expert
-                      <br className="hidden sm:inline" /> Dietitian Support
-                    </span>
-                  </div>
-                </div>
-
-                {/* Main CTA Button: Book a Consultation */}
-                <div className="mt-6 sm:mt-7 flex flex-wrap items-center gap-3">
+                {/* CTA Buttons */}
+                <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-2.5 sm:gap-3">
                   <button
-                    onClick={() => handleOpenModal("consultation")}
-                    className="inline-flex items-center justify-center gap-2 px-6 sm:px-7 py-3 rounded-xl font-bold text-white text-xs sm:text-sm transition-all duration-200 cursor-pointer shadow-md shadow-emerald-800/25 hover:scale-[1.02] active:scale-[0.99]"
+                    onClick={() => handleOpenModal("diet-plan")}
+                    className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 rounded-xl font-bold text-white text-xs sm:text-sm transition-all duration-200 cursor-pointer shadow-md shadow-emerald-700/20 hover:scale-[1.02] active:scale-[0.99]"
                     style={{ background: "#10793f" }}
                     onMouseOver={(e) => (e.currentTarget.style.background = "#0c592e")}
                     onMouseOut={(e) => (e.currentTarget.style.background = "#10793f")}
                   >
-                    <span>Book a Consultation</span>
-                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                    <span>Start Your Plan</span>
+                    <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
                   </button>
 
                   <button
-                    onClick={() => {
-                      document
-                        .getElementById("disease-programs")
-                        ?.scrollIntoView({ behavior: "smooth" });
-                    }}
-                    className="inline-flex items-center justify-center gap-2 px-4 py-3 rounded-xl font-bold text-gray-700 text-xs sm:text-sm bg-white/80 hover:bg-white border border-gray-200 hover:border-gray-300 transition-all cursor-pointer shadow-xs"
+                    onClick={() => handleOpenModal("consultation")}
+                    className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl font-bold text-gray-800 text-xs sm:text-sm bg-white border border-gray-300 hover:border-gray-400 hover:bg-gray-50/90 transition-all duration-200 cursor-pointer shadow-xs hover:scale-[1.01]"
                   >
-                    <span>Explore Programs</span>
-                    <ChevronDown className="w-3.5 h-3.5 text-gray-500" />
+                    <Calendar className="w-3.5 h-3.5 text-gray-700" />
+                    <span>Book a Consultation</span>
                   </button>
                 </div>
               </div>
 
-              {/* Right Column: Hero Doctor Visual + Angled Notice Board (Clipboard) */}
-              <div className="lg:col-span-7 relative flex items-end justify-center lg:justify-end self-end h-[390px] sm:h-[450px] lg:h-[490px] xl:h-[520px]">
-                {/* Luminous emerald-mint aura backdrop centered behind doctor & notice board */}
+              {/* Right Column: Hero Visuals (Doctor, Checklist Stack, Food Dish) */}
+              <div className="lg:col-span-7 relative flex items-end justify-center self-end h-[320px] sm:h-[350px] lg:h-[370px]">
+                {/* Circular Mint Glow Backdrop centered behind the doctor */}
                 <div
-                  className="absolute w-[360px] sm:w-[460px] lg:w-[540px] h-[360px] sm:h-[460px] lg:h-[540px] rounded-full pointer-events-none"
+                  className="absolute w-[300px] sm:w-[340px] lg:w-[370px] h-[300px] sm:h-[340px] lg:h-[370px] rounded-full pointer-events-none"
                   style={{
                     background:
-                      "radial-gradient(circle, rgba(167, 243, 190, 0.75) 0%, rgba(209, 250, 223, 0.45) 45%, rgba(240, 253, 244, 0) 70%)",
-                    right: "8%",
-                    bottom: "-10px",
+                      "radial-gradient(circle, rgba(186, 238, 206, 0.85) 0%, rgba(214, 246, 228, 0.5) 50%, rgba(235, 252, 242, 0) 70%)",
+                    left: "26%",
+                    bottom: "-5px",
+                    transform: "translateX(-20%)",
                   }}
                 />
 
-                {/* Curved flowing green wave ribbon in the background */}
-                <div
-                  className="absolute right-0 bottom-0 w-[320px] sm:w-[440px] lg:w-[520px] h-[160px] sm:h-[220px] pointer-events-none opacity-60 z-0"
-                  style={{
-                    background:
-                      "radial-gradient(ellipse at 85% 90%, rgba(134, 239, 172, 0.65) 0%, rgba(74, 222, 128, 0.35) 45%, rgba(255, 255, 255, 0) 75%)",
-                  }}
-                />
-
-                {/* Notice Board (Clipboard) - Positioned BEHIND doctor's left shoulder, angled slightly */}
-                <div className="absolute right-1 sm:right-4 lg:right-2 xl:right-8 top-3 sm:top-5 lg:top-7 z-10 w-[205px] sm:w-[245px] lg:w-[270px] rotate-[4deg] sm:rotate-[5.5deg] origin-bottom-left transition-transform duration-300 hover:rotate-[2.5deg] hover:scale-[1.02]">
-                  {/* Glossy Green Leaves sprouting behind top-right of the notice board */}
-                  <div className="absolute -top-7 -right-7 sm:-top-9 sm:-right-9 w-20 sm:w-26 h-20 sm:h-26 pointer-events-none z-0">
-                    <Image
-                      src="/image/Glossy Green Leaf Branch.png"
-                      alt=""
-                      fill
-                      unoptimized
-                      className="object-contain object-top-right drop-shadow-sm"
-                    />
-                  </div>
-
-                  {/* Lime-green Clipboard backing board matching reference mockup */}
-                  <div
-                    className="relative rounded-[22px] sm:rounded-[26px] p-2.5 sm:p-3 shadow-2xl border border-[#7cd63c]/50"
-                    style={{
-                      background: "linear-gradient(145deg, #8ee045 0%, #76cc34 50%, #5eb820 100%)",
-                      boxShadow:
-                        "0 18px 40px -10px rgba(78, 163, 30, 0.35), 0 6px 16px rgba(0,0,0,0.08)",
-                    }}
-                  >
-                    {/* Metallic Silver Clamp at Top Center */}
-                    <div className="relative -top-5 sm:-top-6 mx-auto w-24 sm:w-28 h-7 sm:h-8 flex flex-col items-center">
-                      {/* Top rounded clip loop */}
-                      <div className="w-8 h-4 rounded-t-full border-2 border-gray-400 bg-gradient-to-t from-gray-200 to-gray-100 shadow-inner -mb-1" />
-                      {/* Silver clamp plate */}
-                      <div className="w-full h-5 sm:h-6 rounded-md bg-gradient-to-r from-gray-300 via-white to-gray-300 border border-gray-400/80 shadow-md flex items-center justify-between px-2.5">
-                        <div className="w-1.5 h-1.5 rounded-full bg-gray-500 shadow-inner" />
-                        <div className="w-10 sm:w-12 h-1 bg-gradient-to-r from-gray-400 via-gray-200 to-gray-400 rounded-full" />
-                        <div className="w-1.5 h-1.5 rounded-full bg-gray-500 shadow-inner" />
-                      </div>
-                    </div>
-
-                    {/* White Paper Inside */}
-                    <div className="bg-white rounded-[14px] sm:rounded-[18px] p-3 sm:p-4 shadow-sm -mt-2.5 sm:-mt-3">
-                      {/* 4 Checklist Items matching reference mockup */}
-                      <div className="space-y-2 sm:space-y-2.5">
-                        {[
-                          "Manage Symptoms",
-                          "Control Risk Factors",
-                          "Improve Energy",
-                          "Support Long-term Health",
-                        ].map((item) => (
-                          <div key={item} className="flex items-center gap-2 sm:gap-2.5">
-                            <div className="w-4 h-4 sm:w-5 sm:h-5 rounded-[4px] border-2 border-[#10793f] flex items-center justify-center shrink-0 bg-white shadow-xs">
-                              <Check className="w-2.5 h-2.5 sm:w-3 sm:h-3 text-[#10793f] stroke-[3.5]" />
-                            </div>
-                            <span className="text-[11px] sm:text-[13px] font-bold text-gray-800 tracking-tight leading-tight whitespace-nowrap">
-                              {item}
-                            </span>
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-
-                {/* Doctor Visual: Standing tall in foreground, resting flush on bottom baseline */}
-                <div className="relative w-[300px] sm:w-[370px] lg:w-[420px] xl:w-[450px] h-[370px] sm:h-[430px] lg:h-[470px] xl:h-[500px] z-20 flex items-end justify-center mr-6 sm:mr-10 lg:mr-14 xl:mr-18">
+                {/* Hero Doctor Visual - Resting flush on the bottom */}
+                <div className="relative w-[240px] sm:w-[280px] lg:w-[315px] h-[310px] sm:h-[340px] lg:h-[365px] z-10 flex items-end justify-center -mr-4 sm:-mr-5">
                   <Image
                     src="/image/hero section Smiling Doctor in Green Scrubs.png"
-                    alt="Smiling Doctor in Green Scrubs - Disease Management Specialist"
+                    alt="Smiling Doctor in Green Scrubs — Disease Management"
                     fill
                     priority
                     unoptimized
-                    className="object-contain object-bottom drop-shadow-xl"
+                    className="object-contain object-bottom drop-shadow-md"
                   />
+                </div>
 
-                  {/* Dewy green leaf branch accent in front near doctor's elbow */}
-                  <div className="absolute bottom-4 -left-6 sm:-left-10 w-24 sm:w-32 h-24 sm:h-32 pointer-events-none z-30 opacity-90">
-                    <Image
-                      src="/image/Dewy Green Leafy Branch.png"
-                      alt=""
-                      fill
-                      unoptimized
-                      className="object-contain object-bottom-left drop-shadow-md"
-                    />
-                  </div>
+                {/* Vertical Checklist Pill Stack to the right of the doctor */}
+                <div className="relative z-20 flex flex-col gap-2 mb-10 sm:mb-12 lg:mb-14 shrink-0">
+                  {[
+                    "Manage Symptoms",
+                    "Control Risk Factors",
+                    "Improve Energy",
+                    "Support Long-term Health",
+                  ].map((item) => (
+                    <div
+                      key={item}
+                      className="flex items-center gap-2 px-3 sm:px-3.5 py-1.5 bg-white rounded-xl sm:rounded-2xl border border-gray-100 shadow-sm hover:shadow-md transition-all duration-200"
+                    >
+                      <div className="w-4 h-4 rounded-full flex items-center justify-center shrink-0 bg-[#10793f] text-white">
+                        <Check className="w-2.5 h-2.5 stroke-[3]" />
+                      </div>
+                      <span className="text-[11px] sm:text-[12px] font-bold text-gray-800 whitespace-nowrap">
+                        {item}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+
+                {/* Bottom Right Foreground Salad & Green Smoothie */}
+                <div className="absolute bottom-0 right-0 sm:right-1 z-30 w-[150px] sm:w-[185px] lg:w-[210px] h-[110px] sm:h-[135px] lg:h-[155px] drop-shadow-md pointer-events-none">
+                  <Image
+                    src="/image/Healthy Green Feast with Smoothie and Salad.png"
+                    alt="Fresh healthy salad and detox green smoothie"
+                    fill
+                    unoptimized
+                    className="object-contain object-bottom-right"
+                  />
                 </div>
               </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ============================================================== */}
+        {/* 2. BENEFITS / HIGHLIGHTS BAR (6 Clean Icons)                   */}
+        {/* Direct attachment below hero without empty space               */}
+        {/* ============================================================== */}
+        <section
+          className="py-3 sm:py-3.5 border-y border-[#dcf0e2]"
+          style={{ background: "#f3f9f3" }}
+        >
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-2 sm:gap-3">
+              {benefits.map((b) => {
+                const Icon = b.icon;
+                return (
+                  <div
+                    key={b.title}
+                    className="flex items-center gap-2.5 p-2 rounded-xl bg-white/70 border border-[#e2f1e6]"
+                  >
+                    <div className="w-8 h-8 rounded-lg bg-[#edf8f1] flex items-center justify-center text-[#10793f] shrink-0">
+                      <Icon className="w-4.5 h-4.5" />
+                    </div>
+                    <span className="text-xs font-bold text-gray-800 leading-tight whitespace-pre-line">
+                      {b.title}
+                    </span>
+                  </div>
+                );
+              })}
             </div>
           </div>
         </section>
