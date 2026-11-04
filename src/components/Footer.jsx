@@ -177,6 +177,11 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
+                <Link href="/services/child-teen-nutrition" className="hover:text-white transition-colors">
+                  Child &amp; Teen Nutrition
+                </Link>
+              </li>
+              <li>
                 <Link href="/#services" className="hover:text-white transition-colors">
                   Sports Nutrition
                 </Link>

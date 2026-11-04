@@ -146,7 +146,7 @@ const servicesData = [
   {
     title: "Child & Teen Growth",
     description: "Healthy growth, immunity & focused nutrition",
-    href: "/#services",
+    href: "/services/child-teen-nutrition",
     icon: ChildGrowthServiceIcon,
   },
   {
