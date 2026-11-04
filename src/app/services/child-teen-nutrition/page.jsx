@@ -172,67 +172,84 @@ const StomachDigestionIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
   </svg>
 );
 
-const BicepStrengthIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
+const CornWholeGrainsIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.8"
+    strokeWidth="1.9"
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
   >
-    <path d="M5 14c-1.5 0-2.5-1-2.5-2.5S3.5 9 5 9h2c1 0 2 .5 2.5 1.5L11 13l2-1.5c1-1 2.5-1 3.5 0l2 2c1 1 1 2.5 0 3.5l-2 2c-1.5 1.5-3.5 1.5-5 0l-3.5-3.5" />
+    <path d="M7 17L17 7c2-2 3-1 3 1s-3 7-5 9-7 3-9 3-1-1 1-3z" />
+    <path d="M10 8l6 6" />
+    <path d="M8 12l6 6" />
+    <path d="M12 6l6 6" />
+    <path d="M4 20c2-1 4-3 5-6" />
+    <path d="M8 20c1-2 2-4 2-7" />
+  </svg>
+);
+
+const AppleFruitsVegIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.9"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M12 4c.5-1.5 2-2.5 3.5-2.5 0 2-1 3.5-3.5 3.5" />
+    <path d="M12 5c-3-1.5-7 0-7 5.5 0 5 3.5 9.5 7 11.5 3.5-2 7-6.5 7-11.5 0-5.5-4-7-7-5.5z" />
+  </svg>
+);
+
+const DropletHealthyFatsIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.9"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M12 2.5C12 2.5 6 10 6 15a6 6 0 0 0 12 0c0-5-6-12.5-6-12.5z" />
+    <path d="M10 13a3 3 0 0 0 3 3" />
+  </svg>
+);
+
+const BicepQualityProteinIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.9"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M4 14c-1.5 0-2.5-1-2.5-2.5S3.5 9 5 9h2c1 0 2 .5 2.5 1.5L11 13l2-1.5c1-1 2.5-1 3.5 0l2 2c1 1 1 2.5 0 3.5l-2 2c-1.5 1.5-3.5 1.5-5 0l-3.5-3.5" />
     <path d="M9 9l2-3c.8-1 2.2-1.2 3.2-.5l1.8 1.3" />
   </svg>
 );
 
-const WheatGrainIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
+const MilkCartonCalciumIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
   <svg
     viewBox="0 0 24 24"
     fill="none"
     stroke="currentColor"
-    strokeWidth="1.8"
+    strokeWidth="1.9"
     strokeLinecap="round"
     strokeLinejoin="round"
     className={className}
   >
-    <path d="M4 20l16-16" />
-    <path d="M10 6c0 2-2 4-4 4s-4-2-4-4 2-4 4-4 4 2 4 4z" />
-    <path d="M14 10c0 2-2 4-4 4s-4-2-4-4 2-4 4-4 4 2 4 4z" />
-    <path d="M18 14c0 2-2 4-4 4s-4-2-4-4 2-4 4-4 4 2 4 4z" />
-    <path d="M22 18c0 2-2 4-4 4s-4-2-4-4 2-4 4-4 4 2 4 4z" />
-  </svg>
-);
-
-const MilkGlassIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M7 3h10l-1.5 17a2 2 0 0 1-2 1.8H10.5a2 2 0 0 1-2-1.8L7 3z" />
-    <path d="M8 8h8" />
-    <path d="M9 13c1.5 1 4.5 1 6 0" />
-  </svg>
-);
-
-const AvocadoFatsIcon = ({ className = "w-6 h-6 text-[#10793f]" }) => (
-  <svg
-    viewBox="0 0 24 24"
-    fill="none"
-    stroke="currentColor"
-    strokeWidth="1.8"
-    strokeLinecap="round"
-    strokeLinejoin="round"
-    className={className}
-  >
-    <path d="M12 2c-3.5 0-7 5.5-7 12a7 7 0 0 0 14 0c0-6.5-3.5-12-7-12z" />
-    <circle cx="12" cy="14" r="3.5" />
+    <path d="M8 2h8l2 4H6l2-4z" />
+    <rect x="6" y="6" width="12" height="15" rx="1.5" />
+    <path d="M10 11a2 2 0 1 0 4 0 2 2 0 0 0-4 0z" />
+    <path d="M12 9v1" />
   </svg>
 );
 
@@ -824,7 +841,7 @@ export default function ChildTeenNutritionPage() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
               {/* Left Column: Nutrition Focus Areas (6 Cards) */}
-              <div className="lg:col-span-7">
+              <div className="lg:col-span-6">
                 <div className="mb-6">
                   <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight">
                     Nutrition Focus Areas
@@ -871,105 +888,194 @@ export default function ChildTeenNutritionPage() {
                 </div>
               </div>
 
-              {/* Right Column: A Balanced Plate for Children & Teens */}
-              <div className="lg:col-span-5">
-                <div className="bg-[#f3faf6] border border-[#d2eedc] rounded-3xl p-5 sm:p-7 relative overflow-hidden shadow-xs">
+              {/* Right Column: A Balanced Plate for Children & Teens (Exact match to reference design) */}
+              <div className="lg:col-span-6">
+                <div className="bg-[#f4faf6] border border-[#d6eedf] rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 relative overflow-hidden shadow-xs">
                   {/* Title */}
-                  <div className="text-center sm:text-left mb-4">
-                    <h3 className="text-xl sm:text-2xl font-extrabold text-gray-950 tracking-tight leading-tight">
+                  <div className="mb-2 sm:mb-4">
+                    <h3 className="text-xl sm:text-2xl font-black text-gray-950 tracking-tight leading-tight">
                       A Balanced Plate
                       <br />
-                      <span className="text-[#10793f]">for Children & Teens</span>
+                      for Children &amp; Teens
                     </h3>
                   </div>
 
-                  {/* Visual Meal Plate Graphic with Callouts */}
-                  <div className="relative py-2 sm:py-4 flex flex-col items-center">
-                    {/* Central Plate */}
-                    <div className="relative w-[220px] sm:w-[260px] h-[220px] sm:h-[260px] my-3">
+                  {/* Visual Meal Plate Graphic with Hand-drawn Curved Arrows */}
+                  <div className="relative w-full aspect-[451/355] max-w-[500px] mx-auto select-none">
+                    {/* SVG Layer for Hand-drawn Curved Indicator Arrows */}
+                    <svg
+                      viewBox="0 0 451 355"
+                      className="absolute inset-0 w-full h-full pointer-events-none z-20"
+                      fill="none"
+                    >
+                      <defs>
+                        <marker
+                          id="plate-arrow"
+                          viewBox="0 0 10 10"
+                          refX="6"
+                          refY="5"
+                          markerWidth="5"
+                          markerHeight="5"
+                          orient="auto-start-reverse"
+                        >
+                          <path d="M 0 1.5 L 7 5 L 0 8.5 z" fill="#374151" />
+                        </marker>
+                      </defs>
+
+                      {/* 1. Whole Grains Arrow -> Grains partition (top edge) */}
+                      <path
+                        d="M 140 116 C 152 118, 160 124, 164 128"
+                        stroke="#374151"
+                        strokeWidth="1.3"
+                        strokeLinecap="round"
+                        markerEnd="url(#plate-arrow)"
+                      />
+
+                      {/* 2. Fruits & Vegetables Arrow -> Salad/Cucumber partition */}
+                      <path
+                        d="M 112 190 C 120 188, 126 190, 132 192"
+                        stroke="#374151"
+                        strokeWidth="1.3"
+                        strokeLinecap="round"
+                        markerEnd="url(#plate-arrow)"
+                      />
+
+                      {/* 3. Healthy Fats Arrow -> Bottom section */}
+                      <path
+                        d="M 142 290 C 158 286, 168 280, 174 272"
+                        stroke="#374151"
+                        strokeWidth="1.3"
+                        strokeLinecap="round"
+                        markerEnd="url(#plate-arrow)"
+                      />
+
+                      {/* 4. Quality Protein Arrow -> Protein/Rice section */}
+                      <path
+                        d="M 326 114 C 310 118, 300 122, 294 128"
+                        stroke="#374151"
+                        strokeWidth="1.3"
+                        strokeLinecap="round"
+                        markerEnd="url(#plate-arrow)"
+                      />
+
+                      {/* 5. Calcium-Rich Foods Arrow -> Calcium section */}
+                      <path
+                        d="M 344 252 C 328 250, 318 244, 310 238"
+                        stroke="#374151"
+                        strokeWidth="1.3"
+                        strokeLinecap="round"
+                        markerEnd="url(#plate-arrow)"
+                      />
+                    </svg>
+
+                    {/* Central Partitioned Meal Plate */}
+                    <div
+                      className="absolute z-10"
+                      style={{
+                        left: "50%",
+                        top: "56%",
+                        width: "43%",
+                        height: "55%",
+                        transform: "translate(-50%, -50%)",
+                      }}
+                    >
                       <Image
                         src="/image/Colorful Balanced Meal Plate.png"
                         alt="A Balanced Plate for Children & Teens"
                         fill
                         unoptimized
-                        className="object-contain drop-shadow-md"
+                        className="object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)] hover:scale-105 transition-transform duration-300"
                       />
                     </div>
 
-                    {/* Surrounding Nutritional Callouts Grid */}
-                    <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3 mt-3">
-                      {/* 1. Whole Grains */}
-                      <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/90 border border-emerald-100 shadow-2xs">
-                        <div className="w-8 h-8 rounded-lg bg-[#eef8f2] flex items-center justify-center shrink-0">
-                          <WheatGrainIcon className="w-4 h-4 text-[#10793f]" />
+                    {/* 1. Whole Grains Callout (Top-Left) */}
+                    <div
+                      className="absolute flex items-start gap-1.5 sm:gap-2 z-20"
+                      style={{ left: "4%", top: "27%" }}
+                    >
+                      <CornWholeGrainsIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#10793f] shrink-0 mt-0.5" />
+                      <div>
+                        <div className="text-[11px] sm:text-[13px] font-black text-gray-950 leading-tight">
+                          Whole Grains
                         </div>
-                        <div>
-                          <div className="text-xs font-bold text-gray-900 leading-none">
-                            Whole Grains
-                          </div>
-                          <div className="text-[10px] text-gray-500 mt-0.5">
-                            for lasting energy
-                          </div>
+                        <div className="text-[9px] sm:text-[11px] text-gray-500 font-medium leading-tight mt-0.5">
+                          for lasting energy
                         </div>
                       </div>
+                    </div>
 
-                      {/* 2. Quality Protein */}
-                      <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/90 border border-emerald-100 shadow-2xs">
-                        <div className="w-8 h-8 rounded-lg bg-[#eef8f2] flex items-center justify-center shrink-0">
-                          <BicepStrengthIcon className="w-4 h-4 text-[#10793f]" />
+                    {/* 2. Fruits & Vegetables Callout (Middle-Left) */}
+                    <div
+                      className="absolute flex items-start gap-1.5 sm:gap-2 z-20"
+                      style={{ left: "4%", top: "50%" }}
+                    >
+                      <AppleFruitsVegIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#10793f] shrink-0 mt-0.5" />
+                      <div>
+                        <div className="text-[11px] sm:text-[13px] font-black text-gray-950 leading-tight">
+                          Fruits &amp;
+                          <br />
+                          Vegetables
                         </div>
-                        <div>
-                          <div className="text-xs font-bold text-gray-900 leading-none">
-                            Quality Protein
-                          </div>
-                          <div className="text-[10px] text-gray-500 mt-0.5">
-                            for growth & repair
-                          </div>
+                        <div className="text-[9px] sm:text-[11px] text-gray-500 font-medium leading-tight mt-0.5">
+                          for vitamins
+                          <br />
+                          &amp; immunity
                         </div>
                       </div>
+                    </div>
 
-                      {/* 3. Fruits & Vegetables */}
-                      <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/90 border border-emerald-100 shadow-2xs">
-                        <div className="w-8 h-8 rounded-lg bg-[#eef8f2] flex items-center justify-center shrink-0">
-                          <Apple className="w-4 h-4 text-[#10793f]" />
+                    {/* 3. Healthy Fats Callout (Bottom-Left) */}
+                    <div
+                      className="absolute flex items-start gap-1.5 sm:gap-2 z-20"
+                      style={{ left: "7%", top: "80%" }}
+                    >
+                      <DropletHealthyFatsIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#10793f] shrink-0 mt-0.5" />
+                      <div>
+                        <div className="text-[11px] sm:text-[13px] font-black text-gray-950 leading-tight">
+                          Healthy Fats
                         </div>
-                        <div>
-                          <div className="text-xs font-bold text-gray-900 leading-none">
-                            Fruits & Vegetables
-                          </div>
-                          <div className="text-[10px] text-gray-500 mt-0.5">
-                            for vitamins & immunity
-                          </div>
+                        <div className="text-[9px] sm:text-[11px] text-gray-500 font-medium leading-tight mt-0.5">
+                          for brain development
                         </div>
                       </div>
+                    </div>
 
-                      {/* 4. Calcium-Rich Foods */}
-                      <div className="flex items-center gap-2.5 p-2 rounded-xl bg-white/90 border border-emerald-100 shadow-2xs">
-                        <div className="w-8 h-8 rounded-lg bg-[#eef8f2] flex items-center justify-center shrink-0">
-                          <MilkGlassIcon className="w-4 h-4 text-[#10793f]" />
+                    {/* 4. Quality Protein Callout (Top-Right) */}
+                    <div
+                      className="absolute flex items-start gap-1.5 sm:gap-2 z-20"
+                      style={{ right: "4%", top: "26%" }}
+                    >
+                      <BicepQualityProteinIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#10793f] shrink-0 mt-0.5" />
+                      <div>
+                        <div className="text-[11px] sm:text-[13px] font-black text-gray-950 leading-tight">
+                          Quality
+                          <br />
+                          Protein
                         </div>
-                        <div>
-                          <div className="text-xs font-bold text-gray-900 leading-none">
-                            Calcium-Rich Foods
-                          </div>
-                          <div className="text-[10px] text-gray-500 mt-0.5">
-                            for strong bones
-                          </div>
+                        <div className="text-[9px] sm:text-[11px] text-gray-500 font-medium leading-tight mt-0.5">
+                          for growth
+                          <br />
+                          &amp; repair
                         </div>
                       </div>
+                    </div>
 
-                      {/* 5. Healthy Fats (spans full width on small screens) */}
-                      <div className="sm:col-span-2 flex items-center gap-2.5 p-2 rounded-xl bg-white/90 border border-emerald-100 shadow-2xs">
-                        <div className="w-8 h-8 rounded-lg bg-[#eef8f2] flex items-center justify-center shrink-0">
-                          <AvocadoFatsIcon className="w-4 h-4 text-[#10793f]" />
+                    {/* 5. Calcium-Rich Foods Callout (Middle/Bottom-Right) */}
+                    <div
+                      className="absolute flex items-start gap-1.5 sm:gap-2 z-20"
+                      style={{ right: "4%", top: "58%" }}
+                    >
+                      <MilkCartonCalciumIcon className="w-5 h-5 sm:w-6 sm:h-6 text-[#10793f] shrink-0 mt-0.5" />
+                      <div>
+                        <div className="text-[11px] sm:text-[13px] font-black text-gray-950 leading-tight">
+                          Calcium-
+                          <br />
+                          Rich Foods
                         </div>
-                        <div>
-                          <div className="text-xs font-bold text-gray-900 leading-none">
-                            Healthy Fats
-                          </div>
-                          <div className="text-[10px] text-gray-500 mt-0.5">
-                            for brain development & hormonal health
-                          </div>
+                        <div className="text-[9px] sm:text-[11px] text-gray-500 font-medium leading-tight mt-0.5">
+                          for strong
+                          <br />
+                          bones
                         </div>
                       </div>
                     </div>
