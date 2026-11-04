@@ -480,9 +480,9 @@ export default function ChildTeenNutritionPage() {
       <main className="flex-1">
         {/* ============================================================== */}
         {/* 1. HERO SECTION: Child & Teen Nutrition                        */}
-        {/* Exact match to the reference mockup design                      */}
+        {/* Standardized to match weight-loss hero type, size & proportions */}
         {/* ============================================================== */}
-        <section className="relative overflow-hidden pt-3 sm:pt-4 pb-0">
+        <section className="relative overflow-hidden pt-2 sm:pt-3 pb-0">
           {/* Serene Greenhouse Bokeh Background */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
             <Image
@@ -511,7 +511,7 @@ export default function ChildTeenNutritionPage() {
           </div>
 
           {/* Leaf accents */}
-          <div className="absolute left-0 top-1/3 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
+          <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
               src="/image/Dewy Green Leafy Branch.png"
               alt=""
@@ -520,7 +520,7 @@ export default function ChildTeenNutritionPage() {
               className="object-contain object-left"
             />
           </div>
-          <div className="absolute right-0 top-1/4 w-16 sm:w-28 h-56 pointer-events-none opacity-40 z-0">
+          <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
               src="/image/Glossy Green Leaf Branch.png"
               alt=""
@@ -532,7 +532,7 @@ export default function ChildTeenNutritionPage() {
 
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12 relative z-10">
             {/* Breadcrumb Navigation */}
-            <nav className="flex items-center gap-1.5 text-xs font-semibold mb-3">
+            <nav className="flex items-center gap-1.5 text-xs font-semibold mb-2">
               <Link
                 href="/#services"
                 className="text-gray-500 hover:text-[#10793f] transition-colors"
@@ -544,13 +544,13 @@ export default function ChildTeenNutritionPage() {
             </nav>
 
             {/* Main Hero Grid */}
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-end">
               {/* Left Column: Pill Badge, Heading, Subtitle & Action Buttons */}
-              <div className="lg:col-span-5 pb-6 sm:pb-10 z-10">
+              <div className="lg:col-span-5 pb-4 sm:pb-6 z-10">
                 {/* Pill Badge matching reference design with round icon */}
-                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e8f7ee] border border-[#cbeed7] text-[#10793f] text-xs font-bold mb-4 shadow-2xs">
-                  <div className="w-5 h-5 rounded-full bg-[#10793f]/15 flex items-center justify-center shrink-0">
-                    <ChildNutritionBadgeIcon className="w-3.5 h-3.5 text-[#10793f]" />
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#e8f7ee] border border-[#cbeed7] text-[#10793f] text-xs font-bold mb-2.5 shadow-2xs">
+                  <div className="w-4 h-4 rounded-full bg-[#10793f]/15 flex items-center justify-center shrink-0">
+                    <ChildNutritionBadgeIcon className="w-3 h-3 text-[#10793f]" />
                   </div>
                   <span>Child &amp; Teen Nutrition</span>
                 </div>
@@ -558,7 +558,7 @@ export default function ChildTeenNutritionPage() {
                 {/* Main Heading */}
                 <h1
                   className="font-extrabold text-gray-950 tracking-tight leading-[1.12]"
-                  style={{ fontSize: "clamp(30px, 3.6vw, 48px)" }}
+                  style={{ fontSize: "clamp(30px, 3.4vw, 46px)" }}
                 >
                   Right Nutrition for
                   <br />
@@ -568,17 +568,17 @@ export default function ChildTeenNutritionPage() {
                 </h1>
 
                 {/* Subtitle */}
-                <p className="mt-3.5 text-gray-600 text-sm sm:text-base leading-relaxed max-w-lg">
+                <p className="mt-2 sm:mt-2.5 text-gray-600 text-xs sm:text-sm leading-relaxed max-w-md">
                   Expert nutrition guidance for children and teenagers to
                   support healthy growth, strong immunity, better focus and
                   lifelong wellness.
                 </p>
 
                 {/* Action Buttons */}
-                <div className="mt-6 flex flex-wrap items-center gap-3">
+                <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-2.5 sm:gap-3">
                   <button
                     onClick={() => handleOpenModal("consultation")}
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-white text-sm transition-all duration-200 cursor-pointer shadow-md shadow-emerald-700/25 hover:scale-[1.02] active:scale-[0.99]"
+                    className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 rounded-xl font-bold text-white text-xs sm:text-sm transition-all duration-200 cursor-pointer shadow-md shadow-emerald-700/20 hover:scale-[1.02] active:scale-[0.99]"
                     style={{ background: "#10793f" }}
                     onMouseOver={(e) =>
                       (e.currentTarget.style.background = "#0c592e")
@@ -587,14 +587,14 @@ export default function ChildTeenNutritionPage() {
                       (e.currentTarget.style.background = "#10793f")
                     }
                   >
-                    <Calendar className="w-4 h-4" />
+                    <Calendar className="w-3.5 h-3.5" />
                     <span>Book a Consultation</span>
-                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
+                    <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
                   </button>
 
                   <a
                     href="#focus-areas"
-                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-gray-900 text-sm bg-white border border-gray-700/80 hover:border-gray-950 hover:bg-gray-50/90 transition-all duration-200 cursor-pointer shadow-xs hover:scale-[1.01]"
+                    className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl font-bold text-gray-800 text-xs sm:text-sm bg-white border border-gray-300 hover:border-gray-400 hover:bg-gray-50/90 transition-all duration-200 cursor-pointer shadow-xs hover:scale-[1.01]"
                   >
                     <span>Learn More</span>
                   </a>
@@ -602,33 +602,25 @@ export default function ChildTeenNutritionPage() {
               </div>
 
               {/* Right Column: Hero Visuals (Kids + Doodles + Food Arrangement) */}
-              <div className="lg:col-span-7 relative flex items-end justify-center self-end min-h-[420px] sm:min-h-[490px] lg:min-h-[540px]">
-                {/* Organic Mint Backdrop Glow behind Kids */}
+              <div className="lg:col-span-7 relative flex items-end justify-center self-end h-[320px] sm:h-[350px] lg:h-[370px]">
+                {/* Circular Mint Glow Backdrop centered behind the kids */}
                 <div
-                  className="absolute w-[320px] sm:w-[400px] lg:w-[460px] h-[320px] sm:h-[400px] lg:h-[460px] rounded-full pointer-events-none"
+                  className="absolute w-[300px] sm:w-[340px] lg:w-[370px] h-[300px] sm:h-[340px] lg:h-[370px] rounded-full pointer-events-none"
                   style={{
                     background:
-                      "radial-gradient(circle, rgba(195, 241, 213, 0.90) 0%, rgba(220, 248, 232, 0.55) 55%, rgba(240, 252, 245, 0) 75%)",
-                    left: "22%",
-                    bottom: "20px",
-                  }}
-                />
-                <div
-                  className="absolute w-[320px] sm:w-[420px] lg:w-[480px] h-[320px] sm:h-[420px] lg:h-[480px] rounded-full pointer-events-none"
-                  style={{
-                    background:
-                      "radial-gradient(circle, rgba(206, 244, 221, 0.80) 0%, rgba(228, 250, 237, 0.50) 55%, rgba(240, 252, 245, 0) 75%)",
-                    right: "4%",
-                    bottom: "35px",
+                      "radial-gradient(circle, rgba(186, 238, 206, 0.85) 0%, rgba(214, 246, 228, 0.5) 50%, rgba(235, 252, 242, 0) 70%)",
+                    left: "26%",
+                    bottom: "-5px",
+                    transform: "translateX(-20%)",
                   }}
                 />
 
                 {/* Main Kids Image Container: Doodles are anchored directly to this container */}
-                <div className="relative w-[440px] sm:w-[560px] lg:w-[640px] h-[390px] sm:h-[480px] lg:h-[530px] z-10 flex items-end justify-center">
+                <div className="relative w-[340px] sm:w-[410px] lg:w-[460px] h-[310px] sm:h-[345px] lg:h-[365px] z-10 flex items-end justify-center">
                   
                   {/* 1. Radiating burst lines directly above boy's flexing fist */}
                   <div
-                    className="absolute z-20 pointer-events-none w-10 sm:w-12 lg:w-14 h-8 sm:h-10 lg:h-12"
+                    className="absolute z-20 pointer-events-none w-9 sm:w-11 lg:w-12 h-7 sm:h-9 lg:h-10"
                     style={{ left: "8%", top: "14%" }}
                   >
                     <Image
@@ -642,7 +634,7 @@ export default function ChildTeenNutritionPage() {
 
                   {/* 2. Growth Chart with bars & curved arrow on upper right */}
                   <div
-                    className="absolute z-20 pointer-events-none hidden sm:block w-11 sm:w-13 lg:w-15 h-10 sm:h-12 lg:h-14"
+                    className="absolute z-20 pointer-events-none hidden sm:block w-10 sm:w-12 lg:w-13 h-9 sm:h-11 lg:h-12"
                     style={{ right: "3%", top: "4%" }}
                   >
                     <Image
@@ -656,7 +648,7 @@ export default function ChildTeenNutritionPage() {
 
                   {/* 3. Graduation Cap beside girl's shoulder */}
                   <div
-                    className="absolute z-20 pointer-events-none hidden sm:block w-11 sm:w-13 lg:w-15 h-10 sm:h-12 lg:h-14"
+                    className="absolute z-20 pointer-events-none hidden sm:block w-10 sm:w-12 lg:w-13 h-9 sm:h-11 lg:h-12"
                     style={{ right: "-4%", top: "22%" }}
                   >
                     <Image
@@ -670,7 +662,7 @@ export default function ChildTeenNutritionPage() {
 
                   {/* 4. Lightbulb Doodle beside girl's arm */}
                   <div
-                    className="absolute z-20 pointer-events-none hidden sm:block w-9 sm:w-11 lg:w-13 h-9 sm:h-11 lg:h-13"
+                    className="absolute z-20 pointer-events-none hidden sm:block w-8 sm:w-10 lg:w-11 h-8 sm:h-10 lg:h-11"
                     style={{ right: "1%", top: "42%" }}
                   >
                     <Image
@@ -684,7 +676,7 @@ export default function ChildTeenNutritionPage() {
 
                   {/* 5. 4-pointed Star Sparkle beside girl's books */}
                   <div
-                    className="absolute z-20 pointer-events-none hidden sm:block w-7 sm:w-9 lg:w-10 h-7 sm:h-9 lg:h-10"
+                    className="absolute z-20 pointer-events-none hidden sm:block w-6 sm:w-8 lg:w-9 h-6 sm:h-8 lg:h-9"
                     style={{ right: "-3%", top: "62%" }}
                   >
                     <Image
@@ -710,13 +702,7 @@ export default function ChildTeenNutritionPage() {
                 {/* Foreground Table Arrangement: Compact, smaller sized healthy food & fruits */}
                 {/* Clean, smaller size resting on the bottom without overwhelming the kids */}
                 <div
-                  className="absolute z-20 pointer-events-none"
-                  style={{
-                    bottom: "-2px",
-                    left: "14%",
-                    width: "clamp(240px, 32vw, 360px)",
-                    height: "clamp(95px, 12vw, 145px)",
-                  }}
+                  className="absolute z-20 pointer-events-none bottom-0 left-[18%] sm:left-[22%] w-[190px] sm:w-[230px] lg:w-[260px] h-[75px] sm:h-[95px] lg:h-[108px] drop-shadow-md"
                 >
                   <Image
                     src="/image/Healthy Food Still Life Arrangement.png"
@@ -724,7 +710,7 @@ export default function ChildTeenNutritionPage() {
                     fill
                     priority
                     unoptimized
-                    className="object-contain object-bottom drop-shadow-md"
+                    className="object-contain object-bottom"
                   />
                 </div>
               </div>
