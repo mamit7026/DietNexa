@@ -355,8 +355,8 @@ export default function ChildTeenNutritionPage() {
     {
       id: "fussy-eating",
       title: "Fussy Eating",
-      desc: "Practical strategies to build healthy food habits without mealtime battles.",
-      image: "/image/Happy Girl Enjoying a Healthy Salad.png",
+      desc: "Practical strategies to build healthy food habits.",
+      image: "/image/happy_girl_healthy_salad.png",
       icon: CutleryHabitsIcon,
       badgeBg: "bg-amber-50 text-amber-700",
       cardBg: "bg-[#fcfaf4]",
@@ -365,8 +365,8 @@ export default function ChildTeenNutritionPage() {
     {
       id: "low-immunity",
       title: "Low Immunity",
-      desc: "Nutrient-rich guidance to strengthen natural defenses and vitality.",
-      image: "/image/Smiling Boy Flexing in Blue T-Shirt.png",
+      desc: "Nutrient-rich guidance to strengthen natural defenses.",
+      image: "/image/smiling_boy_flexing_blue_shirt.png",
       icon: ImmunityShieldIcon,
       badgeBg: "bg-emerald-50 text-emerald-700",
       cardBg: "bg-[#f3faf6]",
@@ -375,8 +375,8 @@ export default function ChildTeenNutritionPage() {
     {
       id: "underweight",
       title: "Underweight Concerns",
-      desc: "Support healthy and steady weight gain with calorie-dense, wholesome foods.",
-      image: "/image/Smiling Boy Giving Two Thumbs Up.png",
+      desc: "Support healthy and steady weight gain.",
+      image: "/image/smiling_boy_two_thumbs_up.png",
       icon: SproutGrowthIcon,
       badgeBg: "bg-emerald-50 text-emerald-700",
       cardBg: "bg-[#f4faf6]",
@@ -385,8 +385,8 @@ export default function ChildTeenNutritionPage() {
     {
       id: "overweight",
       title: "Overweight Tendency",
-      desc: "Balanced, enjoyable nutrition for a healthy weight without strict diets.",
-      image: "/image/Smiling Girl in a Triumphant Pose.png",
+      desc: "Balanced, enjoyable nutrition for a healthy weight.",
+      image: "/image/smiling_girl_triumphant_pose.png",
       icon: ScaleWeightIcon,
       badgeBg: "bg-emerald-50 text-emerald-700",
       cardBg: "bg-[#fcfaf6]",
@@ -395,8 +395,8 @@ export default function ChildTeenNutritionPage() {
     {
       id: "bone-health",
       title: "Bone Health",
-      desc: "Calcium and Vitamin D support for strong bones and skeletal development.",
-      image: "/image/Milk, Swiss Cheese, and Broccoli Still Life.png",
+      desc: "Calcium and Vitamin D support for strong bones.",
+      image: "/image/milk_swiss_cheese_broccoli.png",
       icon: Activity,
       badgeBg: "bg-emerald-50 text-emerald-700",
       cardBg: "bg-[#f4faf6]",
@@ -405,8 +405,8 @@ export default function ChildTeenNutritionPage() {
     {
       id: "active-sports",
       title: "Active & Sports Kids",
-      desc: "Nutrition for energy, athletic performance, hydration, and speedy recovery.",
-      image: "/image/Soccer, Water Bottle, and Bananas.png",
+      desc: "Nutrition for energy, performance and recovery.",
+      image: "/image/soccer_water_bottle_bananas.png",
       icon: RunningAthleteIcon,
       badgeBg: "bg-emerald-50 text-emerald-700",
       cardBg: "bg-[#f3faf6]",
@@ -936,31 +936,31 @@ export default function ChildTeenNutritionPage() {
                     return (
                       <div
                         key={area.id}
-                        className={`${area.cardBg} ${area.border} border rounded-2xl p-3.5 sm:p-4 min-h-[100px] sm:min-h-[110px] flex items-center justify-between gap-3 shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 group`}
+                        className={`${area.cardBg} ${area.border} border rounded-2xl p-3.5 sm:p-4 min-h-[105px] sm:min-h-[115px] flex items-center justify-between gap-3 shadow-xs hover:shadow-md transition-all duration-200 hover:-translate-y-0.5 group`}
                       >
-                        {/* Text and Icon on the Left */}
+                        {/* Text and Icon on the Left - Full view with no cutoffs */}
                         <div className="flex-1 min-w-0 pr-1">
                           <div className="flex items-center gap-2 mb-1.5">
                             <div className="w-7 h-7 rounded-lg bg-white border border-emerald-100 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
                               <AreaIcon className="w-4 h-4 text-[#10793f]" />
                             </div>
-                            <h3 className="text-xs sm:text-sm font-bold text-gray-950 truncate">
+                            <h3 className="text-xs sm:text-[13px] font-bold text-gray-950 leading-tight">
                               {area.title}
                             </h3>
                           </div>
-                          <p className="text-[11px] sm:text-xs text-gray-600 leading-snug line-clamp-2">
+                          <p className="text-[11px] sm:text-xs text-gray-600 leading-snug">
                             {area.desc}
                           </p>
                         </div>
 
                         {/* Child Cutout Image on the Right */}
-                        <div className="relative w-16 sm:w-20 md:w-22 h-16 sm:h-20 md:h-22 shrink-0 flex items-center justify-end">
+                        <div className="relative w-14 sm:w-16 h-14 sm:h-16 shrink-0 flex items-center justify-end">
                           <Image
                             src={area.image}
                             alt={area.title}
                             fill
                             unoptimized
-                            className="object-contain object-right drop-shadow-sm group-hover:scale-108 transition-transform duration-300"
+                            className="object-contain object-right drop-shadow-sm group-hover:scale-105 transition-transform duration-300"
                           />
                         </div>
                       </div>
