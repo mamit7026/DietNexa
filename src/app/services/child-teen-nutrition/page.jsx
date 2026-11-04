@@ -702,17 +702,17 @@ export default function ChildTeenNutritionPage() {
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center">
               {/* Left Column: Rounded Outdoor Kids Photo */}
               <div className="lg:col-span-6 relative">
-                <div className="relative h-[260px] sm:h-[320px] lg:h-[360px] w-full rounded-3xl overflow-hidden shadow-lg border-4 border-white/90">
+                <div className="relative h-[260px] sm:h-[320px] lg:h-[350px] w-full rounded-3xl overflow-hidden shadow-lg border-4 border-white/90">
                   <Image
-                    src="/image/child_nutrition_kids_playing.jpg"
-                    alt="Active children and teenagers playing soccer in a sunny green park"
+                    src="/image/Joyful Soccer Game in the Park.png"
+                    alt="Joyful Soccer Game in the Park — Nutrition Support for Growing Minds & Bodies"
                     fill
                     priority
                     unoptimized
                     className="object-cover object-center transform hover:scale-105 transition-transform duration-700"
                   />
                   {/* Subtle soft gradient overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/25 via-transparent to-transparent pointer-events-none" />
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
                 </div>
 
                 {/* Decorative floating leaf on the corner */}
