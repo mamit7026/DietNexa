@@ -134,13 +134,13 @@ const servicesData = [
   {
     title: "Sports Nutrition",
     description: "Performance, muscle gain & recovery nutrition",
-    href: "/#services",
+    href: "/services/sports-nutrition",
     icon: RunnerServiceIcon,
   },
   {
     title: "Pregnancy & Lactation",
     description: "Safe, balanced nutrition for mothers and babies",
-    href: "/#services",
+    href: "/services/pregnancy-nutrition",
     icon: PregnantServiceIcon,
   },
   {

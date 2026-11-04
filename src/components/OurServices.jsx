@@ -23,12 +23,14 @@ const services = [
     title: "Sports Nutrition",
     description: "Fuel your performance with the right diet",
     icon: Zap,
+    href: "/services/sports-nutrition",
   },
   {
     id: "pregnancy-nutrition",
     title: "Pregnancy Nutrition",
     description: "Safe and balanced nutrition for mother & baby",
     icon: Baby,
+    href: "/services/pregnancy-nutrition",
   },
   {
     id: "child-teen",
