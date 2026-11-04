@@ -839,16 +839,17 @@ export default function ChildTeenNutritionPage() {
         {/* ============================================================== */}
         <section id="focus-areas" className="py-12 sm:py-16 bg-white">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-10 items-start">
+            {/* Section Header sitting cleanly above both columns */}
+            <div className="mb-6">
+              <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight">
+                Nutrition Focus Areas
+              </h2>
+              <div className="w-12 h-1 bg-[#10793f] rounded-full mt-2.5" />
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-start">
               {/* Left Column: Nutrition Focus Areas (6 Cards) */}
               <div className="lg:col-span-6">
-                <div className="mb-6">
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight">
-                    Nutrition Focus Areas
-                  </h2>
-                  <div className="w-12 h-1 bg-[#10793f] rounded-full mt-2.5" />
-                </div>
-
                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5 sm:gap-4">
                   {focusAreas.map((area) => {
                     const AreaIcon = area.icon;
@@ -888,20 +889,24 @@ export default function ChildTeenNutritionPage() {
                 </div>
               </div>
 
-              {/* Right Column: A Balanced Plate for Children & Teens (Exact match to reference design) */}
+              {/* Right Column: A Balanced Plate for Children & Teens (Compact card, no unnecessary space) */}
               <div className="lg:col-span-6">
-                <div className="bg-[#f4faf6] border border-[#d6eedf] rounded-[28px] sm:rounded-[32px] p-5 sm:p-7 relative overflow-hidden shadow-xs">
-                  {/* Title */}
-                  <div className="mb-2 sm:mb-4">
-                    <h3 className="text-xl sm:text-2xl font-black text-gray-950 tracking-tight leading-tight">
-                      A Balanced Plate
-                      <br />
-                      for Children &amp; Teens
-                    </h3>
-                  </div>
+                <div className="bg-[#f4faf6] border border-[#d6eedf] rounded-[28px] sm:rounded-[32px] p-3 sm:p-4 md:p-5 relative overflow-hidden shadow-xs">
+                  {/* Visual Meal Plate Graphic matching reference mockup with Title in top-left */}
+                  <div className="relative w-full aspect-[451/355] max-w-[480px] mx-auto select-none">
+                    
+                    {/* Title inside card at top-left, exactly matching reference image */}
+                    <div
+                      className="absolute z-20"
+                      style={{ left: "4%", top: "4%" }}
+                    >
+                      <h3 className="text-base sm:text-lg md:text-[21px] font-black text-gray-950 tracking-tight leading-tight">
+                        A Balanced Plate
+                        <br />
+                        for Children &amp; Teens
+                      </h3>
+                    </div>
 
-                  {/* Visual Meal Plate Graphic with Hand-drawn Curved Arrows */}
-                  <div className="relative w-full aspect-[451/355] max-w-[500px] mx-auto select-none">
                     {/* SVG Layer for Hand-drawn Curved Indicator Arrows */}
                     <svg
                       viewBox="0 0 451 355"
@@ -984,7 +989,7 @@ export default function ChildTeenNutritionPage() {
                         alt="A Balanced Plate for Children & Teens"
                         fill
                         unoptimized
-                        className="object-contain drop-shadow-[0_12px_24px_rgba(0,0,0,0.12)] hover:scale-105 transition-transform duration-300"
+                        className="object-contain drop-shadow-[0_10px_20px_rgba(0,0,0,0.1)]"
                       />
                     </div>
 
