@@ -623,111 +623,80 @@ export default function ChildTeenNutritionPage() {
                   }}
                 />
 
-                {/* Hand-drawn Bare Green Outline Doodles matching reference image */}
-                {/* 1. Radiating burst lines directly above boy's flexing fist */}
-                <svg
-                  className="absolute z-20 text-[#10793f] pointer-events-none"
-                  style={{ left: "14%", top: "7%" }}
-                  width="48"
-                  height="38"
-                  viewBox="0 0 44 36"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="2.5"
-                  strokeLinecap="round"
-                >
-                  <line x1="8" y1="28" x2="16" y2="14" />
-                  <line x1="22" y1="30" x2="22" y2="8" />
-                  <line x1="36" y1="28" x2="28" y2="14" />
-                </svg>
-
-                {/* 2. Growth Chart with 3 bars & curved arrow on far right */}
-                <div
-                  className="absolute z-20 pointer-events-none hidden sm:block text-[#10793f]"
-                  style={{ right: "3%", top: "5%" }}
-                >
-                  <svg
-                    className="w-11 h-11 lg:w-12 lg:h-12"
-                    viewBox="0 0 48 48"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <rect x="6" y="28" width="6" height="14" rx="1.5" />
-                    <rect x="18" y="20" width="6" height="22" rx="1.5" />
-                    <rect x="30" y="12" width="6" height="30" rx="1.5" />
-                    <path d="M4 22 C 16 12, 28 9, 42 4" strokeWidth="2.5" />
-                    <path d="M34 4 H 42 V 12" strokeWidth="2.5" />
-                  </svg>
-                </div>
-
-                {/* 3. Graduation Cap Doodle */}
-                <div
-                  className="absolute z-20 pointer-events-none hidden sm:block text-[#10793f]"
-                  style={{ right: "1%", top: "27%" }}
-                >
-                  <svg
-                    className="w-10 h-10 lg:w-11 lg:h-11"
-                    viewBox="0 0 48 48"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M24 9 L44 18 L24 27 L4 18 Z" />
-                    <path d="M12 22 V 33 C 12 37, 36 37, 36 33 V 22" />
-                    <path d="M38 19.5 V 32" />
-                    <circle cx="38" cy="34" r="2" fill="currentColor" />
-                  </svg>
-                </div>
-
-                {/* 4. Lightbulb Doodle */}
-                <div
-                  className="absolute z-20 pointer-events-none hidden sm:block text-[#10793f]"
-                  style={{ right: "4%", top: "48%" }}
-                >
-                  <svg
-                    className="w-8 h-8 lg:w-9 lg:h-9"
-                    viewBox="0 0 40 40"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                  >
-                    <path d="M14 26 C 11 23, 8 18, 8 13 C 8 6.4, 13.4 1, 20 1 C 26.6 1, 32 6.4, 32 13 C 32 18, 29 23, 26 26" />
-                    <path d="M14 26 H 26" />
-                    <path d="M15 30 H 25" />
-                    <path d="M17 34 H 23" />
-                    <line x1="2" y1="13" x2="5" y2="13" />
-                    <line x1="35" y1="13" x2="38" y2="13" />
-                    <line x1="7" y1="4" x2="10" y2="6" />
-                    <line x1="33" y1="4" x2="30" y2="6" />
-                  </svg>
-                </div>
-
-                {/* 5. 4-pointed Star Sparkle */}
-                <div
-                  className="absolute z-20 pointer-events-none hidden sm:block text-[#10793f]"
-                  style={{ right: "1%", top: "67%" }}
-                >
-                  <svg
-                    className="w-5 h-5"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2.2"
-                    strokeLinecap="round"
-                  >
-                    <path d="M12 2 C 12 7, 17 12, 22 12 C 17 12, 12 17, 12 22 C 12 17, 7 12, 2 12 C 7 12, 12 7, 12 2 Z" />
-                  </svg>
-                </div>
-
-                {/* Main Kids Image: Large, prominent, and tall */}
+                {/* Main Kids Image Container: Doodles are anchored directly to this container */}
                 <div className="relative w-[440px] sm:w-[560px] lg:w-[640px] h-[390px] sm:h-[480px] lg:h-[530px] z-10 flex items-end justify-center">
+                  
+                  {/* 1. Radiating burst lines directly above boy's flexing fist */}
+                  <div
+                    className="absolute z-20 pointer-events-none w-10 sm:w-12 lg:w-14 h-8 sm:h-10 lg:h-12"
+                    style={{ left: "8%", top: "14%" }}
+                  >
+                    <Image
+                      src="/image/doodle_burst.png"
+                      alt=""
+                      fill
+                      unoptimized
+                      className="object-contain"
+                    />
+                  </div>
+
+                  {/* 2. Growth Chart with bars & curved arrow on upper right */}
+                  <div
+                    className="absolute z-20 pointer-events-none hidden sm:block w-11 sm:w-13 lg:w-15 h-10 sm:h-12 lg:h-14"
+                    style={{ right: "3%", top: "4%" }}
+                  >
+                    <Image
+                      src="/image/doodle_chart.png"
+                      alt=""
+                      fill
+                      unoptimized
+                      className="object-contain"
+                    />
+                  </div>
+
+                  {/* 3. Graduation Cap beside girl's shoulder */}
+                  <div
+                    className="absolute z-20 pointer-events-none hidden sm:block w-11 sm:w-13 lg:w-15 h-10 sm:h-12 lg:h-14"
+                    style={{ right: "-4%", top: "22%" }}
+                  >
+                    <Image
+                      src="/image/doodle_cap.png"
+                      alt=""
+                      fill
+                      unoptimized
+                      className="object-contain"
+                    />
+                  </div>
+
+                  {/* 4. Lightbulb Doodle beside girl's arm */}
+                  <div
+                    className="absolute z-20 pointer-events-none hidden sm:block w-9 sm:w-11 lg:w-13 h-9 sm:h-11 lg:h-13"
+                    style={{ right: "1%", top: "42%" }}
+                  >
+                    <Image
+                      src="/image/doodle_bulb.png"
+                      alt=""
+                      fill
+                      unoptimized
+                      className="object-contain"
+                    />
+                  </div>
+
+                  {/* 5. 4-pointed Star Sparkle beside girl's books */}
+                  <div
+                    className="absolute z-20 pointer-events-none hidden sm:block w-7 sm:w-9 lg:w-10 h-7 sm:h-9 lg:h-10"
+                    style={{ right: "-3%", top: "62%" }}
+                  >
+                    <Image
+                      src="/image/doodle_star.png"
+                      alt=""
+                      fill
+                      unoptimized
+                      className="object-contain"
+                    />
+                  </div>
+
+                  {/* The Kids Image */}
                   <Image
                     src="/image/Happy Siblings with Books and Strength.png"
                     alt="Happy Siblings with Books and Strength — Child & Teen Nutrition"
