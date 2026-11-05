@@ -684,55 +684,55 @@ export default function GeneralWellnessPage() {
 
         {/* ============================================================== */}
         {/* 6. HEALTH & WELLNESS INSIGHTS                                  */}
-        {/* 3 Insight Cards with Thumbnail Images                          */}
+        {/* Compact Horizontal Cards matching exact reference image        */}
         {/* ============================================================== */}
         <section className="py-10 sm:py-16 bg-[#fafdfb] border-t border-gray-100">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-            <div className="space-y-2 mb-8 sm:mb-10">
+            <div className="space-y-1.5 mb-6 sm:mb-8">
               <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight">
                 Health & Wellness Insights
               </h2>
               <div className="w-12 h-1 bg-[#10793f] rounded-full" />
             </div>
 
-            {/* 3 Horizontal Cards */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* 3 Horizontal Cards in 3-Column Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 lg:gap-5">
               {insights.map((item, idx) => (
-                <div
+                <Link
                   key={idx}
-                  className="bg-white rounded-2xl border border-gray-200/80 shadow-2xs hover:shadow-md hover:border-[#cbeed7] transition-all duration-200 overflow-hidden flex flex-col group"
+                  href={`/resources/guides/${item.slug}`}
+                  className="bg-white rounded-2xl border border-gray-200/80 p-2.5 sm:p-3 shadow-2xs hover:shadow-md hover:border-[#cbeed7] transition-all duration-200 flex items-center gap-3 sm:gap-3.5 group cursor-pointer"
                 >
-                  {/* Card Thumbnail Image */}
-                  <div className="relative w-full h-48 bg-gray-50 overflow-hidden">
+                  {/* Left Thumbnail with Rounded Corners */}
+                  <div className="relative w-[95px] sm:w-[110px] h-[80px] sm:h-[90px] rounded-xl sm:rounded-2xl overflow-hidden shrink-0 shadow-2xs bg-gray-50">
                     <Image
                       src={item.image}
                       alt={item.title}
                       fill
                       className="object-cover group-hover:scale-105 transition-transform duration-300"
-                      sizes="(max-width: 768px) 100vw, 380px"
+                      sizes="120px"
                     />
                   </div>
 
-                  {/* Content */}
-                  <div className="p-5 flex-1 flex flex-col justify-between">
+                  {/* Right Content */}
+                  <div className="flex-1 min-w-0 flex flex-col justify-between py-0.5">
                     <div>
-                      <h3 className="text-base font-bold text-gray-950 mb-2 group-hover:text-[#10793f] transition-colors leading-snug">
+                      <h3 className="text-xs sm:text-[13px] font-bold text-gray-950 group-hover:text-[#10793f] transition-colors leading-snug line-clamp-2">
                         {item.title}
                       </h3>
-                      <p className="text-xs sm:text-sm text-gray-600 leading-relaxed mb-4">
+                      <p className="text-[11px] text-gray-500 leading-snug line-clamp-2 mt-1">
                         {item.desc}
                       </p>
                     </div>
 
-                    <Link
-                      href={`/resources/guides/${item.slug}`}
-                      className="inline-flex items-center gap-1.5 text-xs sm:text-sm font-bold text-[#10793f] hover:text-[#0d6333] transition-colors"
-                    >
-                      <span>Read More</span>
-                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
-                    </Link>
+                    <div className="mt-2">
+                      <span className="inline-flex items-center gap-1 text-[11px] sm:text-xs font-bold text-[#10793f] group-hover:text-[#0d6333] transition-colors">
+                        <span>Read More</span>
+                        <ArrowRight className="w-3 h-3 group-hover:translate-x-1 transition-transform" />
+                      </span>
+                    </div>
                   </div>
-                </div>
+                </Link>
               ))}
             </div>
           </div>
