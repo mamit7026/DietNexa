@@ -358,13 +358,13 @@ export default function SportsNutritionPage() {
               <span className="text-gray-900">Sports Nutrition</span>
             </nav>
 
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-end">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-end">
               {/* Left Column: Pill Badge, Heading, Subtitle & Action Buttons */}
-              <div className="lg:col-span-5 pb-4 sm:pb-6 z-10">
+              <div className="lg:col-span-5 pb-6 sm:pb-10 z-10">
                 {/* Pill Badge matching reference design */}
-                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#e8f7ee] border border-[#cbeed7] text-[#10793f] text-xs font-bold mb-2.5 shadow-2xs">
-                  <div className="w-4 h-4 rounded-full bg-[#10793f]/15 flex items-center justify-center shrink-0">
-                    <DumbbellIcon className="w-3 h-3 text-[#10793f]" />
+                <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-[#e8f7ee] border border-[#cbeed7] text-[#10793f] text-xs font-bold mb-3.5 shadow-2xs">
+                  <div className="w-5 h-5 rounded-full bg-[#10793f]/15 flex items-center justify-center shrink-0">
+                    <DumbbellIcon className="w-3.5 h-3.5 text-[#10793f]" />
                   </div>
                   <span>Sports Nutrition</span>
                 </div>
@@ -372,7 +372,7 @@ export default function SportsNutritionPage() {
                 {/* Main Heading */}
                 <h1
                   className="font-extrabold text-gray-950 tracking-tight leading-[1.12]"
-                  style={{ fontSize: "clamp(30px, 3.4vw, 46px)" }}
+                  style={{ fontSize: "clamp(34px, 3.8vw, 50px)" }}
                 >
                   Fuel Your Performance
                   <br />
@@ -382,17 +382,17 @@ export default function SportsNutritionPage() {
                 </h1>
 
                 {/* Subtitle */}
-                <p className="mt-2 sm:mt-2.5 text-gray-600 text-xs sm:text-sm leading-relaxed max-w-md">
+                <p className="mt-3.5 text-gray-600 text-sm sm:text-base leading-relaxed max-w-lg">
                   Personalized nutrition plans for athletes, fitness enthusiasts
                   and active lifestyles to boost performance, build strength,
                   recover faster and stay injury-free.
                 </p>
 
                 {/* Action Buttons */}
-                <div className="mt-4 sm:mt-5 flex flex-wrap items-center gap-2.5 sm:gap-3">
+                <div className="mt-6 flex flex-wrap items-center gap-3">
                   <button
                     onClick={() => handleOpenModal("consultation")}
-                    className="inline-flex items-center justify-center gap-2 px-5 sm:px-6 py-2.5 rounded-xl font-bold text-white text-xs sm:text-sm transition-all duration-200 cursor-pointer shadow-md shadow-emerald-700/20 hover:scale-[1.02] active:scale-[0.99]"
+                    className="inline-flex items-center justify-center gap-2 px-7 py-3 rounded-full font-bold text-white text-sm transition-all duration-200 cursor-pointer shadow-lg shadow-emerald-700/25 hover:scale-[1.02] active:scale-[0.99]"
                     style={{ background: "#10793f" }}
                     onMouseOver={(e) =>
                       (e.currentTarget.style.background = "#0c592e")
@@ -401,50 +401,40 @@ export default function SportsNutritionPage() {
                       (e.currentTarget.style.background = "#10793f")
                     }
                   >
-                    <Calendar className="w-3.5 h-3.5" />
+                    <Calendar className="w-4 h-4" />
                     <span>Book a Consultation</span>
-                    <ArrowRight className="w-3.5 h-3.5 stroke-[2.5]" />
+                    <ArrowRight className="w-4 h-4 stroke-[2.5]" />
                   </button>
 
                   <a
                     href="#goals"
-                    className="inline-flex items-center justify-center gap-2 px-4 sm:px-5 py-2.5 rounded-xl font-bold text-gray-800 text-xs sm:text-sm bg-white border border-gray-300 hover:border-gray-400 hover:bg-gray-50/90 transition-all duration-200 cursor-pointer shadow-xs hover:scale-[1.01]"
+                    className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full font-bold text-gray-900 text-sm bg-white border border-gray-700/80 hover:border-gray-950 hover:bg-gray-50/90 transition-all duration-200 cursor-pointer shadow-xs hover:scale-[1.01]"
                   >
-                    <Play className="w-3 h-3 text-[#10793f] fill-[#10793f]" />
+                    <Play className="w-3.5 h-3.5 text-[#10793f] fill-[#10793f]" />
                     <span>Learn More</span>
                   </a>
                 </div>
               </div>
 
-              {/* Right Column: Hero Visuals (Man Drinking Shaker, Breakfast Spread & Floating Activity Pills) */}
-              <div className="lg:col-span-7 relative flex items-end justify-center self-end h-[320px] sm:h-[350px] lg:h-[375px]">
-                {/* Curved mint glow & arch swoosh behind the athlete */}
-                <div
-                  className="absolute w-[300px] sm:w-[350px] lg:w-[380px] h-[300px] sm:h-[350px] lg:h-[380px] rounded-full pointer-events-none"
-                  style={{
-                    background:
-                      "radial-gradient(circle, rgba(167, 243, 208, 0.75) 0%, rgba(209, 250, 229, 0.45) 50%, rgba(255, 255, 255, 0) 72%)",
-                    left: "26%",
-                    bottom: "-5px",
-                    transform: "translateX(-20%)",
-                  }}
-                />
+              {/* Right Column: Hero Visuals (Large Athletic Man, Breakfast Spread & Floating Activity Badges) */}
+              <div className="lg:col-span-7 relative flex items-end justify-center self-end min-h-[430px] sm:min-h-[480px] lg:min-h-[520px]">
+              
 
-                {/* Main Hero Visual: Athletic Man with Shaker & Towel */}
-                <div className="relative w-[340px] sm:w-[410px] lg:w-[460px] h-[310px] sm:h-[345px] lg:h-[370px] z-10 flex items-end justify-center">
+                {/* Main Hero Visual: Athletic Man with Shaker & Towel — Large & Hero Dominating */}
+                <div className="relative w-[420px] sm:w-[530px] lg:w-[620px] h-[390px] sm:h-[460px] lg:h-[505px] z-10 flex items-end justify-center">
                   <Image
                     src="/image/Fitness Nutrition Shake and Healthy Meal.png"
                     alt="Fitness Nutrition Shake and Healthy Meal — Expert Sports Nutrition"
                     fill
                     priority
                     unoptimized
-                    className="object-contain object-bottom drop-shadow-md"
+                    className="object-contain object-bottom drop-shadow-xl"
                   />
                 </div>
 
                 {/* Foreground Healthy Breakfast and Salad Spread resting on bottom table */}
                 <div
-                  className="absolute z-20 pointer-events-none bottom-0 left-[2%] sm:left-[6%] w-[200px] sm:w-[240px] lg:w-[275px] h-[75px] sm:h-[95px] lg:h-[110px] drop-shadow-md"
+                  className="absolute z-20 pointer-events-none bottom-0 left-[2%] sm:left-[5%] lg:left-[8%] w-[270px] sm:w-[340px] lg:w-[410px] h-[95px] sm:h-[125px] lg:h-[150px] drop-shadow-md"
                 >
                   <Image
                     src="/image/Healthy Breakfast and Salad Spread.png"
@@ -457,7 +447,7 @@ export default function SportsNutritionPage() {
                 </div>
 
                 {/* Far Right 4 Floating Activity Icons in White Rounded Boxes */}
-                <div className="absolute right-0 sm:right-2 top-8 sm:top-12 z-20 flex flex-col gap-2.5 pointer-events-none select-none">
+                <div className="absolute right-1 sm:right-3 top-6 sm:top-10 z-20 flex flex-col gap-3 pointer-events-none select-none">
                   {[
                     { icon: RunnerFigureIcon, label: "Running" },
                     { icon: DumbbellIcon, label: "Gym" },
@@ -468,9 +458,9 @@ export default function SportsNutritionPage() {
                     return (
                       <div
                         key={i}
-                        className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl sm:rounded-2xl bg-white/95 backdrop-blur-xs shadow-md border border-emerald-100/90 flex items-center justify-center text-[#10793f]"
+                        className="w-10 h-10 sm:w-11 sm:h-11 lg:w-12 lg:h-12 rounded-2xl bg-white/95 backdrop-blur-md shadow-md border border-emerald-100 flex items-center justify-center text-[#10793f] transition-all duration-300 hover:scale-110"
                       >
-                        <ActIcon className="w-5 h-5 stroke-[2]" />
+                        <ActIcon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2]" />
                       </div>
                     );
                   })}
@@ -492,9 +482,8 @@ export default function SportsNutritionPage() {
                 return (
                   <div
                     key={b.title}
-                    className={`flex flex-col items-center text-center px-2 ${
-                      idx !== 0 ? "pt-3 lg:pt-0" : ""
-                    }`}
+                    className={`flex flex-col items-center text-center px-2 ${idx !== 0 ? "pt-3 lg:pt-0" : ""
+                      }`}
                   >
                     <div className="w-10 h-10 rounded-xl bg-emerald-50 text-[#10793f] flex items-center justify-center mb-2 shrink-0 transition-transform duration-200 hover:scale-105">
                       <IconComponent className="w-5 h-5 stroke-[2]" />
@@ -542,7 +531,7 @@ export default function SportsNutritionPage() {
                           className="object-cover object-center transition-transform duration-500 ease-out group-hover:scale-108"
                         />
                         <div className="absolute inset-0 bg-gradient-to-t from-black/20 via-transparent to-transparent pointer-events-none" />
-                        
+
                         {/* Overlapping Round Badge at bottom-left of photo */}
                         <div className="absolute left-4.5 -bottom-5 z-20 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white shadow-md border-2 border-white flex items-center justify-center text-[#10793f] transition-transform duration-300 group-hover:scale-110 group-hover:shadow-lg">
                           <GoalIcon className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.2]" />
@@ -799,9 +788,8 @@ export default function SportsNutritionPage() {
                     >
                       <span>{faq.q}</span>
                       <ChevronDown
-                        className={`w-4 h-4 text-gray-500 shrink-0 transition-transform duration-200 ${
-                          isOpen ? "rotate-180 text-[#10793f]" : ""
-                        }`}
+                        className={`w-4 h-4 text-gray-500 shrink-0 transition-transform duration-200 ${isOpen ? "rotate-180 text-[#10793f]" : ""
+                          }`}
                       />
                     </button>
                     {isOpen && (
