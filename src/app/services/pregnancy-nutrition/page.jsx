@@ -619,53 +619,62 @@ export default function PregnancyNutritionPage() {
 
         {/* ============================================================== */}
         {/* 4. KEY NUTRIENTS DURING PREGNANCY                              */}
-        {/* Grilled Chicken Quinoa Salad Bowl on Left + 5 Nutrients Right  */}
+        {/* Exact match to reference mockup design:                        */}
+        {/* Balanced Bowl on Left + Enclosed White Card on Right           */}
+        {/* Both items aligned and stretched to exact matching height     */}
         {/* ============================================================== */}
-        <section className="py-8 sm:py-12 bg-white relative">
+        <section className="py-6 sm:py-8 bg-white relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
-            <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-              {/* Left Column: Grilled Chicken Quinoa Salad Bowl */}
-              <div className="lg:col-span-4 relative flex items-center justify-center">
-                <div className="relative w-full aspect-4/3 sm:aspect-square max-w-[360px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-gray-100">
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-stretch">
+              {/* Left Column: Grilled Chicken Quinoa Salad Bowl (Matches height of right card) */}
+              <div className="lg:col-span-4 relative flex">
+                <div className="relative w-full h-[220px] sm:h-[240px] lg:h-auto min-h-[220px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-gray-100">
                   <Image
                     src="/image/Grilled Chicken Quinoa Salad Bowl.png"
                     alt="Nutrient-Rich Balanced Pregnancy Meal Bowl with Lean Grilled Chicken, Greens, Avocado & Quinoa"
                     fill
                     unoptimized
+                    priority
                     className="object-cover object-center"
                   />
                 </div>
               </div>
 
-              {/* Right Column: Key Nutrients Grid */}
-              <div className="lg:col-span-8">
-                <div className="mb-6">
-                  <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight">
-                    Key Nutrients During Pregnancy
-                  </h2>
-                  <div className="w-12 h-1 bg-[#10793f] rounded-full mt-2" />
-                </div>
+              {/* Right Column: Enclosed White Card with Title & 5 Nutrients */}
+              <div className="lg:col-span-8 flex">
+                <div className="w-full bg-white rounded-2xl sm:rounded-3xl border border-gray-100 shadow-sm p-5 sm:p-6 lg:p-7 flex flex-col justify-between">
+                  {/* Card Title & Green Accent Bar */}
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-gray-950 tracking-tight">
+                      Key Nutrients During Pregnancy
+                    </h3>
+                    <div className="w-10 h-1 bg-[#10793f] rounded-full mt-1.5 mb-5 sm:mb-6" />
+                  </div>
 
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 sm:gap-4">
-                  {nutrients.map((n) => {
-                    const NutrientIcon = n.icon;
-                    return (
-                      <div
-                        key={n.name}
-                        className="flex flex-col items-center text-center p-2 sm:p-3 rounded-xl transition-all duration-200 hover:bg-emerald-50/40"
-                      >
-                        <div className="w-10 h-10 sm:w-11 sm:h-11 flex items-center justify-center mb-2 shrink-0 text-[#10793f]">
-                          <NutrientIcon className="w-7 h-7 sm:w-8 sm:h-8" />
+                  {/* 5 Nutrients Grid with subtle vertical dividers */}
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3 md:gap-0 md:divide-x divide-gray-100">
+                    {nutrients.map((n, idx) => {
+                      const NutrientIcon = n.icon;
+                      return (
+                        <div
+                          key={n.name}
+                          className={`flex flex-col items-center text-center px-2 sm:px-3 ${
+                            idx !== 0 ? "pt-2 md:pt-0" : ""
+                          }`}
+                        >
+                          <div className="w-9 h-9 sm:w-10 sm:h-10 flex items-center justify-center mb-2 shrink-0 text-[#10793f]">
+                            <NutrientIcon className="w-7 h-7 sm:w-8 sm:h-8" />
+                          </div>
+                          <h4 className="text-xs sm:text-[13px] font-bold text-gray-950 leading-tight mb-1">
+                            {n.name}
+                          </h4>
+                          <p className="text-[10px] sm:text-[11px] text-gray-600 leading-snug">
+                            {n.desc}
+                          </p>
                         </div>
-                        <h4 className="text-xs sm:text-sm font-bold text-gray-950 leading-tight mb-1">
-                          {n.name}
-                        </h4>
-                        <p className="text-[11px] sm:text-xs text-gray-600 leading-snug">
-                          {n.desc}
-                        </p>
-                      </div>
-                    );
-                  })}
+                      );
+                    })}
+                  </div>
                 </div>
               </div>
             </div>
@@ -676,10 +685,10 @@ export default function PregnancyNutritionPage() {
         {/* 5. BENEFITS FOR YOU & YOUR BABY                                */}
         {/* Benefits List on Left + Ultrasound Still Life Photo on Right  */}
         {/* ============================================================== */}
-        <section className="py-8 sm:py-12 bg-white relative">
+        <section className="py-6 sm:py-8 bg-white relative">
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
             <div className="grid grid-cols-1 lg:grid-cols-12 gap-6 lg:gap-8 items-center">
-              {/* Left Column: 6 Benefits Grid */}
+              {/* Left Column: 6 Benefits Grid (3 columns x 2 rows) */}
               <div className="lg:col-span-7">
                 <div className="mb-6">
                   <h2 className="text-2xl sm:text-3xl font-extrabold text-gray-950 tracking-tight">
@@ -688,18 +697,18 @@ export default function PregnancyNutritionPage() {
                   <div className="w-12 h-1 bg-[#10793f] rounded-full mt-2" />
                 </div>
 
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-4">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-x-4 gap-y-4">
                   {babyBenefits.map((b) => {
                     const BIcon = b.icon;
                     return (
                       <div
                         key={b.title}
-                        className="flex items-center gap-3 p-2.5 rounded-xl transition-all duration-200 hover:bg-emerald-50/40"
+                        className="flex items-center gap-2.5 p-2 rounded-xl transition-all duration-200 hover:bg-emerald-50/40"
                       >
-                        <div className="w-9 h-9 rounded-full bg-[#e8f7ee] text-[#10793f] flex items-center justify-center shrink-0">
+                        <div className="w-8 h-8 rounded-full bg-[#e8f7ee] text-[#10793f] flex items-center justify-center shrink-0">
                           <BIcon className="w-4 h-4 stroke-[2]" />
                         </div>
-                        <span className="text-xs sm:text-sm font-bold text-gray-800">
+                        <span className="text-xs sm:text-[13px] font-bold text-gray-800 leading-tight">
                           {b.title}
                         </span>
                       </div>
