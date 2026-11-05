@@ -152,7 +152,7 @@ const servicesData = [
   {
     title: "General Wellness",
     description: "Daily energy, gut health & lifestyle balance",
-    href: "/#services",
+    href: "/services/general-wellness",
     icon: LotusServiceIcon,
   },
 ];

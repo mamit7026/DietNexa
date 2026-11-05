@@ -43,6 +43,7 @@ const services = [
     title: "General Wellness",
     description: "Build better eating and lifestyle habits",
     icon: Apple,
+    href: "/services/general-wellness",
   },
 ];
 
