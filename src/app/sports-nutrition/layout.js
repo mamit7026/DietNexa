@@ -1,2 +1,1 @@
-export { metadata, default } from "../services/pregnancy-nutrition/layout";
-
+export { metadata, default } from "../services/sports-nutrition/layout";

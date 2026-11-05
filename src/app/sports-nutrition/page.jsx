@@ -1,7 +1,5 @@
-import PregnancyNutritionPage from "../services/pregnancy-nutrition/page";
-export { metadata } from "../services/pregnancy-nutrition/layout";
+import SportsNutritionPage from "../services/sports-nutrition/page";
 
 export default function Page() {
-  return <PregnancyNutritionPage />;
+  return <SportsNutritionPage />;
 }
-
