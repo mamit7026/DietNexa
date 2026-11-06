@@ -117,6 +117,115 @@ const LotusServiceIcon = ({ className = "w-5 h-5 text-[#10793f]" }) => (
   </svg>
 );
 
+// Resource Icons matching Services style
+const PatientStoriesIcon = ({ className = "w-5 h-5 text-[#10793f]" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.9"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
+    <circle cx="9" cy="7" r="4" />
+    <path d="M22 21v-2a4 4 0 0 0-3-3.87" />
+    <path d="M16 3.13a4 4 0 0 1 0 7.75" />
+  </svg>
+);
+
+const CalculatorResourceIcon = ({ className = "w-5 h-5 text-[#10793f]" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.9"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <rect width="16" height="20" x="4" y="2" rx="2" />
+    <line x1="8" x2="16" y1="6" y2="6" />
+    <line x1="16" x2="16" y1="14" y2="18" />
+    <path d="M8 10h.01" />
+    <path d="M12 10h.01" />
+    <path d="M16 10h.01" />
+    <path d="M8 14h.01" />
+    <path d="M12 14h.01" />
+    <path d="M8 18h.01" />
+    <path d="M12 18h.01" />
+  </svg>
+);
+
+const BlogResourceIcon = ({ className = "w-5 h-5 text-[#10793f]" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.9"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M4 19.5v-15A2.5 2.5 0 0 1 6.5 2H20v20H6.5a2.5 2.5 0 0 1-2.5-2.5Z" />
+    <path d="M6 6h10" />
+    <path d="M6 10h10" />
+    <path d="M6 14h6" />
+  </svg>
+);
+
+const MealGuidesResourceIcon = ({ className = "w-5 h-5 text-[#10793f]" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.9"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M18 2v6a3 3 0 0 1-3 3 3 3 0 0 1-3-3V2" />
+    <path d="M15 11v11" />
+    <path d="M5 2v10a3 3 0 0 0 3 3h1" />
+    <path d="M9 22V2" />
+  </svg>
+);
+
+const FaqResourceIcon = ({ className = "w-5 h-5 text-[#10793f]" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.9"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" />
+    <path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3" />
+    <line x1="12" x2="12.01" y1="17" y2="17" />
+  </svg>
+);
+
+const HabitTipsIcon = ({ className = "w-5 h-5 text-[#10793f]" }) => (
+  <svg
+    viewBox="0 0 24 24"
+    fill="none"
+    stroke="currentColor"
+    strokeWidth="1.9"
+    strokeLinecap="round"
+    strokeLinejoin="round"
+    className={className}
+  >
+    <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+    <path d="M5 3v4" />
+    <path d="M19 17v4" />
+    <path d="M3 5h4" />
+    <path d="M17 19h4" />
+  </svg>
+);
+
 // 6 Services corresponding exactly to the reference image
 const servicesData = [
   {
@@ -157,6 +266,46 @@ const servicesData = [
   },
 ];
 
+// 6 Resources corresponding to the Services mega dropdown design
+const resourcesData = [
+  {
+    title: "Patient Stories",
+    description: "Verified reviews & transformation stories",
+    href: "/#reviews",
+    icon: PatientStoriesIcon,
+  },
+  {
+    title: "Calorie & Macro Calculator",
+    description: "Calculate your daily energy requirements",
+    href: "/#why-dietnexa",
+    icon: CalculatorResourceIcon,
+  },
+  {
+    title: "Health & Nutrition Blog",
+    description: "Evidence-based wellness articles & research",
+    href: "/about",
+    icon: BlogResourceIcon,
+  },
+  {
+    title: "Nutrition Guides",
+    description: "Free meal plans, diet charts & grocery lists",
+    href: "/#services",
+    icon: MealGuidesResourceIcon,
+  },
+  {
+    title: "Diet & Health FAQs",
+    description: "Common questions answered by clinical dietitians",
+    href: "/#faq",
+    icon: FaqResourceIcon,
+  },
+  {
+    title: "Wellness & Lifestyle Tips",
+    description: "Daily habits for sustained energy and vitality",
+    href: "/services/general-wellness",
+    icon: HabitTipsIcon,
+  },
+];
+
 const navLinks = [
   {
     label: "Services",
@@ -168,28 +317,7 @@ const navLinks = [
   {
     label: "Resources",
     href: "/#reviews",
-    dropdown: [
-      {
-        label: "Patient Stories",
-        href: "/#reviews",
-        description: "Verified reviews & transformation stories",
-      },
-      {
-        label: "Calorie & Macro Calculator",
-        href: "/#why-dietnexa",
-        description: "Calculate your daily energy requirements",
-      },
-      {
-        label: "Health & Nutrition Blog",
-        href: "/about",
-        description: "Evidence-based wellness articles",
-      },
-      {
-        label: "Nutrition Guides",
-        href: "/#services",
-        description: "Free meal plans and grocery lists",
-      },
-    ],
+    dropdown: resourcesData,
   },
   { label: "About Us", href: "/about" },
   { label: "Contact Us", href: "/contact" },
@@ -329,6 +457,7 @@ export default function Navbar({ onOpenModal }) {
                   pathname === link.href ||
                   (link.href === "/" && pathname === "/");
                 const isServices = link.label === "Services";
+                const isResources = link.label === "Resources";
                 const isDropdownOpen = openDropdown === link.label;
 
                 return (
@@ -352,6 +481,9 @@ export default function Navbar({ onOpenModal }) {
                             isActive ||
                             (isServices &&
                               (pathname.startsWith("/services") ||
+                                isDropdownOpen)) ||
+                            (isResources &&
+                              (pathname.startsWith("/resources") ||
                                 isDropdownOpen))
                               ? "#10793f"
                               : "#374151",
@@ -365,6 +497,10 @@ export default function Navbar({ onOpenModal }) {
                             !(
                               isServices &&
                               pathname.startsWith("/services")
+                            ) &&
+                            !(
+                              isResources &&
+                              pathname.startsWith("/resources")
                             ) &&
                             !isDropdownOpen
                           ) {
@@ -382,7 +518,9 @@ export default function Navbar({ onOpenModal }) {
                         />
                         {(isActive ||
                           (isServices &&
-                            pathname.startsWith("/services"))) && (
+                            pathname.startsWith("/services")) ||
+                          (isResources &&
+                            pathname.startsWith("/resources"))) && (
                           <span
                             className="absolute -bottom-1.5 left-0 right-0 h-[2.5px] rounded-full"
                             style={{ background: "#10793f" }}
@@ -504,8 +642,99 @@ export default function Navbar({ onOpenModal }) {
                       </div>
                     )}
 
-                    {/* Standard Dropdown for other menus (e.g. Resources) */}
-                    {!isServices && link.dropdown && isDropdownOpen && (
+                    {/* ============================================================== */}
+                    {/* Resources Mega Dropdown (Matching Services Design exactly)     */}
+                    {/* ============================================================== */}
+                    {isResources && isDropdownOpen && (
+                      <div
+                        onMouseEnter={() => handleMouseEnter("Resources")}
+                        onMouseLeave={handleMouseLeave}
+                        className="absolute top-full -left-48 sm:-left-60 lg:-left-72 mt-2 z-50 w-[780px] lg:w-[840px] max-w-[calc(100vw-32px)] bg-white rounded-3xl p-4 sm:p-5 shadow-[0_20px_50px_rgba(0,0,0,0.12)] border border-gray-150 animate-in fade-in zoom-in-95 duration-150"
+                      >
+                        <div className="flex flex-col sm:flex-row gap-3 sm:gap-4 items-stretch">
+                          {/* Left Promo Card: Our Resources */}
+                          <div
+                            className="w-full sm:w-[220px] lg:w-[235px] shrink-0 rounded-2xl p-4 sm:p-5 flex flex-col justify-between relative overflow-hidden"
+                            style={{
+                              background:
+                                "linear-gradient(180deg, #ecf8ef 0%, #daf3e2 50%, #c4edd0 100%)",
+                            }}
+                          >
+                            {/* Corner leaf accent */}
+                            <div className="absolute top-0 right-0 w-20 h-20 pointer-events-none opacity-40">
+                              <Image
+                                src="/image/Glossy Green Leaf Branch.png"
+                                alt=""
+                                fill
+                                unoptimized
+                                className="object-contain object-top-right"
+                              />
+                            </div>
+
+                            <div>
+                              <h3 className="text-xl sm:text-[22px] font-extrabold text-[#0d3b1f] tracking-tight mb-2 leading-tight">
+                                Our Resources
+                              </h3>
+                              <p className="text-xs sm:text-[13px] text-gray-700 leading-relaxed font-medium">
+                                Evidence-based guides, tools and patient transformation stories.
+                              </p>
+                            </div>
+
+                            {/* Healthy food arrangement image at bottom */}
+                            <div className="relative w-full h-[115px] sm:h-[130px] mt-4 flex items-end justify-center">
+                              <Image
+                                src="/image/Healthy Foods and Fresh Fruit Arrangement.png"
+                                alt="Healthy Foods & Nutrition Resources"
+                                fill
+                                unoptimized
+                                className="object-contain object-bottom drop-shadow-sm"
+                              />
+                            </div>
+                          </div>
+
+                          {/* Right: 6 Resources (2 columns x 3 rows) */}
+                          <div className="flex-1 grid grid-cols-1 sm:grid-cols-2 gap-2.5 sm:gap-3">
+                            {resourcesData.map((res) => {
+                              const Icon = res.icon;
+                              const isCurrentActive = pathname === res.href;
+
+                              return (
+                                <Link
+                                  key={res.title}
+                                  href={res.href}
+                                  onClick={() => setOpenDropdown(null)}
+                                  className={`group flex items-center justify-between p-3 sm:p-3.5 rounded-2xl border transition-all duration-200 cursor-pointer ${
+                                    isCurrentActive
+                                      ? "border-[#84d9a2] bg-[#f2faf5] shadow-xs"
+                                      : "border-gray-200/80 bg-white hover:border-[#10793f] hover:bg-[#f2faf5] hover:shadow-xs"
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-3 min-w-0 pr-1">
+                                    <div className="w-11 h-11 rounded-2xl bg-[#edf8f1] group-hover:bg-white flex items-center justify-center shrink-0 text-[#10793f] transition-colors border border-transparent group-hover:border-emerald-100">
+                                      <Icon className="w-5 h-5" />
+                                    </div>
+
+                                    <div className="min-w-0">
+                                      <h4 className="text-[13.5px] sm:text-[14px] font-bold text-gray-900 group-hover:text-[#10793f] transition-colors leading-snug">
+                                        {res.title}
+                                      </h4>
+                                      <p className="text-[11px] sm:text-[11.5px] text-gray-500 group-hover:text-gray-700 leading-tight mt-0.5 line-clamp-2">
+                                        {res.description}
+                                      </p>
+                                    </div>
+                                  </div>
+
+                                  <ChevronRight className="w-4 h-4 text-gray-400 group-hover:text-[#10793f] group-hover:translate-x-0.5 transition-all shrink-0 ml-1.5" />
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* Standard Dropdown for other menus (if any) */}
+                    {!isServices && !isResources && link.dropdown && isDropdownOpen && (
                       <div
                         onMouseEnter={() => handleMouseEnter(link.label)}
                         onMouseLeave={handleMouseLeave}
@@ -674,6 +903,42 @@ export default function Navbar({ onOpenModal }) {
                                       </div>
                                       <p className="text-[11px] text-gray-500 line-clamp-1">
                                         {svc.description}
+                                      </p>
+                                    </div>
+                                  </div>
+                                  <ChevronRight className="w-4 h-4 text-gray-400 shrink-0" />
+                                </Link>
+                              );
+                            })}
+                          </div>
+                        ) : link.label === "Resources" ? (
+                          <div className="my-1 mx-1 p-2 rounded-2xl bg-[#f7fbf8] border border-[#e1f0e7] space-y-2">
+                            {resourcesData.map((res) => {
+                              const Icon = res.icon;
+                              const isCurrentActive =
+                                pathname === res.href;
+
+                              return (
+                                <Link
+                                  key={res.title}
+                                  href={res.href}
+                                  onClick={() => setMobileOpen(false)}
+                                  className={`flex items-center justify-between p-2.5 rounded-xl transition-colors ${
+                                    isCurrentActive
+                                      ? "bg-white border border-[#84d9a2]"
+                                      : "bg-white/80 hover:bg-white"
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-2.5 min-w-0 pr-1">
+                                    <div className="w-9 h-9 rounded-xl bg-[#edf8f1] flex items-center justify-center shrink-0 text-[#10793f]">
+                                      <Icon className="w-4 h-4" />
+                                    </div>
+                                    <div className="min-w-0">
+                                      <div className="text-[13px] font-bold text-gray-900 leading-snug">
+                                        {res.title}
+                                      </div>
+                                      <p className="text-[11px] text-gray-500 line-clamp-1">
+                                        {res.description}
                                       </p>
                                     </div>
                                   </div>
