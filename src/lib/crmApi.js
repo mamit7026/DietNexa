@@ -43,6 +43,16 @@ export function getDefaultOneMonthRange() {
   };
 }
 
+// Helper format currency to Indian Lakhs (L) or Crores (Cr)
+export function formatINR(val) {
+  if (!val && val !== 0) return "₹ 0";
+  const num = Number(val);
+  if (isNaN(num)) return "₹ 0";
+  if (num >= 10000000) return `₹ ${(num / 10000000).toFixed(2)} Cr`;
+  if (num >= 100000) return `₹ ${(num / 100000).toFixed(2)} L`;
+  return `₹ ${num.toLocaleString("en-IN")}`;
+}
+
 // In-memory / localStorage fallback cache for instant testing if backend is offline
 const DEMO_LEADS_KEY = "dietnexa_demo_leads_store";
 

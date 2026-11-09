@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useSearchParams } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -27,8 +27,9 @@ import {
   CheckCircle2,
 } from "lucide-react";
 import { fetchReportsApi, exportToCsv, getDefaultOneMonthRange } from "@/lib/crmApi";
+import CrmDateRangePicker from "@/components/CrmDateRangePicker";
 
-export default function ReportsPage() {
+function ReportsPageContent() {
   const searchParams = useSearchParams();
   const currentTab = searchParams.get("tab") || "deals";
 
@@ -47,7 +48,6 @@ export default function ReportsPage() {
   const [loading, setLoading] = useState(true);
   const [reportData, setReportData] = useState(null);
   const [exportDropdownOpen, setExportDropdownOpen] = useState(false);
-  const [dateDropdownOpen, setDateDropdownOpen] = useState(false);
 
   const loadReport = async () => {
     setLoading(true);
@@ -75,7 +75,7 @@ export default function ReportsPage() {
 
   useEffect(() => {
     loadReport();
-  }, [currentTab, currentPage, pageSize]);
+  }, [currentTab, currentPage, pageSize, fromDate, toDate]);
 
   const handleApplyFilters = () => {
     setCurrentPage(1);
@@ -83,12 +83,14 @@ export default function ReportsPage() {
   };
 
   const handleResetFilters = () => {
+    const def = getDefaultOneMonthRange();
+    setFromDate(def.fromDate);
+    setToDate(def.toDate);
     setSelectedPipeline("All Pipelines");
     setSelectedStage("All Stages");
     setSelectedOwner("All Owners");
     setSelectedProject("All Projects");
     setCurrentPage(1);
-    loadReport();
   };
 
   const handleExportCSV = () => {
@@ -140,7 +142,7 @@ export default function ReportsPage() {
   };
 
   const deals = reportData?.deals || [];
-  const totalEntries = reportData?.pagination?.total || (deals.length > 0 ? 428 : 0);
+  const totalEntries = reportData?.pagination?.total || deals.length;
 
   return (
     <div className="space-y-4 max-w-[1550px] mx-auto text-gray-900 pb-16 font-sans">
@@ -229,64 +231,18 @@ export default function ReportsPage() {
       ───────────────────────────────────────────────────────────── */}
       <div className="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-2xs">
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-2.5 items-end">
-          {/* 1. Date Range */}
+          {/* 1. Date Range Picker (Calendar & Presets) */}
           <div className="lg:col-span-2">
             <label className="block text-[11px] font-bold text-gray-600 mb-1">Date Range</label>
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setDateDropdownOpen(!dateDropdownOpen)}
-                className="w-full flex items-center justify-between px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-50"
-              >
-                <div className="flex items-center gap-1.5 truncate">
-                  <Calendar className="w-3.5 h-3.5 text-gray-400" />
-                  <span>
-                    Nov 1, 2026 – Nov 9, 2026
-                  </span>
-                </div>
-                <ChevronDown className="w-3 h-3 text-gray-400" />
-              </button>
-
-              {dateDropdownOpen && (
-                <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 p-3 z-50 text-xs">
-                  <div className="font-bold text-gray-800 mb-2">Preset Date Ranges</div>
-                  <div className="space-y-1">
-                    <button
-                      onClick={() => {
-                        setDateDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-2 py-1 rounded hover:bg-gray-100 font-medium"
-                    >
-                      Today
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDateDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-2 py-1 rounded hover:bg-gray-100 font-medium"
-                    >
-                      This Week
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDateDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-2 py-1 rounded bg-emerald-50 text-emerald-800 font-bold"
-                    >
-                      Nov 1, 2026 – Nov 9, 2026
-                    </button>
-                    <button
-                      onClick={() => {
-                        setDateDropdownOpen(false);
-                      }}
-                      className="w-full text-left px-2 py-1 rounded hover:bg-gray-100 font-medium"
-                    >
-                      Past 30 Days
-                    </button>
-                  </div>
-                </div>
-              )}
-            </div>
+            <CrmDateRangePicker
+              fromDate={fromDate}
+              toDate={toDate}
+              onApply={(f, t) => {
+                setFromDate(f);
+                setToDate(t);
+              }}
+              align="left"
+            />
           </div>
 
           {/* 2. Pipeline */}
@@ -537,74 +493,94 @@ export default function ReportsPage() {
               </select>
             </div>
 
-            {/* Pagination Buttons */}
-            <div className="flex items-center gap-1">
-              <button
-                onClick={() => setCurrentPage(1)}
-                disabled={currentPage === 1}
-                className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100 disabled:opacity-40"
-              >
-                «
-              </button>
-              <button
-                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
-                disabled={currentPage === 1}
-                className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100 disabled:opacity-40"
-              >
-                ‹
-              </button>
-              <button
-                className="p-1 px-2.5 rounded-md bg-[#16a34a] text-white font-bold"
-              >
-                1
-              </button>
-              <button
-                onClick={() => setCurrentPage(2)}
-                className="p-1 px-2.5 rounded-md border border-gray-200 hover:bg-gray-100"
-              >
-                2
-              </button>
-              <button
-                onClick={() => setCurrentPage(3)}
-                className="p-1 px-2.5 rounded-md border border-gray-200 hover:bg-gray-100"
-              >
-                3
-              </button>
-              <button
-                onClick={() => setCurrentPage(4)}
-                className="p-1 px-2.5 rounded-md border border-gray-200 hover:bg-gray-100"
-              >
-                4
-              </button>
-              <button
-                onClick={() => setCurrentPage(5)}
-                className="p-1 px-2.5 rounded-md border border-gray-200 hover:bg-gray-100"
-              >
-                5
-              </button>
-              <span className="px-1 text-gray-400">...</span>
-              <button
-                onClick={() => setCurrentPage(43)}
-                className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100"
-              >
-                43
-              </button>
-              <button
-                onClick={() => setCurrentPage((p) => p + 1)}
-                className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100"
-              >
-                ›
-              </button>
-              <button
-                onClick={() => setCurrentPage(43)}
-                className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100"
-              >
-                »
-              </button>
-            </div>
+            {/* Dynamic Pagination Buttons */}
+            {(() => {
+              const totalPages = Math.max(1, Math.ceil(totalEntries / pageSize));
+              const pages = [];
+              for (let i = 1; i <= Math.min(5, totalPages); i++) {
+                pages.push(i);
+              }
+              return (
+                <div className="flex items-center gap-1">
+                  <button
+                    onClick={() => setCurrentPage(1)}
+                    disabled={currentPage === 1}
+                    className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
+                    title="First Page"
+                  >
+                    «
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                    disabled={currentPage === 1}
+                    className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
+                    title="Previous Page"
+                  >
+                    ‹
+                  </button>
+                  {pages.map((p) => (
+                    <button
+                      key={p}
+                      onClick={() => setCurrentPage(p)}
+                      className={`p-1 px-2.5 rounded-md font-semibold cursor-pointer transition-colors ${
+                        currentPage === p
+                          ? "bg-[#16a34a] text-white font-bold"
+                          : "border border-gray-200 hover:bg-gray-100 text-gray-700"
+                      }`}
+                    >
+                      {p}
+                    </button>
+                  ))}
+                  {totalPages > 5 && (
+                    <>
+                      <span className="px-1 text-gray-400">...</span>
+                      <button
+                        onClick={() => setCurrentPage(totalPages)}
+                        className={`p-1 px-2.5 rounded-md font-semibold cursor-pointer border border-gray-200 hover:bg-gray-100 ${
+                          currentPage === totalPages ? "bg-[#16a34a] text-white font-bold" : "text-gray-700"
+                        }`}
+                      >
+                        {totalPages}
+                      </button>
+                    </>
+                  )}
+                  <button
+                    onClick={() => setCurrentPage((p) => Math.min(totalPages, p + 1))}
+                    disabled={currentPage === totalPages}
+                    className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
+                    title="Next Page"
+                  >
+                    ›
+                  </button>
+                  <button
+                    onClick={() => setCurrentPage(totalPages)}
+                    disabled={currentPage === totalPages}
+                    className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100 disabled:opacity-40 cursor-pointer"
+                    title="Last Page"
+                  >
+                    »
+                  </button>
+                </div>
+              );
+            })()}
           </div>
         </div>
       </div>
     </div>
+  );
+}
+
+export default function ReportsPage() {
+  return (
+    <Suspense
+      fallback={
+        <div className="p-8 text-center text-gray-500">
+          <div className="w-8 h-8 border-3 border-[#16a34a] border-t-transparent rounded-full animate-spin mx-auto mb-2" />
+          <span>Loading Deal Reports...</span>
+        </div>
+      }
+    >
+      <ReportsPageContent />
+    </Suspense>
   );
 }

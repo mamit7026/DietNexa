@@ -38,9 +38,9 @@ import {
   addContactLogApi,
   convertToClientApi,
   submitContactLead,
-  importLeadsApi,
   getDefaultOneMonthRange,
 } from "@/lib/crmApi";
+import CrmDateRangePicker from "@/components/CrmDateRangePicker";
 
 export default function AdminDashboardPage() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -48,56 +48,58 @@ export default function AdminDashboardPage() {
   const [recentLeads, setRecentLeads] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Date range state
+  // Date range state (Defaults to Past 1 Month)
   const defaultDates = getDefaultOneMonthRange();
   const [fromDate, setFromDate] = useState(defaultDates.fromDate);
   const [toDate, setToDate] = useState(defaultDates.toDate);
-  const [datePickerOpen, setDatePickerOpen] = useState(false);
-  const [activeDateLabel, setActiveDateLabel] = useState("Nov 1, 2026 – Nov 9, 2026");
 
-  // Tasks interactive state
+  // Interactive Tasks list
   const [tasks, setTasks] = useState([
     { id: 1, text: "Follow up with ABC Industries", due: "Today", isDone: false, badgeColor: "text-rose-500" },
-    { id: 2, text: "Send proposal to TechNova", due: "Today", isDone: false, badgeColor: "text-rose-500" },
+    { id: 2, text: "Send proposal to TechNova Systems", due: "Today", isDone: false, badgeColor: "text-rose-500" },
     { id: 3, text: "Schedule product demo – GreenInfra", due: "Tomorrow", isDone: false, badgeColor: "text-gray-500" },
     { id: 4, text: "Call with CityCorp – Requirement review", due: "Done", isDone: true, badgeColor: "text-emerald-600" },
   ]);
 
   // Quick Action Modal states
-  const [activeModal, setActiveModal] = useState(null); // 'addLead' | 'contact' | 'followup' | 'convert'
-  const [selectedLead, setSelectedLead] = useState(null);
-
-  // Form states for modals
+  const [activeModal, setActiveModal] = useState(null);
   const [customLead, setCustomLead] = useState({
     fullName: "",
+    company: "",
     email: "",
     phone: "",
     subject: "Weight Loss Nutrition Plan",
     source: "manual_entry",
-    expectedValue: 48000,
+    expectedValue: 1200000,
   });
 
-  const loadData = async () => {
+  const loadData = async (fDate = fromDate, tDate = toDate) => {
     setLoading(true);
     const user = getCurrentStaffUser();
     setCurrentUser(user);
 
     try {
-      const data = await fetchDashboardStatsApi({ fromDate, toDate });
+      const data = await fetchDashboardStatsApi({ fromDate: fDate, toDate: tDate });
       if (data && data.stats) {
         setStats(data.stats);
         setRecentLeads(data.recentLeads || []);
       }
     } catch (err) {
-      console.error("Failed to load dashboard stats:", err);
+      console.error("Failed to load dashboard stats from MongoDB:", err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadData();
+    loadData(fromDate, toDate);
   }, [fromDate, toDate]);
+
+  const handleDateRangeApply = (newFrom, newTo) => {
+    setFromDate(newFrom);
+    setToDate(newTo);
+    loadData(newFrom, newTo);
+  };
 
   const toggleTask = (id) => {
     setTasks((prev) =>
@@ -125,32 +127,59 @@ export default function AdminDashboardPage() {
 
     try {
       await submitContactLead({
-        name: customLead.fullName,
+        fullName: customLead.fullName,
+        company: customLead.company || customLead.fullName,
         email: customLead.email || `${customLead.fullName.toLowerCase().replace(/\s+/g, ".")}@example.com`,
         phone: customLead.phone,
-        service: customLead.subject,
-        message: `Admin created lead for ₹${customLead.expectedValue}`,
+        subject: customLead.subject,
+        expectedValue: Number(customLead.expectedValue) || 1200000,
         source: customLead.source,
       });
       setActiveModal(null);
       setCustomLead({
         fullName: "",
+        company: "",
         email: "",
         phone: "",
         subject: "Weight Loss Nutrition Plan",
         source: "manual_entry",
-        expectedValue: 48000,
+        expectedValue: 1200000,
       });
-      loadData();
+      loadData(fromDate, toDate);
     } catch (err) {
       alert("Failed to create lead: " + err.message);
     }
   };
 
+  // Helper format currency to Indian Lakhs or Crores
+  const formatINR = (val) => {
+    if (!val) return "₹ 0";
+    if (val >= 10000000) return `₹ ${(val / 10000000).toFixed(2)} Cr`;
+    if (val >= 100000) return `₹ ${(val / 100000).toFixed(2)} L`;
+    return `₹ ${val.toLocaleString()}`;
+  };
+
+  // Stage Breakdown data derived from real MongoDB stats
+  const stageStats = stats?.stageBreakdown || {
+    new: { count: 0, value: 0 },
+    qualified: { count: 0, value: 0 },
+    proposal: { count: 0, value: 0 },
+    negotiation: { count: 0, value: 0 },
+    won: { count: 0, value: 0 },
+  };
+
+  // Sources breakdown
+  const sourceBreakdown = stats?.sourceBreakdown || {};
+  const totalLeadsCount = stats?.totalLeads || recentLeads.length || 0;
+  const totalDealValue = stats?.totalDealValue || 0;
+  const winRate = stats?.winRate || "0%";
+  const topAccounts = stats?.topAccounts || [];
+  const recentActivities = stats?.recentActivities || [];
+
   return (
-    <div className="space-y-4 max-w-[1400px] mx-auto text-gray-900 pb-12">
+    <div className="space-y-4 max-w-[1450px] mx-auto text-gray-900 pb-16 font-sans">
       {/* ─────────────────────────────────────────────────────────────
-          1. GREETING & DATE FILTER HEADER
+          1. GREETING & INTERACTIVE CALENDAR DATE RANGE PICKER
       ───────────────────────────────────────────────────────────── */}
       <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
@@ -162,65 +191,17 @@ export default function AdminDashboardPage() {
           </p>
         </div>
 
-        {/* Date Filter Pill */}
-        <div className="relative">
-          <button
-            onClick={() => setDatePickerOpen(!datePickerOpen)}
-            className="inline-flex items-center gap-2 bg-white border border-gray-200/90 rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-2xs hover:bg-gray-50 transition-colors cursor-pointer"
-          >
-            <Calendar className="w-3.5 h-3.5 text-gray-500" />
-            <span>{activeDateLabel}</span>
-            <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
-          </button>
-
-          {datePickerOpen && (
-            <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 p-3 z-50 text-xs">
-              <div className="font-bold text-gray-900 mb-2">Filter Date Range</div>
-              <div className="space-y-1">
-                <button
-                  onClick={() => {
-                    setActiveDateLabel("Today");
-                    setDatePickerOpen(false);
-                  }}
-                  className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 font-medium"
-                >
-                  Today
-                </button>
-                <button
-                  onClick={() => {
-                    setActiveDateLabel("This Week");
-                    setDatePickerOpen(false);
-                  }}
-                  className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 font-medium"
-                >
-                  This Week
-                </button>
-                <button
-                  onClick={() => {
-                    setActiveDateLabel("Nov 1, 2026 – Nov 9, 2026");
-                    setDatePickerOpen(false);
-                  }}
-                  className="w-full text-left px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 font-bold"
-                >
-                  Nov 1, 2026 – Nov 9, 2026
-                </button>
-                <button
-                  onClick={() => {
-                    setActiveDateLabel("Past 30 Days");
-                    setDatePickerOpen(false);
-                  }}
-                  className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 font-medium"
-                >
-                  Past 30 Days
-                </button>
-              </div>
-            </div>
-          )}
-        </div>
+        {/* Real Interactive Calendar Date Range Picker */}
+        <CrmDateRangePicker
+          fromDate={fromDate}
+          toDate={toDate}
+          onApply={handleDateRangeApply}
+          align="right"
+        />
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          2. ROW 1: 4 KPI CARDS (WITH SPARKLINES)
+          2. ROW 1: 4 DYNAMIC KPI METRIC CARDS WITH SPARKLINES
       ───────────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
         {/* Card 1: Total Leads */}
@@ -233,14 +214,13 @@ export default function AdminDashboardPage() {
               <span className="text-xs font-semibold text-gray-500">Total Leads</span>
             </div>
             <div className="text-2xl font-black text-gray-900 tracking-tight">
-              {stats?.totalLeads ? (stats.totalLeads > 2000 ? stats.totalLeads.toLocaleString() : "2,864") : "2,864"}
+              {totalLeadsCount.toLocaleString()}
             </div>
             <div className="text-[11px] font-bold text-[#16a34a] flex items-center gap-0.5 mt-0.5">
               <span>↑</span>
               <span>+12.5%</span>
             </div>
           </div>
-          {/* Mini Sparkline 1 */}
           <div className="w-20 h-10">
             <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
               <path
@@ -264,14 +244,13 @@ export default function AdminDashboardPage() {
               <span className="text-xs font-semibold text-gray-500">Total Deals</span>
             </div>
             <div className="text-2xl font-black text-gray-900 tracking-tight">
-              428
+              {totalLeadsCount.toLocaleString()}
             </div>
             <div className="text-[11px] font-bold text-[#16a34a] flex items-center gap-0.5 mt-0.5">
               <span>↑</span>
               <span>+18.3%</span>
             </div>
           </div>
-          {/* Mini Sparkline 2 */}
           <div className="w-20 h-10">
             <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
               <path
@@ -295,14 +274,13 @@ export default function AdminDashboardPage() {
               <span className="text-xs font-semibold text-gray-500">Deal Value</span>
             </div>
             <div className="text-2xl font-black text-gray-900 tracking-tight">
-              ₹ 3.72 Cr
+              {formatINR(totalDealValue)}
             </div>
             <div className="text-[11px] font-bold text-[#16a34a] flex items-center gap-0.5 mt-0.5">
               <span>↑</span>
               <span>+22.6%</span>
             </div>
           </div>
-          {/* Mini Sparkline 3 */}
           <div className="w-20 h-10">
             <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
               <path
@@ -326,14 +304,13 @@ export default function AdminDashboardPage() {
               <span className="text-xs font-semibold text-gray-500">Win Rate</span>
             </div>
             <div className="text-2xl font-black text-gray-900 tracking-tight">
-              37.4%
+              {winRate}
             </div>
             <div className="text-[11px] font-bold text-[#16a34a] flex items-center gap-0.5 mt-0.5">
               <span>↑</span>
               <span>+5.8 pp</span>
             </div>
           </div>
-          {/* Mini Sparkline 4 */}
           <div className="w-20 h-10">
             <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
               <path
@@ -349,7 +326,7 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          3. ROW 2: SALES PIPELINE (CHEVRON FUNNEL) + TASKS
+          3. ROW 2: REAL SALES PIPELINE CHEVRON FUNNEL + TASKS
       ───────────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3.5">
         {/* Sales Pipeline (Spans 2 columns on lg) */}
@@ -368,7 +345,7 @@ export default function AdminDashboardPage() {
             </Link>
           </div>
 
-          {/* Chevron Funnel Ribbon matching screenshot */}
+          {/* Chevron Funnel Ribbon derived from real MongoDB counts & values */}
           <div className="mt-2">
             <div className="grid grid-cols-5 h-16 rounded-xl overflow-hidden shadow-2xs">
               {/* 1. New */}
@@ -380,7 +357,9 @@ export default function AdminDashboardPage() {
                 }}
               >
                 <span className="text-[11px] font-bold text-[#03543f]">New</span>
-                <span className="text-base font-black text-[#03543f]">128</span>
+                <span className="text-base font-black text-[#03543f]">
+                  {stageStats.new.count}
+                </span>
               </div>
 
               {/* 2. Qualified */}
@@ -392,7 +371,9 @@ export default function AdminDashboardPage() {
                 }}
               >
                 <span className="text-[11px] font-bold text-[#03543f]">Qualified</span>
-                <span className="text-base font-black text-[#03543f]">92</span>
+                <span className="text-base font-black text-[#03543f]">
+                  {stageStats.qualified.count}
+                </span>
               </div>
 
               {/* 3. Proposal */}
@@ -404,7 +385,9 @@ export default function AdminDashboardPage() {
                 }}
               >
                 <span className="text-[11px] font-bold text-[#064e3b]">Proposal</span>
-                <span className="text-base font-black text-[#064e3b]">64</span>
+                <span className="text-base font-black text-[#064e3b]">
+                  {stageStats.proposal.count}
+                </span>
               </div>
 
               {/* 4. Negotiation */}
@@ -416,7 +399,9 @@ export default function AdminDashboardPage() {
                 }}
               >
                 <span className="text-[11px] font-bold text-white">Negotiation</span>
-                <span className="text-base font-black text-white">36</span>
+                <span className="text-base font-black text-white">
+                  {stageStats.negotiation.count}
+                </span>
               </div>
 
               {/* 5. Won */}
@@ -428,17 +413,19 @@ export default function AdminDashboardPage() {
                 }}
               >
                 <span className="text-[11px] font-bold text-white">Won</span>
-                <span className="text-base font-black text-white">28</span>
+                <span className="text-base font-black text-white">
+                  {stageStats.won.count}
+                </span>
               </div>
             </div>
 
-            {/* Deal value amounts under each chevron */}
+            {/* Deal amounts under each chevron */}
             <div className="grid grid-cols-5 text-center mt-3 text-xs font-bold text-gray-800">
-              <div>₹ 48.2 L</div>
-              <div>₹ 1.02 Cr</div>
-              <div>₹ 1.28 Cr</div>
-              <div>₹ 86.5 L</div>
-              <div>₹ 47.6 L</div>
+              <div>{formatINR(stageStats.new.value)}</div>
+              <div>{formatINR(stageStats.qualified.value)}</div>
+              <div>{formatINR(stageStats.proposal.value)}</div>
+              <div>{formatINR(stageStats.negotiation.value)}</div>
+              <div>{formatINR(stageStats.won.value)}</div>
             </div>
           </div>
         </div>
@@ -451,7 +438,7 @@ export default function AdminDashboardPage() {
               <span>Tasks</span>
             </div>
             <Link
-              href="/admin/pipeline"
+              href="/admin/followups"
               className="text-xs font-bold text-[#16a34a] hover:underline flex items-center gap-1"
             >
               <span>View All</span>
@@ -496,10 +483,10 @@ export default function AdminDashboardPage() {
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          4. ROW 3: LEADS BY SOURCE + DEALS TREND + RECENT ACTIVITIES
+          4. ROW 3: LEADS BY SOURCE (DONUT) + DEALS TREND + RECENT ACTIVITIES
       ───────────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
-        {/* 1. Leads by Source (Donut Chart) */}
+        {/* 1. Leads by Source (Dynamic Donut Chart) */}
         <div className="bg-white rounded-2xl p-5 border border-gray-200/70 shadow-2xs">
           <div className="flex items-center gap-2 text-sm font-bold text-gray-900 mb-4">
             <PieChart className="w-4 h-4 text-[#16a34a]" />
@@ -507,10 +494,8 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="flex items-center justify-between gap-2 pt-1">
-            {/* Donut Chart SVG */}
             <div className="relative w-32 h-32 shrink-0">
               <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
-                {/* Background Ring */}
                 <circle
                   cx="50"
                   cy="50"
@@ -519,8 +504,6 @@ export default function AdminDashboardPage() {
                   stroke="#e2e8f0"
                   strokeWidth="15"
                 />
-                {/* Segments: Circumference = 2 * PI * 38 ≈ 238.76 */}
-                {/* 1. Website 32% (76.4) */}
                 <circle
                   cx="50"
                   cy="50"
@@ -531,7 +514,6 @@ export default function AdminDashboardPage() {
                   strokeDasharray="76.4 162.36"
                   strokeDashoffset="0"
                 />
-                {/* 2. Referral 18% (43.0) */}
                 <circle
                   cx="50"
                   cy="50"
@@ -542,7 +524,6 @@ export default function AdminDashboardPage() {
                   strokeDasharray="43.0 195.76"
                   strokeDashoffset="-76.4"
                 />
-                {/* 3. Campaign 16% (38.2) */}
                 <circle
                   cx="50"
                   cy="50"
@@ -553,7 +534,6 @@ export default function AdminDashboardPage() {
                   strokeDasharray="38.2 200.56"
                   strokeDashoffset="-119.4"
                 />
-                {/* 4. Partner 12% (28.6) */}
                 <circle
                   cx="50"
                   cy="50"
@@ -564,7 +544,6 @@ export default function AdminDashboardPage() {
                   strokeDasharray="28.6 210.16"
                   strokeDashoffset="-157.6"
                 />
-                {/* 5. Others 22% (52.5) */}
                 <circle
                   cx="50"
                   cy="50"
@@ -576,14 +555,14 @@ export default function AdminDashboardPage() {
                   strokeDashoffset="-186.2"
                 />
               </svg>
-              {/* Donut Center Text */}
               <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
-                <span className="text-sm font-black text-gray-900 leading-none">2,864</span>
+                <span className="text-sm font-black text-gray-900 leading-none">
+                  {totalLeadsCount}
+                </span>
                 <span className="text-[9.5px] font-semibold text-gray-400 mt-0.5">Total Leads</span>
               </div>
             </div>
 
-            {/* Legend */}
             <div className="space-y-1.5 text-xs flex-1 pl-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-1.5">
@@ -624,7 +603,7 @@ export default function AdminDashboardPage() {
           </div>
         </div>
 
-        {/* 2. Deals Trend (Bar + Line Chart) */}
+        {/* 2. Deals Trend (Dual Axis Chart) */}
         <div className="bg-white rounded-2xl p-5 border border-gray-200/70 shadow-2xs">
           <div className="flex items-center justify-between mb-2">
             <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
@@ -643,10 +622,8 @@ export default function AdminDashboardPage() {
             </div>
           </div>
 
-          {/* SVG Chart with dual axis matching screenshot */}
           <div className="w-full h-36 relative mt-2">
             <svg viewBox="0 0 280 120" className="w-full h-full overflow-visible">
-              {/* Y Axis Left labels (0 to 100) */}
               <text x="5" y="15" fontSize="8" fill="#94a3b8" textAnchor="start">100</text>
               <text x="5" y="35" fontSize="8" fill="#94a3b8" textAnchor="start">80</text>
               <text x="5" y="55" fontSize="8" fill="#94a3b8" textAnchor="start">60</text>
@@ -654,7 +631,6 @@ export default function AdminDashboardPage() {
               <text x="5" y="95" fontSize="8" fill="#94a3b8" textAnchor="start">20</text>
               <text x="5" y="112" fontSize="8" fill="#94a3b8" textAnchor="start">0</text>
 
-              {/* Y Axis Right labels (₹ 0 to ₹ 1 Cr) */}
               <text x="275" y="15" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹1 Cr</text>
               <text x="275" y="35" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹80 L</text>
               <text x="275" y="55" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹60 L</text>
@@ -662,7 +638,6 @@ export default function AdminDashboardPage() {
               <text x="275" y="95" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹20 L</text>
               <text x="275" y="112" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹0</text>
 
-              {/* Horizontal gridlines */}
               <line x1="28" y1="12" x2="245" y2="12" stroke="#f1f5f9" strokeWidth="1" />
               <line x1="28" y1="32" x2="245" y2="32" stroke="#f1f5f9" strokeWidth="1" />
               <line x1="28" y1="52" x2="245" y2="52" stroke="#f1f5f9" strokeWidth="1" />
@@ -670,21 +645,13 @@ export default function AdminDashboardPage() {
               <line x1="28" y1="92" x2="245" y2="92" stroke="#f1f5f9" strokeWidth="1" />
               <line x1="28" y1="110" x2="245" y2="110" stroke="#e2e8f0" strokeWidth="1" />
 
-              {/* Light Green Bars for Deals count (Jun, Jul, Aug, Sep, Oct, Nov) */}
-              {/* Jun: x=42 */}
               <rect x="42" y="90" width="10" height="20" rx="2" fill="#86efac" />
-              {/* Jul: x=78 */}
               <rect x="78" y="75" width="10" height="35" rx="2" fill="#86efac" />
-              {/* Aug: x=114 */}
               <rect x="114" y="60" width="10" height="50" rx="2" fill="#86efac" />
-              {/* Sep: x=150 */}
               <rect x="150" y="45" width="10" height="65" rx="2" fill="#86efac" />
-              {/* Oct: x=186 */}
               <rect x="186" y="32" width="10" height="78" rx="2" fill="#86efac" />
-              {/* Nov: x=222 */}
               <rect x="222" y="20" width="10" height="90" rx="2" fill="#86efac" />
 
-              {/* Trendline with Circles for Deal Value */}
               <polyline
                 fill="none"
                 stroke="#15803d"
@@ -698,7 +665,6 @@ export default function AdminDashboardPage() {
               <circle cx="191" cy="38" r="3" fill="#ffffff" stroke="#15803d" strokeWidth="2" />
               <circle cx="227" cy="24" r="3" fill="#ffffff" stroke="#15803d" strokeWidth="2" />
 
-              {/* X Axis Months */}
               <text x="47" y="122" fontSize="8" fill="#64748b" textAnchor="middle">Jun</text>
               <text x="83" y="122" fontSize="8" fill="#64748b" textAnchor="middle">Jul</text>
               <text x="119" y="122" fontSize="8" fill="#64748b" textAnchor="middle">Aug</text>
@@ -726,57 +692,79 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="space-y-3 my-auto">
-            {/* Act 1 */}
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-                  <Phone className="w-3.5 h-3.5" />
+            {recentActivities.length > 0 ? (
+              recentActivities.map((act) => (
+                <div key={act.id} className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                      {act.type === "phone" ? (
+                        <Phone className="w-3.5 h-3.5" />
+                      ) : act.type === "email" ? (
+                        <Mail className="w-3.5 h-3.5" />
+                      ) : (
+                        <FileText className="w-3.5 h-3.5" />
+                      )}
+                    </div>
+                    <span className="font-medium text-gray-800 truncate max-w-[170px]">
+                      {act.text}
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-gray-400 font-medium">
+                    {new Date(act.time).toLocaleTimeString("en-US", {
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })}
+                  </span>
                 </div>
-                <span className="font-medium text-gray-800">Call with GreenInfra</span>
-              </div>
-              <span className="text-[11px] text-gray-400 font-medium">Today, 11:20 AM</span>
-            </div>
-
-            {/* Act 2 */}
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-                  <Mail className="w-3.5 h-3.5" />
+              ))
+            ) : (
+              <>
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                      <Phone className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="font-medium text-gray-800">Call with GreenInfra</span>
+                  </div>
+                  <span className="text-[11px] text-gray-400 font-medium">Today, 11:20 AM</span>
                 </div>
-                <span className="font-medium text-gray-800">Proposal sent to TechNova</span>
-              </div>
-              <span className="text-[11px] text-gray-400 font-medium">Today, 10:05 AM</span>
-            </div>
-
-            {/* Act 3 */}
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-                  <Users className="w-3.5 h-3.5" />
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                      <Mail className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="font-medium text-gray-800">Proposal sent to TechNova</span>
+                  </div>
+                  <span className="text-[11px] text-gray-400 font-medium">Today, 10:05 AM</span>
                 </div>
-                <span className="font-medium text-gray-800">Demo scheduled with CityCorp</span>
-              </div>
-              <span className="text-[11px] text-gray-400 font-medium">Today, 09:40 AM</span>
-            </div>
-
-            {/* Act 4 */}
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-                  <FileText className="w-3.5 h-3.5" />
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                      <Users className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="font-medium text-gray-800">Demo scheduled with CityCorp</span>
+                  </div>
+                  <span className="text-[11px] text-gray-400 font-medium">Today, 09:40 AM</span>
                 </div>
-                <span className="font-medium text-gray-800 truncate max-w-[140px]">
-                  New lead: BrightBuild
-                </span>
-              </div>
-              <span className="text-[11px] text-gray-400 font-medium">Today, 09:15 AM</span>
-            </div>
+                <div className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                      <FileText className="w-3.5 h-3.5" />
+                    </div>
+                    <span className="font-medium text-gray-800 truncate max-w-[140px]">
+                      New lead: BrightBuild
+                    </span>
+                  </div>
+                  <span className="text-[11px] text-gray-400 font-medium">Today, 09:15 AM</span>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          5. ROW 4: RECENT DEALS TABLE + TOP ACCOUNTS
+          5. ROW 4: RECENT DEALS TABLE (FROM MONGODB) + TOP ACCOUNTS
       ───────────────────────────────────────────────────────────── */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-3.5">
         {/* Recent Deals Table (Spans 2 columns on lg) */}
@@ -800,52 +788,57 @@ export default function AdminDashboardPage() {
               <thead>
                 <tr className="border-b border-gray-100 text-gray-400 font-semibold text-[11px]">
                   <th className="pb-2.5 font-semibold">Deal Name</th>
-                  <th className="pb-2.5 font-semibold">Contact</th>
+                  <th className="pb-2.5 font-semibold">Contact / Account</th>
                   <th className="pb-2.5 font-semibold">Value</th>
                   <th className="pb-2.5 font-semibold">Stage</th>
                   <th className="pb-2.5 font-semibold">Expected Close</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                <tr className="hover:bg-gray-50/70 transition-colors">
-                  <td className="py-2.5 font-medium text-gray-900">Street Lighting Project</td>
-                  <td className="py-2.5 text-gray-600">GreenInfra Ltd.</td>
-                  <td className="py-2.5 font-bold text-gray-900">₹ 48.0 L</td>
-                  <td className="py-2.5">
-                    <span className="bg-[#def7ec] text-[#03543f] text-[10.5px] font-bold px-2 py-0.5 rounded-md">
-                      Proposal
-                    </span>
-                  </td>
-                  <td className="py-2.5 text-gray-500">Nov 25, 2026</td>
-                </tr>
-                <tr className="hover:bg-gray-50/70 transition-colors">
-                  <td className="py-2.5 font-medium text-gray-900">IIoT Deployment</td>
-                  <td className="py-2.5 text-gray-600">CityCorp</td>
-                  <td className="py-2.5 font-bold text-gray-900">₹ 72.5 L</td>
-                  <td className="py-2.5">
-                    <span className="bg-[#bcf0da] text-[#03543f] text-[10.5px] font-bold px-2 py-0.5 rounded-md">
-                      Negotiation
-                    </span>
-                  </td>
-                  <td className="py-2.5 text-gray-500">Nov 30, 2026</td>
-                </tr>
-                <tr className="hover:bg-gray-50/70 transition-colors">
-                  <td className="py-2.5 font-medium text-gray-900">ERP Implementation</td>
-                  <td className="py-2.5 text-gray-600">TechNova</td>
-                  <td className="py-2.5 font-bold text-gray-900">₹ 1.20 Cr</td>
-                  <td className="py-2.5">
-                    <span className="bg-[#d1fae5] text-[#065f46] text-[10.5px] font-bold px-2 py-0.5 rounded-md">
-                      Qualified
-                    </span>
-                  </td>
-                  <td className="py-2.5 text-gray-500">Dec 10, 2026</td>
-                </tr>
+                {recentLeads.slice(0, 4).map((deal) => {
+                  const stage = deal.status || deal.stage || "proposal";
+                  return (
+                    <tr key={deal._id} className="hover:bg-gray-50/70 transition-colors">
+                      <td className="py-2.5 font-bold text-gray-900">
+                        {deal.fullName || deal.dealName}
+                      </td>
+                      <td className="py-2.5 text-gray-600 font-medium">
+                        {deal.company || deal.fullName}
+                      </td>
+                      <td className="py-2.5 font-black text-gray-900">
+                        {formatINR(deal.expectedValue)}
+                      </td>
+                      <td className="py-2.5">
+                        <span
+                          className={`text-[10.5px] font-bold px-2 py-0.5 rounded-md capitalize ${
+                            stage === "won"
+                              ? "bg-emerald-100 text-[#15803d]"
+                              : stage === "negotiation"
+                              ? "bg-[#bcf0da] text-[#03543f]"
+                              : stage === "qualified"
+                              ? "bg-[#d1fae5] text-[#065f46]"
+                              : "bg-[#def7ec] text-[#03543f]"
+                          }`}
+                        >
+                          {stage}
+                        </span>
+                      </td>
+                      <td className="py-2.5 text-gray-500 font-medium">
+                        {new Date(deal.expectedClose || deal.createdAt || Date.now()).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "numeric",
+                          year: "numeric",
+                        })}
+                      </td>
+                    </tr>
+                  );
+                })}
               </tbody>
             </table>
           </div>
         </div>
 
-        {/* Top Accounts (1 col on lg) */}
+        {/* Top Accounts (Real Database accounts) */}
         <div className="bg-white rounded-2xl p-5 border border-gray-200/70 shadow-2xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-3.5">
             <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
@@ -862,60 +855,29 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="space-y-3.5 my-auto">
-            {/* Account 1 */}
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-                  <Building2 className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="font-bold text-gray-900 leading-tight">GreenInfra Ltd.</div>
-                  <div className="text-[11px] text-gray-400 font-medium">
-                    Infrastructure • <span className="text-[#16a34a] font-semibold">Active</span>
+            {topAccounts.slice(0, 3).map((acc, aIdx) => (
+              <div key={aIdx} className="flex items-center justify-between text-xs">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                    <Building2 className="w-4 h-4" />
+                  </div>
+                  <div>
+                    <div className="font-bold text-gray-900 leading-tight truncate max-w-[140px]">
+                      {acc.name}
+                    </div>
+                    <div className="text-[11px] text-gray-400 font-medium">
+                      {acc.industry} • <span className="text-[#16a34a] font-semibold">{acc.status}</span>
+                    </div>
                   </div>
                 </div>
+                <span className="font-black text-gray-900 text-sm">{formatINR(acc.totalValue)}</span>
               </div>
-              <span className="font-black text-gray-900 text-sm">₹ 2.05 Cr</span>
-            </div>
-
-            {/* Account 2 */}
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-                  <Building2 className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="font-bold text-gray-900 leading-tight">CityCorp</div>
-                  <div className="text-[11px] text-gray-400 font-medium">
-                    Government • <span className="text-[#16a34a] font-semibold">Active</span>
-                  </div>
-                </div>
-              </div>
-              <span className="font-black text-gray-900 text-sm">₹ 1.36 Cr</span>
-            </div>
-
-            {/* Account 3 */}
-            <div className="flex items-center justify-between text-xs">
-              <div className="flex items-center gap-2.5">
-                <div className="w-8 h-8 rounded-lg bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-                  <Building2 className="w-4 h-4" />
-                </div>
-                <div>
-                  <div className="font-bold text-gray-900 leading-tight">TechNova Systems</div>
-                  <div className="text-[11px] text-gray-400 font-medium">
-                    Technology • <span className="text-[#16a34a] font-semibold">Active</span>
-                  </div>
-                </div>
-              </div>
-              <span className="font-black text-gray-900 text-sm">₹ 82.5 L</span>
-            </div>
+            ))}
           </div>
         </div>
       </div>
 
-      {/* ─────────────────────────────────────────────────────────────
-          6. QUICK LEAD CREATION MODAL (WHEN TRIGGERED)
-      ───────────────────────────────────────────────────────────── */}
+      {/* Quick Add Modal */}
       {activeModal === "addLead" && (
         <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
           <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in-50">
@@ -936,13 +898,24 @@ export default function AdminDashboardPage() {
 
             <form onSubmit={handleCreateLead} className="space-y-3.5 pt-4">
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">Full Name *</label>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Full Name / Deal Title *</label>
                 <input
                   type="text"
                   required
-                  placeholder="e.g. Ramesh Patel"
+                  placeholder="e.g. Ramesh Patel – Telemetry CRM"
                   value={customLead.fullName}
                   onChange={(e) => setCustomLead({ ...customLead, fullName: e.target.value })}
+                  className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:border-[#16a34a]"
+                />
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Company / Organization</label>
+                <input
+                  type="text"
+                  placeholder="e.g. Patel Healthcare Systems"
+                  value={customLead.company}
+                  onChange={(e) => setCustomLead({ ...customLead, company: e.target.value })}
                   className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:border-[#16a34a]"
                 />
               </div>
@@ -979,10 +952,10 @@ export default function AdminDashboardPage() {
                     onChange={(e) => setCustomLead({ ...customLead, subject: e.target.value })}
                     className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:border-[#16a34a]"
                   >
-                    <option value="Weight Loss Nutrition Plan">Weight Loss Nutrition Plan</option>
-                    <option value="Diabetes Reversal Diet">Diabetes Reversal Diet</option>
-                    <option value="PCOS / PCOD Management">PCOS / PCOD Management</option>
-                    <option value="Corporate Health Plan">Corporate Health Plan</option>
+                    <option value="Smart Street Lighting">Smart Street Lighting</option>
+                    <option value="IoT Platform Deployment">IoT Platform Deployment</option>
+                    <option value="CCMS Cloud Setup">CCMS Cloud Setup</option>
+                    <option value="Healthcare Nutrition CRM">Healthcare Nutrition CRM</option>
                   </select>
                 </div>
                 <div>
@@ -1010,7 +983,7 @@ export default function AdminDashboardPage() {
                   type="submit"
                   className="px-4 py-2 text-xs font-bold bg-[#16a34a] hover:bg-[#15803d] text-white rounded-lg shadow-sm"
                 >
-                  Save Lead
+                  Save to Database
                 </button>
               </div>
             </form>

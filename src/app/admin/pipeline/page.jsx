@@ -44,17 +44,25 @@ import {
   addRemarkApi,
   deleteLeadApi,
   convertToClientApi,
+  getDefaultOneMonthRange,
+  formatINR,
 } from "@/lib/crmApi";
+
+import CrmDateRangePicker from "@/components/CrmDateRangePicker";
 
 export default function DealsKanbanPage() {
   const [currentUser, setCurrentUser] = useState(null);
   const [columns, setColumns] = useState({});
   const [loading, setLoading] = useState(true);
 
+  // Date range defaults to past 1 month
+  const defaultDates = getDefaultOneMonthRange();
+  const [fromDate, setFromDate] = useState(defaultDates.fromDate);
+  const [toDate, setToDate] = useState(defaultDates.toDate);
+
   // Filter States
   const [pipelineFilter, setPipelineFilter] = useState("Sales Pipeline");
   const [ownerFilter, setOwnerFilter] = useState("All Owners");
-  const [timeFilter, setTimeFilter] = useState("All Time");
 
   // Drag and Drop State
   const [draggedLeadId, setDraggedLeadId] = useState(null);
@@ -478,13 +486,17 @@ export default function DealsKanbanPage() {
     },
   };
 
-  const loadPipeline = async () => {
+  const loadPipeline = async (fDate = fromDate, tDate = toDate) => {
     setLoading(true);
     const user = getCurrentStaffUser();
     setCurrentUser(user);
 
     try {
-      const data = await fetchPipelineApi();
+      const data = await fetchPipelineApi({
+        fromDate: fDate,
+        toDate: tDate,
+        owner: ownerFilter !== "All Owners" ? ownerFilter : undefined,
+      });
       if (data && data.columns) {
         const stageCols = {
           new: { key: "new", title: "New", dealsCount: "0 Deals", totalValueText: "₹ 0", leads: [] },
@@ -565,8 +577,8 @@ export default function DealsKanbanPage() {
   };
 
   useEffect(() => {
-    loadPipeline();
-  }, []);
+    loadPipeline(fromDate, toDate);
+  }, [fromDate, toDate, ownerFilter, pipelineFilter]);
 
   // Move deal stage (Drag & Drop or 1-Click Stage Selector)
   const handleStageChange = async (leadId, targetStage) => {
@@ -784,12 +796,17 @@ export default function DealsKanbanPage() {
             <ChevronDown className="w-3 h-3 text-gray-400" />
           </button>
 
-          {/* Time Filter */}
-          <button className="inline-flex items-center gap-1.5 bg-white border border-gray-200/90 rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-2xs hover:bg-gray-50 cursor-pointer">
-            <Calendar className="w-3.5 h-3.5 text-gray-500" />
-            <span>{timeFilter}</span>
-            <ChevronDown className="w-3 h-3 text-gray-400" />
-          </button>
+          {/* Interactive Calendar Date Range Picker */}
+          <CrmDateRangePicker
+            fromDate={fromDate}
+            toDate={toDate}
+            onApply={(f, t) => {
+              setFromDate(f);
+              setToDate(t);
+              loadPipeline(f, t);
+            }}
+            align="right"
+          />
 
           {/* Kanban / List Toggle */}
           <div className="flex items-center bg-gray-100 p-0.5 rounded-lg border border-gray-200">
@@ -822,65 +839,85 @@ export default function DealsKanbanPage() {
         </div>
       </div>
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. TOP 5 METRICS CARDS ROW (MATCHES SCREENSHOT)
-      ───────────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
-        {/* Metric 1: Total Deals */}
-        <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-            <Handshake className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-xl font-black text-gray-900 leading-none">428</div>
-            <div className="text-[11px] font-semibold text-gray-500 mt-1">Total Deals</div>
-          </div>
-        </div>
+      {/* Dynamic calculations from live MongoDB deals */}
+      {(() => {
+        const allDeals = Object.values(columns).flatMap((c) => c.leads || []);
+        const totalDeals = allDeals.length;
+        const totalDealValue = allDeals.reduce((sum, d) => sum + (d.expectedValue || 0), 0);
+        const wonDeals = (columns.won?.leads || []).length;
+        const wonValue = (columns.won?.leads || []).reduce((sum, d) => sum + (d.expectedValue || 0), 0);
+        const openValue = Math.max(0, totalDealValue - wonValue);
+        const winRate = totalDeals > 0 ? ((wonDeals / totalDeals) * 100).toFixed(1) + "%" : "0%";
 
-        {/* Metric 2: Total Deal Value */}
-        <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-            <IndianRupee className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-xl font-black text-gray-900 leading-none">₹ 3.72 Cr</div>
-            <div className="text-[11px] font-semibold text-gray-500 mt-1">Total Deal Value</div>
-          </div>
-        </div>
+        return (
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3">
+            {/* Metric 1: Total Deals */}
+            <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                <Handshake className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-xl font-black text-gray-900 leading-none">
+                  {totalDeals.toLocaleString()}
+                </div>
+                <div className="text-[11px] font-semibold text-gray-500 mt-1">Total Deals</div>
+              </div>
+            </div>
 
-        {/* Metric 3: Win Rate */}
-        <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-            <Target className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-xl font-black text-gray-900 leading-none">37.4%</div>
-            <div className="text-[11px] font-semibold text-gray-500 mt-1">Win Rate</div>
-          </div>
-        </div>
+            {/* Metric 2: Total Deal Value */}
+            <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                <IndianRupee className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-xl font-black text-gray-900 leading-none">
+                  {formatINR(totalDealValue)}
+                </div>
+                <div className="text-[11px] font-semibold text-gray-500 mt-1">Total Deal Value</div>
+              </div>
+            </div>
 
-        {/* Metric 4: Won Value */}
-        <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center gap-3.5">
-          <div className="w-10 h-10 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-            <Trophy className="w-5 h-5" />
-          </div>
-          <div>
-            <div className="text-xl font-black text-gray-900 leading-none">₹ 2.48 Cr</div>
-            <div className="text-[11px] font-semibold text-gray-500 mt-1">Won Value</div>
-          </div>
-        </div>
+            {/* Metric 3: Win Rate */}
+            <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                <Target className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-xl font-black text-gray-900 leading-none">
+                  {winRate}
+                </div>
+                <div className="text-[11px] font-semibold text-gray-500 mt-1">Win Rate</div>
+              </div>
+            </div>
 
-        {/* Metric 5: Open Value */}
-        <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center gap-3.5 col-span-2 sm:col-span-1">
-          <div className="w-10 h-10 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-            <BarChart2 className="w-5 h-5" />
+            {/* Metric 4: Won Value */}
+            <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center gap-3.5">
+              <div className="w-10 h-10 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                <Trophy className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-xl font-black text-gray-900 leading-none">
+                  {formatINR(wonValue)}
+                </div>
+                <div className="text-[11px] font-semibold text-gray-500 mt-1">Won Value</div>
+              </div>
+            </div>
+
+            {/* Metric 5: Open Value */}
+            <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center gap-3.5 col-span-2 sm:col-span-1">
+              <div className="w-10 h-10 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                <BarChart2 className="w-5 h-5" />
+              </div>
+              <div>
+                <div className="text-xl font-black text-gray-900 leading-none">
+                  {formatINR(openValue)}
+                </div>
+                <div className="text-[11px] font-semibold text-gray-500 mt-1">Open Value</div>
+              </div>
+            </div>
           </div>
-          <div>
-            <div className="text-xl font-black text-gray-900 leading-none">₹ 1.24 Cr</div>
-            <div className="text-[11px] font-semibold text-gray-500 mt-1">Open Value</div>
-          </div>
-        </div>
-      </div>
+        );
+      })()}
 
       {/* ─────────────────────────────────────────────────────────────
           3. KANBAN 5-COLUMN BOARD (MATCHES SCREENSHOT)

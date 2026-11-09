@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import Image from "next/image";
@@ -28,8 +28,9 @@ import {
 } from "lucide-react";
 import { getCurrentStaffUser, clearStaffSession } from "@/lib/crmApi";
 
-export default function AdminLayout({ children }) {
+function AdminLayoutContent({ children }) {
   const pathname = usePathname();
+  const searchParams = useSearchParams();
   const router = useRouter();
   const [currentUser, setCurrentUser] = useState(null);
   const [sidebarOpen, setSidebarOpen] = useState(false);
@@ -37,6 +38,12 @@ export default function AdminLayout({ children }) {
   const [createDropdownOpen, setCreateDropdownOpen] = useState(false);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+
+  // Submenu expansion state (both Deals and Reports open by default on active pages)
+  const [openMenus, setOpenMenus] = useState({
+    Deals: true,
+    Reports: true,
+  });
 
   const isLoginPage = pathname === "/admin/login";
 
@@ -60,6 +67,13 @@ export default function AdminLayout({ children }) {
     router.push("/admin/login");
   };
 
+  const toggleMenu = (menuName) => {
+    setOpenMenus((prev) => ({
+      ...prev,
+      [menuName]: !prev[menuName],
+    }));
+  };
+
   if (isLoginPage) {
     return <>{children}</>;
   }
@@ -76,8 +90,9 @@ export default function AdminLayout({ children }) {
   }
 
   const isAdmin = currentUser.role === "admin";
+  const currentTab = searchParams.get("tab") || "deals";
 
-  // Clean, non-redundant sidebar menu items with best names matching screenshots
+  // Sidebar navigation items matching screenshots
   const navItems = [
     { name: "Dashboard", href: "/admin", icon: LayoutDashboard },
     { name: "Leads", href: "/admin/leads", icon: Users },
@@ -86,24 +101,25 @@ export default function AdminLayout({ children }) {
       name: "Deals",
       href: "/admin/pipeline",
       icon: Handshake,
+      hasSub: true,
       subItems: [
-        { name: "Kanban", href: "/admin/pipeline" },
-        { name: "List View", href: "/admin/leads" },
-        { name: "Pipeline", href: "/admin/pipeline" },
+        { name: "Kanban", href: "/admin/pipeline", key: "kanban" },
+        { name: "List View", href: "/admin/leads", key: "list" },
+        { name: "Pipeline", href: "/admin/pipeline?view=stages", key: "pipeline" },
       ],
     },
     { name: "Activities", href: "/admin/followups", icon: Calendar },
     {
       name: "Reports",
-      href: "/admin/reports",
+      href: "/admin/reports?tab=deals",
       icon: BarChart3,
       hasSub: true,
       subItems: [
-        { name: "Deal Report", href: "/admin/reports?tab=deals" },
-        { name: "Lead Report", href: "/admin/reports?tab=leads" },
-        { name: "Activity Report", href: "/admin/reports?tab=activities" },
-        { name: "Account Report", href: "/admin/reports?tab=accounts" },
-        { name: "User Performance", href: "/admin/reports?tab=performance" },
+        { name: "Deal Report", href: "/admin/reports?tab=deals", key: "deals" },
+        { name: "Lead Report", href: "/admin/reports?tab=leads", key: "leads" },
+        { name: "Activity Report", href: "/admin/reports?tab=activities", key: "activities" },
+        { name: "Account Report", href: "/admin/reports?tab=accounts", key: "accounts" },
+        { name: "User Performance", href: "/admin/reports?tab=performance", key: "performance" },
       ],
     },
     ...(isAdmin
@@ -162,46 +178,76 @@ export default function AdminLayout({ children }) {
           <nav className="p-3 space-y-1 flex-1">
             {navItems.map((item) => {
               const Icon = item.icon;
-              const isDeals = item.name === "Deals";
-              const isReports = item.name === "Reports";
+              const hasSub = item.hasSub && item.subItems;
+              const isOpen = openMenus[item.name];
+
+              // Is this primary item active?
               const isActive =
                 item.name === "Dashboard"
                   ? pathname === "/admin"
-                  : pathname.startsWith(item.href) && item.href !== "/admin";
+                  : pathname.startsWith(item.href.split("?")[0]) && item.href !== "/admin";
 
               return (
                 <div key={item.name} className="space-y-1">
-                  <Link
-                    href={item.href}
-                    onClick={() => setSidebarOpen(false)}
-                    className={`flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all ${
-                      isActive
-                        ? "bg-[#22c55e] text-white font-bold shadow-md shadow-emerald-950/40"
-                        : "text-emerald-100/75 hover:text-white hover:bg-white/10"
-                    }`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <Icon
-                        className={`w-4 h-4 ${
-                          isActive ? "text-white" : "text-emerald-300/80"
-                        }`}
-                      />
-                      <span>{item.name}</span>
-                    </div>
-                    {item.hasSub && (
-                      <ChevronDown
-                        className={`w-3.5 h-3.5 ${
-                          isActive ? "text-white" : "text-emerald-300/60"
-                        }`}
-                      />
-                    )}
-                  </Link>
+                  <div className="flex items-center">
+                    <Link
+                      href={item.href}
+                      onClick={() => {
+                        if (hasSub) {
+                          setOpenMenus((prev) => ({ ...prev, [item.name]: true }));
+                        }
+                        setSidebarOpen(false);
+                      }}
+                      className={`flex-1 flex items-center justify-between px-3.5 py-2.5 rounded-xl text-[13px] font-medium transition-all ${
+                        isActive
+                          ? "bg-[#22c55e] text-white font-bold shadow-md shadow-emerald-950/40"
+                          : "text-emerald-100/75 hover:text-white hover:bg-white/10"
+                      }`}
+                    >
+                      <div className="flex items-center gap-3">
+                        <Icon
+                          className={`w-4 h-4 ${
+                            isActive ? "text-white" : "text-emerald-300/80"
+                          }`}
+                        />
+                        <span>{item.name}</span>
+                      </div>
+                      {hasSub && (
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            toggleMenu(item.name);
+                          }}
+                          className="p-1 rounded hover:bg-white/10 cursor-pointer"
+                        >
+                          <ChevronDown
+                            className={`w-3.5 h-3.5 transition-transform ${
+                              isOpen ? "rotate-180" : ""
+                            } ${isActive ? "text-white" : "text-emerald-300/60"}`}
+                          />
+                        </button>
+                      )}
+                    </Link>
+                  </div>
 
-                  {/* Sub-items under Deals or Reports matching screenshot */}
-                  {((isDeals && isActive) || (isReports && isActive)) && item.subItems && (
-                    <div className="pl-6 pr-2 py-1 space-y-1">
-                      {item.subItems.map((sub, sIdx) => {
-                        const isSubActive = sIdx === 0; // Default first subitem active like in screenshots
+                  {/* Expandable Sub-items matching screenshots */}
+                  {hasSub && (isOpen || isActive) && (
+                    <div className="pl-6 pr-2 py-1 space-y-1 animate-in fade-in-50 duration-150">
+                      {item.subItems.map((sub) => {
+                        // Subitem active check
+                        let isSubActive = false;
+                        if (item.name === "Reports") {
+                          isSubActive =
+                            pathname === "/admin/reports" &&
+                            (currentTab === sub.key || (!searchParams.get("tab") && sub.key === "deals"));
+                        } else if (item.name === "Deals") {
+                          if (sub.key === "kanban") isSubActive = pathname === "/admin/pipeline" && searchParams.get("view") !== "stages";
+                          else if (sub.key === "list") isSubActive = pathname === "/admin/leads";
+                          else if (sub.key === "pipeline") isSubActive = pathname === "/admin/pipeline" && searchParams.get("view") === "stages";
+                        }
+
                         return (
                           <Link
                             key={sub.name}
@@ -209,15 +255,15 @@ export default function AdminLayout({ children }) {
                             onClick={() => setSidebarOpen(false)}
                             className={`flex items-center gap-2.5 px-3 py-1.5 rounded-lg text-xs font-semibold transition-colors ${
                               isSubActive
-                                ? "text-white font-bold bg-white/10"
+                                ? "text-white font-bold bg-white/15 shadow-2xs"
                                 : "text-emerald-200/70 hover:text-white hover:bg-white/5"
                             }`}
                           >
                             <span
                               className={`w-2 h-2 rounded-full ${
                                 isSubActive
-                                  ? "bg-[#22c55e] ring-2 ring-[#22c55e]/40"
-                                  : "border border-emerald-300/60"
+                                  ? "bg-[#22c55e] ring-2 ring-[#22c55e]/50"
+                                  : "border border-emerald-300/50"
                               }`}
                             />
                             <span>{sub.name}</span>
@@ -427,5 +473,22 @@ export default function AdminLayout({ children }) {
         </main>
       </div>
     </div>
+  );
+}
+
+export default function AdminLayout({ children }) {
+  return (
+    <Suspense
+      fallback={
+        <div className="min-h-screen bg-[#f4f7f5] flex items-center justify-center font-sans">
+          <div className="flex flex-col items-center gap-3">
+            <div className="w-10 h-10 border-3 border-[#22c55e] border-t-transparent rounded-full animate-spin" />
+            <p className="text-sm font-semibold text-gray-700">Loading CRM Portal...</p>
+          </div>
+        </div>
+      }
+    >
+      <AdminLayoutContent>{children}</AdminLayoutContent>
+    </Suspense>
   );
 }

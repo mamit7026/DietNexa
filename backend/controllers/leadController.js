@@ -827,12 +827,85 @@ async function getDashboardStats(request, reply) {
       Lead.find(scopeQuery).sort({ createdAt: -1 }).limit(8).populate("assignedTo", "name email role"),
     ]);
 
+    const allLeadsInScope = await Lead.find(scopeQuery).sort({ createdAt: -1 });
+
     const statusMap = statusCounts.reduce((acc, curr) => {
       acc[curr._id] = curr.count;
       return acc;
     }, {});
 
-    const conversionRate = totalLeads > 0 ? ((convertedClients / totalLeads) * 100).toFixed(1) : 0;
+    const totalDealValue = allLeadsInScope.reduce((sum, l) => sum + (l.expectedValue || 0), 0);
+    const wonLeads = allLeadsInScope.filter((l) => l.status === "won" || l.status === "converted" || l.clientProfile?.isClient);
+    const wonValue = wonLeads.reduce((sum, l) => sum + (l.expectedValue || l.clientProfile?.amountPaid || 0), 0);
+    const openValue = Math.max(0, totalDealValue - wonValue);
+    const winRate = totalLeads > 0 ? ((wonLeads.length / totalLeads) * 100).toFixed(1) : 0;
+
+    // Detailed Stage Breakdown with counts and sum values
+    const stageBreakdown = {
+      new: { count: 0, value: 0 },
+      qualified: { count: 0, value: 0 },
+      proposal: { count: 0, value: 0 },
+      negotiation: { count: 0, value: 0 },
+      won: { count: 0, value: 0 },
+    };
+
+    allLeadsInScope.forEach((l) => {
+      let st = l.stage || l.status || "new";
+      if (st === "contacted") st = "qualified";
+      else if (st === "in_discussion") st = "proposal";
+      else if (st === "followup_scheduled") st = "negotiation";
+      else if (st === "converted") st = "won";
+
+      if (stageBreakdown[st]) {
+        stageBreakdown[st].count++;
+        stageBreakdown[st].value += (l.expectedValue || 0);
+      }
+    });
+
+    // Sources Breakdown
+    const sourceBreakdown = {};
+    allLeadsInScope.forEach((l) => {
+      const src = l.source || "Website";
+      sourceBreakdown[src] = (sourceBreakdown[src] || 0) + 1;
+    });
+
+    // Top Accounts aggregation
+    const accountMap = {};
+    allLeadsInScope.forEach((l) => {
+      const comp = l.company || l.fullName;
+      if (!accountMap[comp]) {
+        accountMap[comp] = {
+          name: comp,
+          industry: l.project || "Infrastructure",
+          status: "Active",
+          totalValue: 0,
+        };
+      }
+      accountMap[comp].totalValue += (l.expectedValue || 0);
+    });
+    const topAccounts = Object.values(accountMap).sort((a, b) => b.totalValue - a.totalValue).slice(0, 5);
+
+    // Recent activities (Calls, emails, remarks)
+    const recentActivities = [];
+    allLeadsInScope.forEach((l) => {
+      (l.callLogs || []).forEach((c) => {
+        recentActivities.push({
+          id: c._id,
+          type: c.channel,
+          text: `${c.channel === "phone" ? "Call" : "Email"} with ${l.company || l.fullName}`,
+          time: c.contactedAt,
+        });
+      });
+      (l.notes || []).forEach((n) => {
+        recentActivities.push({
+          id: n._id,
+          type: "note",
+          text: `Note on ${l.company || l.fullName}: ${n.text}`,
+          time: n.createdAt,
+        });
+      });
+    });
+    recentActivities.sort((a, b) => new Date(b.time) - new Date(a.time));
 
     return reply.send({
       success: true,
@@ -842,13 +915,22 @@ async function getDashboardStats(request, reply) {
       },
       stats: {
         totalLeads,
+        totalDeals: totalLeads,
         todayLeads,
         pendingFollowups,
-        convertedClients,
-        conversionRate: `${conversionRate}%`,
+        convertedClients: wonLeads.length,
+        conversionRate: `${winRate}%`,
+        winRate: `${winRate}%`,
+        totalDealValue,
+        wonValue,
+        openValue,
         statusBreakdown: statusMap,
+        stageBreakdown,
+        sourceBreakdown,
+        topAccounts,
+        recentActivities: recentActivities.slice(0, 6),
       },
-      recentLeads,
+      recentLeads: allLeadsInScope.slice(0, 8),
     });
   } catch (error) {
     return reply.code(500).send({ success: false, message: "Failed to fetch dashboard metrics", error: error.message });

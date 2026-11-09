@@ -34,6 +34,7 @@ import {
   getDefaultOneMonthRange,
   exportToCsv,
 } from "@/lib/crmApi";
+import CrmDateRangePicker from "@/components/CrmDateRangePicker";
 
 export default function AdminLeadsPage() {
   const [currentUser, setCurrentUser] = useState(null);
@@ -254,24 +255,15 @@ export default function AdminLeadsPage() {
           </div>
 
           <div className="flex items-center gap-2">
-            <div className="flex items-center gap-1 text-xs text-gray-600">
-              <span>From:</span>
-              <input
-                type="date"
-                value={fromDate}
-                onChange={(e) => setFromDate(e.target.value)}
-                className="p-1 text-xs rounded-lg border border-gray-200 bg-gray-50 outline-none"
-              />
-            </div>
-            <div className="flex items-center gap-1 text-xs text-gray-600">
-              <span>To:</span>
-              <input
-                type="date"
-                value={toDate}
-                onChange={(e) => setToDate(e.target.value)}
-                className="p-1 text-xs rounded-lg border border-gray-200 bg-gray-50 outline-none"
-              />
-            </div>
+            <CrmDateRangePicker
+              fromDate={fromDate}
+              toDate={toDate}
+              onApply={(f, t) => {
+                setFromDate(f);
+                setToDate(t);
+              }}
+              align="right"
+            />
           </div>
         </div>
 
