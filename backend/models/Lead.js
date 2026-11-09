@@ -139,8 +139,7 @@ const leadSchema = new mongoose.Schema(
     },
     source: {
       type: String,
-      enum: ["contact_page", "consultation_modal", "manual_entry", "landing_page"],
-      default: "contact_page",
+      default: "contact_page", // 'contact_page', 'consultation_modal', 'google_ads', 'facebook_instagram', 'referral', 'manual_entry', 'whatsapp_inquiry'
     },
     status: {
       type: String,
@@ -158,6 +157,14 @@ const leadSchema = new mongoose.Schema(
       type: String,
       enum: ["low", "medium", "high", "urgent"],
       default: "medium",
+    },
+    expectedValue: {
+      type: Number,
+      default: 7500, // Estimated deal size in INR
+    },
+    stageOrder: {
+      type: Number,
+      default: 0,
     },
     // Sales Assignment
     assignedTo: {
@@ -193,12 +200,11 @@ const leadSchema = new mongoose.Schema(
   }
 );
 
-// Indexes for fast querying & filtering
 leadSchema.index({ status: 1 });
+leadSchema.index({ source: 1 });
 leadSchema.index({ assignedTo: 1 });
 leadSchema.index({ followUpDate: 1 });
 leadSchema.index({ "clientProfile.isClient": 1 });
 leadSchema.index({ createdAt: -1 });
 
 module.exports = mongoose.models.Lead || mongoose.model("Lead", leadSchema);
-

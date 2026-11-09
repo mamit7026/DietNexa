@@ -19,6 +19,8 @@ import {
   Headphones,
   CheckCircle2,
   Sparkles,
+  Columns3,
+  TrendingUp,
 } from "lucide-react";
 import { getCurrentStaffUser, clearStaffSession } from "@/lib/crmApi";
 
@@ -77,6 +79,12 @@ export default function AdminLayout({ children }) {
       roles: ["admin", "sales"],
     },
     {
+      name: "Kanban Pipeline",
+      href: "/admin/pipeline",
+      icon: Columns3,
+      roles: ["admin", "sales"],
+    },
+    {
       name: "Leads & Inquiries",
       href: "/admin/leads",
       icon: Inbox,
@@ -92,6 +100,12 @@ export default function AdminLayout({ children }) {
       name: "Clients (CRM)",
       href: "/admin/clients",
       icon: UserCheck,
+      roles: ["admin", "sales"],
+    },
+    {
+      name: "Reports & Analytics",
+      href: "/admin/reports",
+      icon: TrendingUp,
       roles: ["admin", "sales"],
     },
     {

@@ -18,6 +18,10 @@ import {
   ChevronUp,
   AlertCircle,
   Sparkles,
+  Columns3,
+  Download,
+  Calendar,
+  Tag,
 } from "lucide-react";
 import {
   fetchLeads,
@@ -26,6 +30,9 @@ import {
   setFollowUpApi,
   addContactLogApi,
   convertToClientApi,
+  submitContactLead,
+  getDefaultOneMonthRange,
+  exportToCsv,
 } from "@/lib/crmApi";
 
 export default function AdminLeadsPage() {
@@ -34,10 +41,26 @@ export default function AdminLeadsPage() {
   const [loading, setLoading] = useState(true);
 
   // Filters
+  const defaultDates = getDefaultOneMonthRange();
+  const [fromDate, setFromDate] = useState(defaultDates.fromDate);
+  const [toDate, setToDate] = useState(defaultDates.toDate);
   const [search, setSearch] = useState("");
   const [statusFilter, setStatusFilter] = useState("all");
   const [priorityFilter, setPriorityFilter] = useState("all");
   const [assignedFilter, setAssignedFilter] = useState("all");
+  const [sourceFilter, setSourceFilter] = useState("all");
+
+  // Custom Lead Modal
+  const [showAddLead, setShowAddLead] = useState(false);
+  const [newLeadData, setNewLeadData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    subject: "Weight Loss Nutrition Plan",
+    source: "manual_entry",
+    priority: "medium",
+    expectedValue: 8500,
+  });
 
   // Expanded details for history/notes
   const [expandedLeadId, setExpandedLeadId] = useState(null);
@@ -68,6 +91,9 @@ export default function AdminLeadsPage() {
         status: statusFilter,
         priority: priorityFilter,
         assignedTo: assignedFilter,
+        source: sourceFilter,
+        fromDate,
+        toDate,
       });
       if (data && data.leads) {
         setLeads(data.leads);
@@ -81,7 +107,40 @@ export default function AdminLeadsPage() {
 
   useEffect(() => {
     loadLeads();
-  }, [search, statusFilter, priorityFilter, assignedFilter]);
+  }, [search, statusFilter, priorityFilter, assignedFilter, sourceFilter, fromDate, toDate]);
+
+  const handleExportCsv = () => {
+    if (!leads.length) return;
+    const exportData = leads.map((l) => ({
+      FullName: l.fullName,
+      Email: l.email,
+      Phone: l.phone || "",
+      Subject: l.subject,
+      Source: l.source || "inquiry",
+      Status: l.status,
+      Priority: l.priority,
+      AssignedTo: l.assignedToName || "Unassigned",
+      ExpectedValue: l.expectedValue || 7500,
+      CreatedAt: new Date(l.createdAt).toLocaleDateString(),
+    }));
+    exportToCsv(exportData, `dietnexa_leads_${fromDate}_to_${toDate}.csv`);
+  };
+
+  const handleCreateCustomLead = async (e) => {
+    e.preventDefault();
+    await submitContactLead(newLeadData);
+    setShowAddLead(false);
+    setNewLeadData({
+      fullName: "",
+      email: "",
+      phone: "",
+      subject: "Weight Loss Nutrition Plan",
+      source: "manual_entry",
+      priority: "medium",
+      expectedValue: 8500,
+    });
+    await loadLeads();
+  };
 
   const handleStatusChange = async (leadId, newStatus) => {
     await updateLeadApi(leadId, { status: newStatus });
@@ -150,18 +209,73 @@ export default function AdminLeadsPage() {
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
-          <span className="px-3 py-1.5 rounded-xl bg-emerald-50 text-emerald-900 font-bold text-xs border border-emerald-200">
+        <div className="flex flex-wrap items-center gap-2">
+          <Link
+            href="/admin/pipeline"
+            className="px-3.5 py-2 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-800 text-xs font-bold flex items-center gap-1.5 transition-colors"
+          >
+            <Columns3 className="w-4 h-4 text-[#10793f]" />
+            <span>Kanban Pipeline</span>
+          </Link>
+
+          <button
+            type="button"
+            onClick={() => setShowAddLead(true)}
+            className="px-3.5 py-2 rounded-xl bg-[#10793f] hover:bg-[#0c592e] text-white text-xs font-bold flex items-center gap-1.5 transition-colors shadow-xs"
+          >
+            <Plus className="w-4 h-4" />
+            <span>Add Custom Lead</span>
+          </button>
+
+          <button
+            type="button"
+            onClick={handleExportCsv}
+            className="px-3.5 py-2 rounded-xl bg-gray-900 hover:bg-black text-white text-xs font-bold flex items-center gap-1.5 transition-colors"
+          >
+            <Download className="w-4 h-4" />
+            <span>Export CSV</span>
+          </button>
+
+          <span className="px-3 py-2 rounded-xl bg-emerald-50 text-emerald-900 font-bold text-xs border border-emerald-200">
             {leads.length} {leads.length === 1 ? "Inquiry" : "Inquiries"}
           </span>
         </div>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          2. SEARCH & FILTER TOOLBAR
+          2. SEARCH & FILTER TOOLBAR (With Date Range & Source)
       ───────────────────────────────────────────────────────────── */}
       <div className="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200/80 shadow-xs space-y-3">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+        {/* Date Filter Bar */}
+        <div className="flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-gray-100">
+          <div className="flex items-center gap-2">
+            <Calendar className="w-4 h-4 text-[#10793f]" />
+            <span className="text-xs font-bold text-gray-700">Date Range (Default 1 Month):</span>
+          </div>
+
+          <div className="flex items-center gap-2">
+            <div className="flex items-center gap-1 text-xs text-gray-600">
+              <span>From:</span>
+              <input
+                type="date"
+                value={fromDate}
+                onChange={(e) => setFromDate(e.target.value)}
+                className="p-1 text-xs rounded-lg border border-gray-200 bg-gray-50 outline-none"
+              />
+            </div>
+            <div className="flex items-center gap-1 text-xs text-gray-600">
+              <span>To:</span>
+              <input
+                type="date"
+                value={toDate}
+                onChange={(e) => setToDate(e.target.value)}
+                className="p-1 text-xs rounded-lg border border-gray-200 bg-gray-50 outline-none"
+              />
+            </div>
+          </div>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
           {/* Search Input */}
           <div className="relative">
             <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-gray-400">
@@ -181,14 +295,32 @@ export default function AdminLeadsPage() {
             <select
               value={statusFilter}
               onChange={(e) => setStatusFilter(e.target.value)}
-              className="w-full py-2 px-3 text-xs rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:outline-none focus:border-[#10793f] transition-all font-medium text-gray-700"
+              className="w-full py-2 px-3 text-xs rounded-xl border border-gray-200 bg-gray-50/50 font-medium text-gray-700"
             >
               <option value="all">All Statuses</option>
               <option value="new">New Inquiries</option>
               <option value="contacted">Contacted</option>
+              <option value="in_discussion">In Discussion</option>
               <option value="followup_scheduled">Follow-up Scheduled</option>
               <option value="converted">Converted Clients</option>
               <option value="lost">Lost</option>
+            </select>
+          </div>
+
+          {/* Lead Source Filter */}
+          <div>
+            <select
+              value={sourceFilter}
+              onChange={(e) => setSourceFilter(e.target.value)}
+              className="w-full py-2 px-3 text-xs rounded-xl border border-gray-200 bg-gray-50/50 font-medium text-gray-700"
+            >
+              <option value="all">All Lead Sources</option>
+              <option value="contact_page">Contact Page Form</option>
+              <option value="consultation_modal">Consultation Modal</option>
+              <option value="google_ads">Google Search / Ads</option>
+              <option value="facebook_instagram">Instagram / Social</option>
+              <option value="referral">Doctor / Patient Referral</option>
+              <option value="manual_entry">Manual Sales Inquiry</option>
             </select>
           </div>
 
@@ -197,7 +329,7 @@ export default function AdminLeadsPage() {
             <select
               value={priorityFilter}
               onChange={(e) => setPriorityFilter(e.target.value)}
-              className="w-full py-2 px-3 text-xs rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:outline-none focus:border-[#10793f] transition-all font-medium text-gray-700"
+              className="w-full py-2 px-3 text-xs rounded-xl border border-gray-200 bg-gray-50/50 font-medium text-gray-700"
             >
               <option value="all">All Priorities</option>
               <option value="urgent">Urgent</option>
@@ -212,7 +344,7 @@ export default function AdminLeadsPage() {
             <select
               value={assignedFilter}
               onChange={(e) => setAssignedFilter(e.target.value)}
-              className="w-full py-2 px-3 text-xs rounded-xl border border-gray-200 bg-gray-50/50 focus:bg-white focus:outline-none focus:border-[#10793f] transition-all font-medium text-gray-700"
+              className="w-full py-2 px-3 text-xs rounded-xl border border-gray-200 bg-gray-50/50 font-medium text-gray-700"
             >
               <option value="all">All Staff Assignments</option>
               {currentUser?.role === "sales" && (
@@ -768,6 +900,144 @@ export default function AdminLeadsPage() {
                   className="px-4 py-2 rounded-xl bg-[#10793f] text-white text-xs font-bold hover:bg-[#0c592e]"
                 >
                   Confirm Client Enrolment
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Add Custom Lead modal */}
+      {showAddLead && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
+          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100 space-y-4">
+            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
+              <h3 className="text-lg font-bold text-gray-900">
+                Generate Custom Lead
+              </h3>
+              <button
+                onClick={() => setShowAddLead(false)}
+                className="text-gray-400 hover:text-gray-700 font-bold text-sm"
+              >
+                ✕
+              </button>
+            </div>
+
+            <form onSubmit={handleCreateCustomLead} className="space-y-3">
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">
+                  Customer Full Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={newLeadData.fullName}
+                  onChange={(e) =>
+                    setNewLeadData({ ...newLeadData, fullName: e.target.value })
+                  }
+                  placeholder="e.g. Rahul Sen"
+                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                    Email *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={newLeadData.email}
+                    onChange={(e) =>
+                      setNewLeadData({ ...newLeadData, email: e.target.value })
+                    }
+                    placeholder="email@example.com"
+                    className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
+                  />
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                    Phone
+                  </label>
+                  <input
+                    type="tel"
+                    value={newLeadData.phone}
+                    onChange={(e) =>
+                      setNewLeadData({ ...newLeadData, phone: e.target.value })
+                    }
+                    placeholder="+91..."
+                    className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
+                  />
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-bold text-gray-700 mb-1">
+                  Service / Subject
+                </label>
+                <input
+                  type="text"
+                  value={newLeadData.subject}
+                  onChange={(e) =>
+                    setNewLeadData({ ...newLeadData, subject: e.target.value })
+                  }
+                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
+                />
+              </div>
+
+              <div className="grid grid-cols-2 gap-2.5">
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                    Lead Source *
+                  </label>
+                  <select
+                    value={newLeadData.source}
+                    onChange={(e) =>
+                      setNewLeadData({ ...newLeadData, source: e.target.value })
+                    }
+                    className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
+                  >
+                    <option value="manual_entry">Manual Sales Inquiry</option>
+                    <option value="google_ads">Google Search / Ads</option>
+                    <option value="facebook_instagram">Instagram / Social</option>
+                    <option value="referral">Doctor / Patient Referral</option>
+                    <option value="contact_page">Contact Page Form</option>
+                  </select>
+                </div>
+
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">
+                    Expected Deal (₹)
+                  </label>
+                  <input
+                    type="number"
+                    value={newLeadData.expectedValue}
+                    onChange={(e) =>
+                      setNewLeadData({
+                        ...newLeadData,
+                        expectedValue: Number(e.target.value),
+                      })
+                    }
+                    className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
+                  />
+                </div>
+              </div>
+
+              <div className="flex justify-end gap-2 pt-3">
+                <button
+                  type="button"
+                  onClick={() => setShowAddLead(false)}
+                  className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100"
+                >
+                  Cancel
+                </button>
+                <button
+                  type="submit"
+                  className="px-5 py-2.5 rounded-xl bg-[#10793f] text-white text-xs font-bold hover:bg-[#0c592e]"
+                >
+                  Create Lead
                 </button>
               </div>
             </form>

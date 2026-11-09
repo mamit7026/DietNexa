@@ -1,8 +1,8 @@
 const leadController = require("../controllers/leadController");
-const { authenticate } = require("../middleware/auth");
+const { authenticate, authorizeRoles } = require("../middleware/auth");
 
 async function leadRoutes(fastify, options) {
-  // 1. PUBLIC: Lead submission from contact page & consultation modals
+  // 1. PUBLIC: Lead submission from contact page, consultation modals, or custom lead generator
   fastify.post("/public", leadController.createPublicLead);
 
   // 2. PROTECTED: All CRM operations below require Staff Authentication (Admin or Sales)
@@ -12,6 +12,42 @@ async function leadRoutes(fastify, options) {
       preHandler: [authenticate],
     },
     leadController.getAllLeads
+  );
+
+  // Kanban Pipeline View
+  fastify.get(
+    "/pipeline",
+    {
+      preHandler: [authenticate],
+    },
+    leadController.getPipeline
+  );
+
+  // Move Lead Kanban Stage
+  fastify.patch(
+    "/:id/stage",
+    {
+      preHandler: [authenticate],
+    },
+    leadController.moveStage
+  );
+
+  // Bulk Leads Import (CSV / JSON)
+  fastify.post(
+    "/import",
+    {
+      preHandler: [authenticate],
+    },
+    leadController.importLeads
+  );
+
+  // Reports & Analytics
+  fastify.get(
+    "/reports",
+    {
+      preHandler: [authenticate],
+    },
+    leadController.getReports
   );
 
   fastify.get(
@@ -83,4 +119,3 @@ async function leadRoutes(fastify, options) {
 }
 
 module.exports = leadRoutes;
-

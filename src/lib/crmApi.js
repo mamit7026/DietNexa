@@ -30,17 +30,29 @@ export function clearStaffSession() {
   localStorage.removeItem("dietnexa_staff_user");
 }
 
+// Default One Month Range helper (from 30 days ago to today)
+export function getDefaultOneMonthRange() {
+  const to = new Date();
+  const from = new Date();
+  from.setMonth(from.getMonth() - 1);
+
+  return {
+    fromDate: from.toISOString().split("T")[0],
+    toDate: to.toISOString().split("T")[0],
+  };
+}
+
 // In-memory / localStorage fallback cache for instant testing if backend is offline
 const DEMO_LEADS_KEY = "dietnexa_demo_leads_store";
 
-function getLocalLeads() {
+export function getLocalLeads() {
   if (typeof window === "undefined") return [];
   try {
     const raw = localStorage.getItem(DEMO_LEADS_KEY);
     if (raw) return JSON.parse(raw);
   } catch (e) {}
 
-  // Initial demo leads
+  // Initial demo leads with source & stages
   const initial = [
     {
       _id: "demo-lead-1",
@@ -52,6 +64,7 @@ function getLocalLeads() {
       source: "contact_page",
       status: "followup_scheduled",
       priority: "high",
+      expectedValue: 8500,
       assignedTo: { _id: "demo-sales-1", name: "Rahul Verma", role: "sales" },
       assignedToName: "Rahul Verma",
       followUpDate: new Date(Date.now() + 4 * 60 * 60 * 1000).toISOString(),
@@ -87,6 +100,7 @@ function getLocalLeads() {
       source: "consultation_modal",
       status: "converted",
       priority: "medium",
+      expectedValue: 12500,
       assignedTo: { _id: "demo-sales-1", name: "Rahul Verma", role: "sales" },
       assignedToName: "Rahul Verma",
       clientProfile: {
@@ -121,6 +135,7 @@ function getLocalLeads() {
       source: "contact_page",
       status: "new",
       priority: "urgent",
+      expectedValue: 6999,
       assignedTo: null,
       assignedToName: "Unassigned",
       followUpDate: null,
@@ -128,12 +143,30 @@ function getLocalLeads() {
       notes: [],
       createdAt: new Date(Date.now() - 30 * 60 * 1000).toISOString(),
     },
+    {
+      _id: "demo-lead-4",
+      fullName: "Vikram Malhotra",
+      email: "vikram.m@example.com",
+      phone: "+91 98223 98765",
+      subject: "Sports Nutrition for Marathon",
+      message: "Endurance running macro plan and hydration strategy for upcoming race.",
+      source: "google_ads",
+      status: "in_discussion",
+      priority: "high",
+      expectedValue: 9500,
+      assignedTo: { _id: "demo-sales-1", name: "Rahul Verma", role: "sales" },
+      assignedToName: "Rahul Verma",
+      followUpDate: null,
+      callLogs: [],
+      notes: [],
+      createdAt: new Date(Date.now() - 3 * 24 * 60 * 60 * 1000).toISOString(),
+    },
   ];
   saveLocalLeads(initial);
   return initial;
 }
 
-function saveLocalLeads(leads) {
+export function saveLocalLeads(leads) {
   if (typeof window === "undefined") return;
   localStorage.setItem(DEMO_LEADS_KEY, JSON.stringify(leads));
 }
@@ -142,7 +175,7 @@ function saveLocalLeads(leads) {
 // API METHODS
 // ─────────────────────────────────────────────────────────────
 
-// 1. Submit Public Lead (Contact Page / Modal)
+// 1. Submit Public Lead (Contact Page / Modal / Custom Form)
 export async function submitContactLead(leadData) {
   try {
     const res = await fetch(`${API_BASE_URL}/leads/public`, {
@@ -152,8 +185,7 @@ export async function submitContactLead(leadData) {
     });
 
     if (res.ok) {
-      const data = await res.json();
-      return data;
+      return await res.json();
     }
   } catch (err) {
     console.warn("Fastify backend not reachable, caching lead locally:", err.message);
@@ -169,8 +201,9 @@ export async function submitContactLead(leadData) {
     subject: leadData.subject || "Dietitian Consultation",
     message: leadData.message || "",
     source: leadData.source || "contact_page",
-    status: "new",
-    priority: "medium",
+    status: leadData.status || "new",
+    priority: leadData.priority || "medium",
+    expectedValue: Number(leadData.expectedValue) || 7500,
     assignedTo: null,
     assignedToName: "Unassigned",
     followUpDate: null,
@@ -193,6 +226,7 @@ export async function submitContactLead(leadData) {
     success: true,
     message: "Your inquiry has been received! Our nutrition team will get in touch shortly.",
     leadId: newLead._id,
+    lead: newLead,
     isLocalFallback: true,
   };
 }
@@ -214,7 +248,6 @@ export async function staffLogin(email, password) {
     setStaffSession(data.token, data.user);
     return data;
   } catch (err) {
-    // If backend is down, allow demo credentials
     const normEmail = email.trim().toLowerCase();
     if (
       (normEmail === "admin@dietnexa.com" && password === "admin123") ||
@@ -241,26 +274,20 @@ export async function staffLogin(email, password) {
   }
 }
 
-// 3. Get Leads with filters
+// 3. Get Leads with filters & Date Range
 export async function fetchLeads(params = {}) {
   const token = getAuthToken();
   const query = new URLSearchParams(params).toString();
 
   try {
     const res = await fetch(`${API_BASE_URL}/leads?${query}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
+      headers: { Authorization: `Bearer ${token}` },
     });
-
-    if (res.ok) {
-      return await res.json();
-    }
+    if (res.ok) return await res.json();
   } catch (e) {
     console.warn("Backend unavailable, using local CRM leads:", e.message);
   }
 
-  // Fallback to local leads
   let leads = getLocalLeads();
 
   if (params.status && params.status !== "all") {
@@ -269,11 +296,22 @@ export async function fetchLeads(params = {}) {
   if (params.priority && params.priority !== "all") {
     leads = leads.filter((l) => l.priority === params.priority);
   }
+  if (params.source && params.source !== "all") {
+    leads = leads.filter((l) => l.source === params.source);
+  }
   if (params.assignedTo === "me") {
     const user = getCurrentStaffUser();
     leads = leads.filter((l) => l.assignedTo?._id === user?.id || l.assignedTo === user?.id);
   } else if (params.assignedTo === "unassigned") {
     leads = leads.filter((l) => !l.assignedTo);
+  }
+  if (params.fromDate) {
+    leads = leads.filter((l) => new Date(l.createdAt) >= new Date(params.fromDate));
+  }
+  if (params.toDate) {
+    const end = new Date(params.toDate);
+    end.setHours(23, 59, 59, 999);
+    leads = leads.filter((l) => new Date(l.createdAt) <= end);
   }
   if (params.search) {
     const s = params.search.toLowerCase();
@@ -285,14 +323,184 @@ export async function fetchLeads(params = {}) {
     );
   }
 
+  return { success: true, total: leads.length, leads };
+}
+
+// 4. Fetch Kanban Pipeline
+export async function fetchPipelineApi(params = {}) {
+  const token = getAuthToken();
+  const query = new URLSearchParams(params).toString();
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/leads/pipeline?${query}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) return await res.json();
+  } catch (e) {}
+
+  // Fallback Kanban structure
+  const leads = getLocalLeads();
+  const columns = {
+    new: { id: "new", title: "New Inquiries", color: "emerald", leads: [], totalValue: 0 },
+    contacted: { id: "contacted", title: "Contacted", color: "blue", leads: [], totalValue: 0 },
+    in_discussion: { id: "in_discussion", title: "In Discussion", color: "indigo", leads: [], totalValue: 0 },
+    followup_scheduled: { id: "followup_scheduled", title: "Follow-up Scheduled", color: "amber", leads: [], totalValue: 0 },
+    converted: { id: "converted", title: "Won / Converted", color: "purple", leads: [], totalValue: 0 },
+    lost: { id: "lost", title: "Lost", color: "gray", leads: [], totalValue: 0 },
+  };
+
+  leads.forEach((l) => {
+    const colKey = columns[l.status] ? l.status : "new";
+    columns[colKey].leads.push(l);
+    columns[colKey].totalValue += l.expectedValue || (l.clientProfile?.amountPaid || 7500);
+  });
+
+  return { success: true, totalCount: leads.length, columns };
+}
+
+// 5. Move Lead Stage in Kanban
+export async function moveLeadStageApi(leadId, newStage) {
+  const token = getAuthToken();
+  try {
+    const res = await fetch(`${API_BASE_URL}/leads/${leadId}/stage`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ newStage }),
+    });
+    if (res.ok) return await res.json();
+  } catch (e) {}
+
+  // Fallback
+  const leads = getLocalLeads();
+  const idx = leads.findIndex((l) => l._id === leadId);
+  if (idx !== -1) {
+    leads[idx].status = newStage;
+    if (newStage === "converted" && !leads[idx].clientProfile?.isClient) {
+      leads[idx].clientProfile = {
+        isClient: true,
+        convertedAt: new Date().toISOString(),
+        planName: "Personalized Nutrition Plan",
+        durationMonths: 3,
+        amountPaid: leads[idx].expectedValue || 7500,
+        paymentStatus: "paid",
+        startDate: new Date().toISOString(),
+        targetGoal: leads[idx].subject,
+        assignedDietitian: "Dr. Ananya Sen",
+      };
+    }
+    saveLocalLeads(leads);
+    return { success: true, lead: leads[idx] };
+  }
+  return { success: false };
+}
+
+// 6. Bulk Import Leads
+export async function importLeadsApi(leadsArray) {
+  const token = getAuthToken();
+  try {
+    const res = await fetch(`${API_BASE_URL}/leads/import`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ leads: leadsArray }),
+    });
+    if (res.ok) return await res.json();
+  } catch (e) {}
+
+  // Fallback
+  const existing = getLocalLeads();
+  let count = 0;
+  leadsArray.forEach((item) => {
+    if (item.fullName && item.email) {
+      existing.unshift({
+        _id: "import-" + Date.now() + "-" + count,
+        fullName: item.fullName,
+        email: item.email,
+        phone: item.phone || "",
+        subject: item.subject || "Imported Consultation",
+        message: item.message || "Bulk imported lead",
+        source: item.source || "manual_entry",
+        status: item.status || "new",
+        priority: item.priority || "medium",
+        expectedValue: Number(item.expectedValue) || 7500,
+        assignedTo: null,
+        assignedToName: "Unassigned",
+        callLogs: [],
+        notes: [],
+        createdAt: new Date().toISOString(),
+      });
+      count++;
+    }
+  });
+  saveLocalLeads(existing);
+  return { success: true, inserted: count, message: `Imported ${count} leads locally.` };
+}
+
+// 7. Fetch CRM Analytics Reports
+export async function fetchReportsApi(params = {}) {
+  const token = getAuthToken();
+  const query = new URLSearchParams(params).toString();
+
+  try {
+    const res = await fetch(`${API_BASE_URL}/leads/reports?${query}`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) return await res.json();
+  } catch (e) {}
+
+  // Fallback
+  const leads = getLocalLeads();
+  const converted = leads.filter((l) => l.clientProfile?.isClient || l.status === "converted");
+  const totalRevenue = converted.reduce((sum, c) => sum + (c.clientProfile?.amountPaid || c.expectedValue || 7500), 0);
+
+  const sourceBreakdown = {};
+  leads.forEach((l) => {
+    const s = l.source || "contact_page";
+    sourceBreakdown[s] = (sourceBreakdown[s] || 0) + 1;
+  });
+
+  const statusBreakdown = {};
+  leads.forEach((l) => {
+    statusBreakdown[l.status] = (statusBreakdown[l.status] || 0) + 1;
+  });
+
   return {
     success: true,
-    total: leads.length,
-    leads,
+    summary: {
+      totalLeads: leads.length,
+      convertedCount: converted.length,
+      conversionRate: leads.length > 0 ? `${((converted.length / leads.length) * 100).toFixed(1)}%` : "0%",
+      totalRevenue,
+    },
+    salesPerformance: [
+      {
+        id: "demo-sales-1",
+        name: "Rahul Verma",
+        email: "sales@dietnexa.com",
+        phone: "+91 98765 43211",
+        totalLeads: leads.length,
+        contactedCount: leads.filter((l) => l.status !== "new").length,
+        convertedCount: converted.length,
+        conversionRate: `${((converted.length / Math.max(1, leads.length)) * 100).toFixed(1)}%`,
+        totalRevenue,
+      },
+    ],
+    sourceBreakdown,
+    statusBreakdown,
+    planBreakdown: {
+      "Weight Loss Management Program": 18500,
+      "Disease Management Plan (Diabetes)": 12500,
+      "General Wellness Nutrition Plan": 7500,
+    },
   };
 }
 
-// 4. Update Lead (Status, Assigned, Notes)
+// 8. Update Lead (Status, Assigned, Notes, Source)
 export async function updateLeadApi(leadId, updates) {
   const token = getAuthToken();
   try {
@@ -307,12 +515,13 @@ export async function updateLeadApi(leadId, updates) {
     if (res.ok) return await res.json();
   } catch (e) {}
 
-  // Fallback
   const leads = getLocalLeads();
   const idx = leads.findIndex((l) => l._id === leadId);
   if (idx !== -1) {
     if (updates.status) leads[idx].status = updates.status;
     if (updates.priority) leads[idx].priority = updates.priority;
+    if (updates.source) leads[idx].source = updates.source;
+    if (updates.expectedValue) leads[idx].expectedValue = updates.expectedValue;
     if (updates.note) {
       const user = getCurrentStaffUser();
       leads[idx].notes.push({
@@ -328,7 +537,7 @@ export async function updateLeadApi(leadId, updates) {
   return { success: false };
 }
 
-// 5. Schedule Follow-up (Set date, time & notes)
+// 9. Schedule Follow-up
 export async function setFollowUpApi(leadId, { followUpDate, followUpNotes, markCompleted }) {
   const token = getAuthToken();
   try {
@@ -343,7 +552,6 @@ export async function setFollowUpApi(leadId, { followUpDate, followUpNotes, mark
     if (res.ok) return await res.json();
   } catch (e) {}
 
-  // Fallback
   const leads = getLocalLeads();
   const idx = leads.findIndex((l) => l._id === leadId);
   if (idx !== -1) {
@@ -361,7 +569,7 @@ export async function setFollowUpApi(leadId, { followUpDate, followUpNotes, mark
   return { success: false };
 }
 
-// 6. Record Contact Log (Call, WhatsApp, Email)
+// 10. Record Contact Log
 export async function addContactLogApi(leadId, logData) {
   const token = getAuthToken();
   try {
@@ -376,7 +584,6 @@ export async function addContactLogApi(leadId, logData) {
     if (res.ok) return await res.json();
   } catch (e) {}
 
-  // Fallback
   const leads = getLocalLeads();
   const idx = leads.findIndex((l) => l._id === leadId);
   if (idx !== -1) {
@@ -397,7 +604,7 @@ export async function addContactLogApi(leadId, logData) {
   return { success: false };
 }
 
-// 7. Convert Lead to Client
+// 11. Convert Lead to Client
 export async function convertToClientApi(leadId, clientData) {
   const token = getAuthToken();
   try {
@@ -412,7 +619,6 @@ export async function convertToClientApi(leadId, clientData) {
     if (res.ok) return await res.json();
   } catch (e) {}
 
-  // Fallback
   const leads = getLocalLeads();
   const idx = leads.findIndex((l) => l._id === leadId);
   if (idx !== -1) {
@@ -434,7 +640,7 @@ export async function convertToClientApi(leadId, clientData) {
   return { success: false };
 }
 
-// 8. Fetch Converted Clients
+// 12. Fetch Converted Clients
 export async function fetchClientsApi(params = {}) {
   const token = getAuthToken();
   const query = new URLSearchParams(params).toString();
@@ -445,14 +651,13 @@ export async function fetchClientsApi(params = {}) {
     if (res.ok) return await res.json();
   } catch (e) {}
 
-  // Fallback
   const leads = getLocalLeads();
   const clients = leads.filter((l) => l.clientProfile?.isClient);
   const totalRevenue = clients.reduce((acc, c) => acc + (c.clientProfile?.amountPaid || 0), 0);
   return { success: true, count: clients.length, totalRevenue, clients };
 }
 
-// 9. Fetch Follow-ups
+// 13. Fetch Follow-ups
 export async function fetchFollowUpsApi(params = {}) {
   const token = getAuthToken();
   const query = new URLSearchParams(params).toString();
@@ -463,7 +668,6 @@ export async function fetchFollowUpsApi(params = {}) {
     if (res.ok) return await res.json();
   } catch (e) {}
 
-  // Fallback
   const leads = getLocalLeads();
   let followUps = leads.filter((l) => l.followUpDate);
   const now = new Date();
@@ -494,20 +698,31 @@ export async function fetchFollowUpsApi(params = {}) {
   };
 }
 
-// 10. Dashboard Stats
-export async function fetchDashboardStatsApi() {
+// 14. Dashboard Stats (with Date Range filter)
+export async function fetchDashboardStatsApi(params = {}) {
   const token = getAuthToken();
+  const query = new URLSearchParams(params).toString();
   try {
-    const res = await fetch(`${API_BASE_URL}/leads/stats`, {
+    const res = await fetch(`${API_BASE_URL}/leads/stats?${query}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     if (res.ok) return await res.json();
   } catch (e) {}
 
-  // Fallback
-  const leads = getLocalLeads();
+  let leads = getLocalLeads();
+
+  if (params.fromDate) {
+    leads = leads.filter((l) => new Date(l.createdAt) >= new Date(params.fromDate));
+  }
+  if (params.toDate) {
+    const end = new Date(params.toDate);
+    end.setHours(23, 59, 59, 999);
+    leads = leads.filter((l) => new Date(l.createdAt) <= end);
+  }
+
   const converted = leads.filter((l) => l.clientProfile?.isClient).length;
   const followups = leads.filter((l) => l.followUpDate && !l.followUpCompleted).length;
+
   return {
     success: true,
     stats: {
@@ -522,12 +737,38 @@ export async function fetchDashboardStatsApi() {
       statusBreakdown: {
         new: leads.filter((l) => l.status === "new").length,
         contacted: leads.filter((l) => l.status === "contacted").length,
+        in_discussion: leads.filter((l) => l.status === "in_discussion").length,
         followup_scheduled: leads.filter((l) => l.status === "followup_scheduled").length,
         converted: converted,
         lost: leads.filter((l) => l.status === "lost").length,
       },
     },
-    recentLeads: leads.slice(0, 6),
+    recentLeads: leads.slice(0, 8),
   };
 }
 
+// 15. Export to CSV Helper
+export function exportToCsv(data, filename = "dietnexa_leads.csv") {
+  if (!data || !data.length) return;
+
+  const headers = Object.keys(data[0]);
+  const csvRows = [];
+  csvRows.push(headers.join(","));
+
+  for (const row of data) {
+    const values = headers.map((header) => {
+      const val = row[header] ?? "";
+      const escaped = ("" + val).replace(/"/g, '\\"');
+      return `"${escaped}"`;
+    });
+    csvRows.push(values.join(","));
+  }
+
+  const csvString = csvRows.join("\n");
+  const blob = new Blob([csvString], { type: "text/csv;charset=utf-8;" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.setAttribute("href", url);
+  a.setAttribute("download", filename);
+  a.click();
+}
