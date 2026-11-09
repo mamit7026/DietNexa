@@ -1,0 +1,614 @@
+const Lead = require("../models/Lead");
+const User = require("../models/User");
+
+// 1. PUBLIC: Create lead from Contact Page or Consultation Modal
+async function createPublicLead(request, reply) {
+  try {
+    const {
+      fullName,
+      email,
+      phone = "",
+      subject = "Dietitian Consultation",
+      message = "",
+      source = "contact_page",
+      priority = "medium",
+    } = request.body || {};
+
+    if (!fullName || !email) {
+      return reply.code(400).send({
+        success: false,
+        message: "Full name and email are required to submit an inquiry",
+      });
+    }
+
+    // Auto-assign to an active sales agent if available (round-robin / least busy)
+    let assignedUser = null;
+    try {
+      const activeSales = await User.find({ role: "sales", isActive: true });
+      if (activeSales.length > 0) {
+        // Find sales rep with fewest active leads
+        const counts = await Promise.all(
+          activeSales.map(async (u) => {
+            const count = await Lead.countDocuments({
+              assignedTo: u._id,
+              status: { $in: ["new", "contacted", "followup_scheduled", "in_discussion"] },
+            });
+            return { user: u, count };
+          })
+        );
+        counts.sort((a, b) => a.count - b.count);
+        assignedUser = counts[0].user;
+      }
+    } catch (assignErr) {
+      console.warn("Could not auto-assign lead:", assignErr.message);
+    }
+
+    const newLead = await Lead.create({
+      fullName: fullName.trim(),
+      email: email.trim().toLowerCase(),
+      phone: phone.trim(),
+      subject: subject.trim(),
+      message: message.trim(),
+      source,
+      priority,
+      status: "new",
+      assignedTo: assignedUser ? assignedUser._id : null,
+      assignedToName: assignedUser ? assignedUser.name : "Unassigned",
+      notes: [
+        {
+          authorName: "System",
+          text: `Inquiry received via ${source.replace("_", " ")} on ${new Date().toLocaleString()}`,
+        },
+      ],
+    });
+
+    return reply.code(201).send({
+      success: true,
+      message: "Your inquiry has been received! Our nutrition team will get in touch shortly.",
+      leadId: newLead._id,
+    });
+  } catch (error) {
+    request.log.error(error);
+    return reply.code(500).send({
+      success: false,
+      message: "Failed to submit lead",
+      error: error.message,
+    });
+  }
+}
+
+// 2. GET ALL LEADS (Filtered by status, priority, assignedTo, search, date)
+async function getAllLeads(request, reply) {
+  try {
+    const {
+      status,
+      priority,
+      assignedTo,
+      search,
+      isClient,
+      page = 1,
+      limit = 50,
+      sortBy = "createdAt",
+      sortOrder = "desc",
+    } = request.query || {};
+
+    const query = {};
+
+    // Filter by client conversion state
+    if (isClient !== undefined) {
+      query["clientProfile.isClient"] = isClient === "true";
+    }
+
+    // Role-based scoping: sales agents can filter or see assigned leads
+    if (request.user.role === "sales" && assignedTo === "me") {
+      query.assignedTo = request.user._id;
+    } else if (assignedTo && assignedTo !== "all") {
+      if (assignedTo === "unassigned") {
+        query.assignedTo = null;
+      } else {
+        query.assignedTo = assignedTo;
+      }
+    }
+
+    // Status filter
+    if (status && status !== "all") {
+      query.status = status;
+    }
+
+    // Priority filter
+    if (priority && priority !== "all") {
+      query.priority = priority;
+    }
+
+    // Search by name, email, phone, subject
+    if (search && search.trim()) {
+      const searchRegex = new RegExp(search.trim(), "i");
+      query.$or = [
+        { fullName: searchRegex },
+        { email: searchRegex },
+        { phone: searchRegex },
+        { subject: searchRegex },
+      ];
+    }
+
+    const sortOptions = {};
+    sortOptions[sortBy] = sortOrder === "asc" ? 1 : -1;
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const [leads, total] = await Promise.all([
+      Lead.find(query)
+        .sort(sortOptions)
+        .skip(skip)
+        .limit(parseInt(limit))
+        .populate("assignedTo", "name email phone role"),
+      Lead.countDocuments(query),
+    ]);
+
+    return reply.send({
+      success: true,
+      total,
+      page: parseInt(page),
+      pages: Math.ceil(total / parseInt(limit)),
+      leads,
+    });
+  } catch (error) {
+    request.log.error(error);
+    return reply.code(500).send({
+      success: false,
+      message: "Failed to fetch leads",
+      error: error.message,
+    });
+  }
+}
+
+// 3. GET SINGLE LEAD DETAILS
+async function getLeadById(request, reply) {
+  try {
+    const { id } = request.params;
+    const lead = await Lead.findById(id).populate("assignedTo", "name email phone role");
+
+    if (!lead) {
+      return reply.code(404).send({ success: false, message: "Lead not found" });
+    }
+
+    return reply.send({
+      success: true,
+      lead,
+    });
+  } catch (error) {
+    return reply.code(500).send({
+      success: false,
+      message: "Failed to fetch lead",
+      error: error.message,
+    });
+  }
+}
+
+// 4. UPDATE LEAD DETAILS (status, priority, assigned rep, notes)
+async function updateLead(request, reply) {
+  try {
+    const { id } = request.params;
+    const { status, priority, assignedTo, note } = request.body || {};
+
+    const lead = await Lead.findById(id);
+    if (!lead) {
+      return reply.code(404).send({ success: false, message: "Lead not found" });
+    }
+
+    if (status && lead.status !== status) {
+      lead.notes.push({
+        authorId: request.user._id,
+        authorName: request.user.name,
+        text: `Status changed from '${lead.status}' to '${status}'`,
+      });
+      lead.status = status;
+    }
+
+    if (priority) {
+      lead.priority = priority;
+    }
+
+    if (assignedTo !== undefined) {
+      if (assignedTo === null || assignedTo === "") {
+        lead.assignedTo = null;
+        lead.assignedToName = "Unassigned";
+      } else {
+        const agent = await User.findById(assignedTo);
+        if (agent) {
+          lead.assignedTo = agent._id;
+          lead.assignedToName = agent.name;
+          lead.notes.push({
+            authorId: request.user._id,
+            authorName: request.user.name,
+            text: `Assigned to ${agent.name} (${agent.role})`,
+          });
+        }
+      }
+    }
+
+    if (note && note.trim()) {
+      lead.notes.push({
+        authorId: request.user._id,
+        authorName: request.user.name,
+        text: note.trim(),
+      });
+    }
+
+    await lead.save();
+
+    return reply.send({
+      success: true,
+      message: "Lead updated successfully",
+      lead,
+    });
+  } catch (error) {
+    return reply.code(500).send({
+      success: false,
+      message: "Failed to update lead",
+      error: error.message,
+    });
+  }
+}
+
+// 5. SALES USER: SET FOLLOW-UP TIME & SCHEDULE
+async function setFollowUp(request, reply) {
+  try {
+    const { id } = request.params;
+    const { followUpDate, followUpNotes = "", markCompleted = false } = request.body || {};
+
+    const lead = await Lead.findById(id);
+    if (!lead) {
+      return reply.code(404).send({ success: false, message: "Lead not found" });
+    }
+
+    if (markCompleted) {
+      lead.followUpCompleted = true;
+      lead.notes.push({
+        authorId: request.user._id,
+        authorName: request.user.name,
+        text: `Marked scheduled follow-up as completed`,
+      });
+    } else {
+      if (!followUpDate) {
+        return reply.code(400).send({
+          success: false,
+          message: "A valid follow-up date and time is required",
+        });
+      }
+
+      lead.followUpDate = new Date(followUpDate);
+      lead.followUpNotes = followUpNotes.trim();
+      lead.followUpCompleted = false;
+      lead.status = "followup_scheduled";
+
+      lead.notes.push({
+        authorId: request.user._id,
+        authorName: request.user.name,
+        text: `Scheduled follow-up for ${new Date(followUpDate).toLocaleString()}${
+          followUpNotes ? `: "${followUpNotes}"` : ""
+        }`,
+      });
+    }
+
+    await lead.save();
+
+    return reply.send({
+      success: true,
+      message: markCompleted ? "Follow-up completed" : "Follow-up scheduled successfully",
+      lead,
+    });
+  } catch (error) {
+    return reply.code(500).send({
+      success: false,
+      message: "Failed to set follow-up",
+      error: error.message,
+    });
+  }
+}
+
+// 6. SALES USER: RECORD CONTACT LOG (Call, WhatsApp, Email)
+async function addContactLog(request, reply) {
+  try {
+    const { id } = request.params;
+    const {
+      channel = "phone",
+      outcome = "connected_interested",
+      notes = "",
+      nextFollowUpDate = null,
+    } = request.body || {};
+
+    const lead = await Lead.findById(id);
+    if (!lead) {
+      return reply.code(404).send({ success: false, message: "Lead not found" });
+    }
+
+    lead.callLogs.push({
+      contactedAt: new Date(),
+      contactedBy: request.user._id,
+      contactedByName: request.user.name,
+      channel,
+      outcome,
+      notes: notes.trim(),
+    });
+
+    // Update status to 'contacted' or based on outcome
+    if (outcome === "converted") {
+      lead.status = "converted";
+    } else if (outcome === "not_interested") {
+      lead.status = "lost";
+    } else {
+      lead.status = nextFollowUpDate ? "followup_scheduled" : "contacted";
+    }
+
+    if (nextFollowUpDate) {
+      lead.followUpDate = new Date(nextFollowUpDate);
+      lead.followUpNotes = notes;
+      lead.followUpCompleted = false;
+    }
+
+    await lead.save();
+
+    return reply.send({
+      success: true,
+      message: `Contact log recorded via ${channel}`,
+      lead,
+    });
+  } catch (error) {
+    return reply.code(500).send({
+      success: false,
+      message: "Failed to record contact log",
+      error: error.message,
+    });
+  }
+}
+
+// 7. CONVERT LEAD TO ACTIVE CLIENT (CRM conversion)
+async function convertToClient(request, reply) {
+  try {
+    const { id } = request.params;
+    const {
+      planName = "Personalized Nutrition Plan",
+      durationMonths = 3,
+      amountPaid = 0,
+      paymentStatus = "paid",
+      startDate = new Date(),
+      targetGoal = "",
+      assignedDietitian = "Dr. Ananya Sen",
+    } = request.body || {};
+
+    const lead = await Lead.findById(id);
+    if (!lead) {
+      return reply.code(404).send({ success: false, message: "Lead not found" });
+    }
+
+    lead.status = "converted";
+    lead.clientProfile = {
+      isClient: true,
+      convertedAt: new Date(),
+      convertedBy: request.user._id,
+      planName,
+      durationMonths: Number(durationMonths),
+      amountPaid: Number(amountPaid),
+      paymentStatus,
+      startDate: new Date(startDate),
+      targetGoal,
+      assignedDietitian,
+    };
+
+    lead.notes.push({
+      authorId: request.user._id,
+      authorName: request.user.name,
+      text: `🎉 Converted to active client! Enrolled in '${planName}' (${durationMonths} mo) - ₹${amountPaid}`,
+    });
+
+    await lead.save();
+
+    return reply.send({
+      success: true,
+      message: "Lead converted to Client successfully!",
+      lead,
+    });
+  } catch (error) {
+    return reply.code(500).send({
+      success: false,
+      message: "Failed to convert client",
+      error: error.message,
+    });
+  }
+}
+
+// 8. GET ALL CLIENTS (Dedicated CRM view for converted clients)
+async function getClients(request, reply) {
+  try {
+    const { search, planName, paymentStatus } = request.query || {};
+
+    const query = {
+      "clientProfile.isClient": true,
+    };
+
+    if (planName && planName !== "all") {
+      query["clientProfile.planName"] = planName;
+    }
+
+    if (paymentStatus && paymentStatus !== "all") {
+      query["clientProfile.paymentStatus"] = paymentStatus;
+    }
+
+    if (search && search.trim()) {
+      const searchRegex = new RegExp(search.trim(), "i");
+      query.$or = [
+        { fullName: searchRegex },
+        { email: searchRegex },
+        { phone: searchRegex },
+        { "clientProfile.targetGoal": searchRegex },
+      ];
+    }
+
+    const clients = await Lead.find(query)
+      .sort({ "clientProfile.convertedAt": -1 })
+      .populate("assignedTo", "name email phone role");
+
+    // Compute basic revenue summary
+    const totalRevenue = clients.reduce((sum, c) => sum + (c.clientProfile?.amountPaid || 0), 0);
+
+    return reply.send({
+      success: true,
+      count: clients.length,
+      totalRevenue,
+      clients,
+    });
+  } catch (error) {
+    return reply.code(500).send({
+      success: false,
+      message: "Failed to fetch clients",
+      error: error.message,
+    });
+  }
+}
+
+// 9. GET FOLLOW-UPS LIST WITH FILTERS (Today, Upcoming, Overdue)
+async function getFollowUps(request, reply) {
+  try {
+    const { filter = "all", assignedTo } = request.query || {};
+
+    const query = {
+      followUpDate: { $ne: null },
+    };
+
+    if (request.user.role === "sales" && assignedTo === "me") {
+      query.assignedTo = request.user._id;
+    } else if (assignedTo && assignedTo !== "all") {
+      query.assignedTo = assignedTo;
+    }
+
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+    const endOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 23, 59, 59, 999);
+
+    if (filter === "today") {
+      query.followUpDate = { $gte: startOfToday, $lte: endOfToday };
+      query.followUpCompleted = false;
+    } else if (filter === "overdue") {
+      query.followUpDate = { $lt: startOfToday };
+      query.followUpCompleted = false;
+    } else if (filter === "upcoming") {
+      query.followUpDate = { $gt: endOfToday };
+      query.followUpCompleted = false;
+    } else if (filter === "completed") {
+      query.followUpCompleted = true;
+    } else if (filter === "pending") {
+      query.followUpCompleted = false;
+    }
+
+    const followUps = await Lead.find(query)
+      .sort({ followUpDate: 1 })
+      .populate("assignedTo", "name email phone role");
+
+    // Categorized counters
+    const [todayCount, overdueCount, upcomingCount] = await Promise.all([
+      Lead.countDocuments({
+        followUpDate: { $gte: startOfToday, $lte: endOfToday },
+        followUpCompleted: false,
+      }),
+      Lead.countDocuments({
+        followUpDate: { $lt: startOfToday },
+        followUpCompleted: false,
+      }),
+      Lead.countDocuments({
+        followUpDate: { $gt: endOfToday },
+        followUpCompleted: false,
+      }),
+    ]);
+
+    return reply.send({
+      success: true,
+      counts: {
+        today: todayCount,
+        overdue: overdueCount,
+        upcoming: upcomingCount,
+        total: followUps.length,
+      },
+      followUps,
+    });
+  } catch (error) {
+    return reply.code(500).send({
+      success: false,
+      message: "Failed to fetch follow-ups",
+      error: error.message,
+    });
+  }
+}
+
+// 10. GET CRM DASHBOARD METRICS
+async function getDashboardStats(request, reply) {
+  try {
+    const now = new Date();
+    const startOfToday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+
+    const [
+      totalLeads,
+      todayLeads,
+      pendingFollowups,
+      convertedClients,
+      statusCounts,
+      recentLeads,
+    ] = await Promise.all([
+      Lead.countDocuments(),
+      Lead.countDocuments({ createdAt: { $gte: startOfToday } }),
+      Lead.countDocuments({
+        followUpDate: { $ne: null },
+        followUpCompleted: false,
+      }),
+      Lead.countDocuments({ "clientProfile.isClient": true }),
+      Lead.aggregate([
+        {
+          $group: {
+            _id: "$status",
+            count: { $sum: 1 },
+          },
+        },
+      ]),
+      Lead.find().sort({ createdAt: -1 }).limit(6).populate("assignedTo", "name email role"),
+    ]);
+
+    const statusMap = statusCounts.reduce((acc, curr) => {
+      acc[curr._id] = curr.count;
+      return acc;
+    }, {});
+
+    const conversionRate = totalLeads > 0 ? ((convertedClients / totalLeads) * 100).toFixed(1) : 0;
+
+    return reply.send({
+      success: true,
+      stats: {
+        totalLeads,
+        todayLeads,
+        pendingFollowups,
+        convertedClients,
+        conversionRate: `${conversionRate}%`,
+        statusBreakdown: statusMap,
+      },
+      recentLeads,
+    });
+  } catch (error) {
+    return reply.code(500).send({
+      success: false,
+      message: "Failed to fetch dashboard metrics",
+      error: error.message,
+    });
+  }
+}
+
+module.exports = {
+  createPublicLead,
+  getAllLeads,
+  getLeadById,
+  updateLead,
+  setFollowUp,
+  addContactLog,
+  convertToClient,
+  getClients,
+  getFollowUps,
+  getDashboardStats,
+};
+

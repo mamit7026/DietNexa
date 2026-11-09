@@ -1,0 +1,19 @@
+{
+  "name": "dietnexa-backend",
+  "version": "1.0.0",
+  "description": "DietNexa Fastify CRM & Leads Backend with MongoDB",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "dependencies": {
+    "fastify": "^5.2.1",
+    "@fastify/cors": "^10.0.2",
+    "@fastify/jwt": "^9.0.4",
+    "dotenv": "^16.4.7",
+    "mongoose": "^8.9.5",
+    "bcryptjs": "^2.4.3"
+  }
+}
+

@@ -792,6 +792,13 @@ export default function Navbar({ onOpenModal }) {
                 <Globe className="w-5 h-5" />
               </button>
 
+              <Link
+                href="/admin/login"
+                className="px-4 py-2 rounded-full text-[14px] font-semibold text-gray-700 hover:text-[#10793f] border border-gray-200 hover:border-[#10793f] hover:bg-[#f0f9f4] transition-all cursor-pointer"
+              >
+                Log In
+              </Link>
+
               <button
                 onClick={() => onOpenModal?.("get-started")}
                 className="px-5 py-2.5 rounded-full text-[14px] font-semibold text-white transition-all hover:opacity-95 active:scale-95 cursor-pointer shadow-md"
@@ -1001,19 +1008,28 @@ export default function Navbar({ onOpenModal }) {
 
               {/* Action buttons inside drawer */}
               <div className="pt-4 mt-2 border-t border-gray-100">
-                <button
-                  onClick={() => {
-                    setMobileOpen(false);
-                    onOpenModal?.("get-started");
-                  }}
-                  className="w-full py-2.5 rounded-full text-sm font-semibold text-white transition-all cursor-pointer shadow-md"
-                  style={{
-                    background: "#10793f",
-                    boxShadow: "0 4px 14px rgba(16,121,63,0.25)",
-                  }}
-                >
-                  Get Started
-                </button>
+                <div className="flex gap-2.5">
+                  <Link
+                    href="/admin/login"
+                    onClick={() => setMobileOpen(false)}
+                    className="flex-1 py-2.5 rounded-full text-center text-sm font-semibold text-gray-700 bg-gray-100 hover:bg-gray-200 transition-all cursor-pointer"
+                  >
+                    Log In
+                  </Link>
+                  <button
+                    onClick={() => {
+                      setMobileOpen(false);
+                      onOpenModal?.("get-started");
+                    }}
+                    className="flex-1 py-2.5 rounded-full text-sm font-semibold text-white transition-all cursor-pointer shadow-md"
+                    style={{
+                      background: "#10793f",
+                      boxShadow: "0 4px 14px rgba(16,121,63,0.25)",
+                    }}
+                  >
+                    Get Started
+                  </button>
+                </div>
               </div>
             </div>
           </div>

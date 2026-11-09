@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { X, CheckCircle, Calendar, Clock, Sparkles, User, Mail, Phone } from "lucide-react";
+import { submitContactLead } from "@/lib/crmApi";
 
 export default function ConsultationModal({ isOpen, onClose, initialType = "diet-plan", selectedDietitian = null }) {
   const [activeTab, setActiveTab] = useState(initialType);
@@ -19,8 +20,20 @@ export default function ConsultationModal({ isOpen, onClose, initialType = "diet
 
   if (!isOpen) return null;
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
+    try {
+      await submitContactLead({
+        fullName: formData.name,
+        email: formData.email,
+        phone: formData.phone,
+        subject: `Consultation (${formData.goal || activeTab})`,
+        message: `Dietitian: ${formData.dietitian || "Any"}, Diet: ${formData.dietType || "General"}, Preferred Time: ${formData.date} ${formData.timeSlot}`,
+        source: "consultation_modal",
+      });
+    } catch (err) {
+      console.error(err);
+    }
     setIsSubmitted(true);
   };
 

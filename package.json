@@ -4,6 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "backend": "node backend/server.js",
+    "backend:dev": "node --watch backend/server.js",
     "build": "next build",
     "start": "next start",
     "lint": "eslint"

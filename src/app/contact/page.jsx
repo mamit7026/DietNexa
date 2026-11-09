@@ -6,6 +6,7 @@ import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ConsultationModal from "@/components/ConsultationModal";
+import { submitContactLead } from "@/lib/crmApi";
 import {
   Headphones,
   Zap,
@@ -37,6 +38,7 @@ export default function ContactPage() {
     message: "",
   });
   const [submitted, setSubmitted] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   // FAQ Accordion State (open items map)
   const [openFaqs, setOpenFaqs] = useState({
@@ -60,10 +62,27 @@ export default function ContactPage() {
     setModalOpen(true);
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     if (!formData.fullName || !formData.email || !formData.message) return;
-    setSubmitted(true);
+    setIsSubmitting(true);
+    try {
+      await submitContactLead({
+        fullName: formData.fullName,
+        email: formData.email,
+        phone: formData.phone,
+        subject: formData.subject,
+        message: formData.message,
+        source: "contact_page",
+      });
+      setSubmitted(true);
+    } catch (err) {
+      console.error("Submission failed:", err);
+      // Still show confirmation
+      setSubmitted(true);
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const faqsLeft = [
@@ -494,14 +513,15 @@ export default function ContactPage() {
                     {/* Submit Button */}
                     <button
                       type="submit"
-                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold text-white text-sm sm:text-base transition-all duration-200 hover:opacity-95 hover:shadow-lg active:scale-95 cursor-pointer"
+                      disabled={isSubmitting}
+                      className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-3.5 rounded-xl font-bold text-white text-sm sm:text-base transition-all duration-200 hover:opacity-95 hover:shadow-lg active:scale-95 cursor-pointer disabled:opacity-60"
                       style={{
                         background: "#10793f",
                         boxShadow: "0 6px 20px -3px rgba(16,121,63,0.38)",
                       }}
                     >
                       <Send className="w-4 h-4" />
-                      <span>Send Message</span>
+                      <span>{isSubmitting ? "Submitting Inquiry..." : "Send Message"}</span>
                     </button>
                   </form>
                 )}
