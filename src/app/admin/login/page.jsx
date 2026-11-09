@@ -50,17 +50,6 @@ export default function AdminLoginPage() {
     }
   };
 
-  const handleFillDemo = (type) => {
-    if (type === "admin") {
-      setEmail("admin@dietnexa.com");
-      setPassword("admin123");
-    } else {
-      setEmail("sales@dietnexa.com");
-      setPassword("sales123");
-    }
-    setErrorMessage("");
-  };
-
   return (
     <div className="min-h-screen bg-[#f4faf6] flex flex-col justify-center items-center px-4 py-12 relative overflow-hidden font-sans">
       {/* Background Decorative Rings & Gradient */}
@@ -159,46 +148,8 @@ export default function AdminLoginPage() {
           </button>
         </form>
 
-        {/* 1-Click Quick Demo Login Shortcuts */}
-        <div className="mt-8 pt-6 border-t border-gray-100">
-          <div className="flex items-center justify-between mb-3">
-            <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
-              1-Click Demo Accounts
-            </span>
-            <span className="text-[10px] text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full font-semibold">
-              Instant Test
-            </span>
-          </div>
-
-          <div className="grid grid-cols-2 gap-2.5">
-            <button
-              type="button"
-              onClick={() => handleFillDemo("admin")}
-              className="p-2.5 rounded-xl border border-emerald-200 bg-emerald-50/60 hover:bg-emerald-100/70 text-left transition-colors cursor-pointer group"
-            >
-              <div className="flex items-center gap-1.5 text-xs font-bold text-[#0d3b1f]">
-                <ShieldCheck className="w-3.5 h-3.5 text-[#10793f]" />
-                <span>Admin Role</span>
-              </div>
-              <p className="text-[10px] text-gray-500 mt-0.5">admin@dietnexa.com</p>
-            </button>
-
-            <button
-              type="button"
-              onClick={() => handleFillDemo("sales")}
-              className="p-2.5 rounded-xl border border-blue-200 bg-blue-50/60 hover:bg-blue-100/70 text-left transition-colors cursor-pointer group"
-            >
-              <div className="flex items-center gap-1.5 text-xs font-bold text-blue-900">
-                <Users className="w-3.5 h-3.5 text-blue-600" />
-                <span>Sales Role</span>
-              </div>
-              <p className="text-[10px] text-gray-500 mt-0.5">sales@dietnexa.com</p>
-            </button>
-          </div>
-        </div>
-
         {/* Return to website link */}
-        <div className="mt-6 text-center">
+        <div className="mt-8 pt-6 border-t border-gray-100 text-center">
           <Link
             href="/"
             className="text-xs text-gray-500 hover:text-[#10793f] transition-colors font-medium inline-flex items-center gap-1"

@@ -95,395 +95,13 @@ export default function DealsKanbanPage() {
     stage: "new",
   });
 
-  // Seed reference deals to match screenshot if empty
+  // Empty Kanban columns structure
   const defaultColumnsData = {
-    new: {
-      key: "new",
-      title: "New",
-      dealsCount: "128 Deals",
-      totalValueText: "₹ 48.2 L",
-      badgeColor: "bg-[#def7ec] text-[#03543f]",
-      leads: [
-        {
-          _id: "deal-new-1",
-          fullName: "CityCorp – Street Light CRM",
-          company: "CityCorp",
-          subject: "Street Light CRM & Telemetry Integration",
-          expectedValue: 1200000,
-          valueFormatted: "₹ 12.00 L",
-          status: "new",
-          phone: "+91 98201 12345",
-          email: "procurement@citycorp.gov.in",
-          expectedClose: "Nov 18, 2026",
-          source: "Government Tender",
-          owner: "Amit Mondal",
-          createdAt: "2026-11-09T09:15:00.000Z",
-          notes: [
-            {
-              _id: "n-1",
-              authorName: "Amit Mondal",
-              text: "Initial inquiry submitted via tender portal. Requires cloud telemetry dashboard.",
-              createdAt: "2026-11-09T09:15:00.000Z",
-            },
-          ],
-          callLogs: [
-            {
-              _id: "c-1",
-              channel: "phone",
-              outcome: "connected_interested",
-              notes: "Spoke with chief engineer. Requested formal capability deck.",
-              contactedByName: "Amit Mondal",
-              contactedAt: "2026-11-09T10:30:00.000Z",
-            },
-          ],
-        },
-        {
-          _id: "deal-new-2",
-          fullName: "BrightBuild – CRM Setup",
-          company: "BrightBuild",
-          subject: "Enterprise CRM & Field Tracking",
-          expectedValue: 850000,
-          valueFormatted: "₹ 8.50 L",
-          status: "new",
-          phone: "+91 98450 67890",
-          email: "sales@brightbuild.co.in",
-          expectedClose: "Nov 20, 2026",
-          source: "Website Inquiry",
-          owner: "Priya Sharma",
-          createdAt: "2026-11-08T14:20:00.000Z",
-          notes: [
-            {
-              _id: "n-2",
-              authorName: "Priya Sharma",
-              text: "Lead verified. Needs mobile field app for 40 sales reps.",
-              createdAt: "2026-11-08T14:20:00.000Z",
-            },
-          ],
-          callLogs: [],
-        },
-        {
-          _id: "deal-new-3",
-          fullName: "UrbanInfra – IoT Deal",
-          company: "UrbanInfra",
-          subject: "Smart Infrastructure Sensor Monitoring",
-          expectedValue: 675000,
-          valueFormatted: "₹ 6.75 L",
-          status: "new",
-          phone: "+91 99100 23456",
-          email: "contact@urbaninfra.in",
-          expectedClose: "Nov 22, 2026",
-          source: "Campaign",
-          owner: "Rohit Verma",
-          createdAt: "2026-11-07T11:00:00.000Z",
-          notes: [],
-          callLogs: [],
-        },
-      ],
-    },
-    qualified: {
-      key: "qualified",
-      title: "Qualified",
-      dealsCount: "92 Deals",
-      totalValueText: "₹ 1.02 Cr",
-      badgeColor: "bg-[#bcf0da] text-[#03543f]",
-      leads: [
-        {
-          _id: "deal-qual-1",
-          fullName: "GreenInfra – CCMS Cloud",
-          company: "GreenInfra Ltd.",
-          subject: "Centralized Control Management System",
-          expectedValue: 1800000,
-          valueFormatted: "₹ 18.00 L",
-          status: "qualified",
-          phone: "+91 98765 43210",
-          email: "director@greeninfra.com",
-          expectedClose: "Nov 16, 2026",
-          source: "Partner Referral",
-          owner: "Amit Mondal",
-          createdAt: "2026-11-06T10:00:00.000Z",
-          notes: [
-            {
-              _id: "n-3",
-              authorName: "Amit Mondal",
-              text: "Technical qualification call completed with CTO. Budget approved for Q4.",
-              createdAt: "2026-11-08T16:00:00.000Z",
-            },
-          ],
-          callLogs: [
-            {
-              _id: "c-2",
-              channel: "phone",
-              outcome: "qualified_demo_scheduled",
-              notes: "Scheduled live demo of analytics dashboard for upcoming Monday.",
-              contactedByName: "Amit Mondal",
-              contactedAt: "2026-11-08T15:45:00.000Z",
-            },
-          ],
-        },
-        {
-          _id: "deal-qual-2",
-          fullName: "MetroPlus – Smart Lighting",
-          company: "MetroPlus",
-          subject: "Energy-efficient LED Mesh Controllers",
-          expectedValue: 1475000,
-          valueFormatted: "₹ 14.75 L",
-          status: "qualified",
-          phone: "+91 98190 33445",
-          email: "ops@metroplus.org",
-          expectedClose: "Nov 18, 2026",
-          source: "Direct",
-          owner: "Neha Malhotra",
-          createdAt: "2026-11-05T09:30:00.000Z",
-          notes: [],
-          callLogs: [],
-        },
-        {
-          _id: "deal-qual-3",
-          fullName: "SafeCity – IoT Platform",
-          company: "SafeCity",
-          subject: "Public Surveillance & Emergency Beacon CRM",
-          expectedValue: 1200000,
-          valueFormatted: "₹ 12.00 L",
-          status: "qualified",
-          phone: "+91 99887 76655",
-          email: "tech@safecity.in",
-          expectedClose: "Nov 21, 2026",
-          source: "Google Search",
-          owner: "Rahul Verma",
-          createdAt: "2026-11-04T12:00:00.000Z",
-          notes: [],
-          callLogs: [],
-        },
-      ],
-    },
-    proposal: {
-      key: "proposal",
-      title: "Proposal",
-      dealsCount: "64 Deals",
-      totalValueText: "₹ 1.28 Cr",
-      badgeColor: "bg-[#6ee7b7] text-[#064e3b]",
-      leads: [
-        {
-          _id: "deal-prop-1",
-          fullName: "TechNova – ERP & CRM",
-          company: "TechNova Systems",
-          subject: "Full-stack Healthcare CRM & Staff Management",
-          expectedValue: 2250000,
-          valueFormatted: "₹ 22.50 L",
-          status: "proposal",
-          phone: "+91 98300 44556",
-          email: "ceo@technova.io",
-          expectedClose: "Nov 25, 2026",
-          source: "Inbound Marketing",
-          owner: "Amit Mondal",
-          createdAt: "2026-11-03T11:15:00.000Z",
-          notes: [
-            {
-              _id: "n-4",
-              authorName: "Amit Mondal",
-              text: "Sent detailed commercial proposal including 3-year support SLA.",
-              createdAt: "2026-11-09T10:05:00.000Z",
-            },
-          ],
-          callLogs: [
-            {
-              _id: "c-3",
-              channel: "email",
-              outcome: "proposal_sent",
-              notes: "Proposal PDF version 2.1 dispatched to board members.",
-              contactedByName: "Amit Mondal",
-              contactedAt: "2026-11-09T10:05:00.000Z",
-            },
-          ],
-        },
-        {
-          _id: "deal-prop-2",
-          fullName: "Infratech – OEE Solution",
-          company: "Infratech Pvt. Ltd.",
-          subject: "Overall Equipment Effectiveness Telemetry",
-          expectedValue: 2000000,
-          valueFormatted: "₹ 20.00 L",
-          status: "proposal",
-          phone: "+91 97654 32109",
-          email: "management@infratech.com",
-          expectedClose: "Nov 28, 2026",
-          source: "Industry Expo",
-          owner: "Sneha Iyer",
-          createdAt: "2026-11-02T16:00:00.000Z",
-          notes: [],
-          callLogs: [],
-        },
-        {
-          _id: "deal-prop-3",
-          fullName: "BuildTron – Asset Mgmt",
-          company: "BuildTron",
-          subject: "Automated Fleet & Equipment Maintenance",
-          expectedValue: 1500000,
-          valueFormatted: "₹ 15.00 L",
-          status: "proposal",
-          phone: "+91 98111 22334",
-          email: "projects@buildtron.net",
-          expectedClose: "Dec 02, 2026",
-          source: "Partner Referral",
-          owner: "Arjun Mehta",
-          createdAt: "2026-11-01T14:30:00.000Z",
-          notes: [],
-          callLogs: [],
-        },
-      ],
-    },
-    negotiation: {
-      key: "negotiation",
-      title: "Negotiation",
-      dealsCount: "36 Deals",
-      totalValueText: "₹ 86.5 L",
-      badgeColor: "bg-[#22c55e] text-white",
-      leads: [
-        {
-          _id: "deal-neg-1",
-          fullName: "SmartCity – Phase II",
-          company: "SmartCity Corp.",
-          subject: "Citywide Smart Metering Rollout",
-          expectedValue: 2800000,
-          valueFormatted: "₹ 28.00 L",
-          status: "negotiation",
-          phone: "+91 98400 99887",
-          email: "tenders@smartcitycorp.org",
-          expectedClose: "Nov 26, 2026",
-          source: "RFP Tender",
-          owner: "Amit Mondal",
-          createdAt: "2026-10-28T09:00:00.000Z",
-          notes: [
-            {
-              _id: "n-5",
-              authorName: "Amit Mondal",
-              text: "Discount discussion underway. Client wants 5% volume reduction on year 1 licenses.",
-              createdAt: "2026-11-09T11:20:00.000Z",
-            },
-          ],
-          callLogs: [
-            {
-              _id: "c-4",
-              channel: "phone",
-              outcome: "commercial_negotiation",
-              notes: "Call with procurement head. Revised payment terms to 40-40-20.",
-              contactedByName: "Amit Mondal",
-              contactedAt: "2026-11-09T11:20:00.000Z",
-            },
-          ],
-        },
-        {
-          _id: "deal-neg-2",
-          fullName: "EcoLight – City Project",
-          company: "EcoLight Systems",
-          subject: "Solar LED Central Gateway Deployment",
-          expectedValue: 2450000,
-          valueFormatted: "₹ 24.50 L",
-          status: "negotiation",
-          phone: "+91 98222 11122",
-          email: "contracts@ecolight.in",
-          expectedClose: "Nov 27, 2026",
-          source: "Referral",
-          owner: "Priya Sharma",
-          createdAt: "2026-10-25T15:00:00.000Z",
-          notes: [],
-          callLogs: [],
-        },
-        {
-          _id: "deal-neg-3",
-          fullName: "NexaInfra – Platform",
-          company: "NexaInfra",
-          subject: "Multi-tenant Smart City OS Infrastructure",
-          expectedValue: 1800000,
-          valueFormatted: "₹ 18.00 L",
-          status: "negotiation",
-          phone: "+91 99000 88776",
-          email: "tech@nexainfra.com",
-          expectedClose: "Dec 01, 2026",
-          source: "Enterprise Direct",
-          owner: "Rahul Verma",
-          createdAt: "2026-10-20T10:00:00.000Z",
-          notes: [],
-          callLogs: [],
-        },
-      ],
-    },
-    won: {
-      key: "won",
-      title: "Won",
-      dealsCount: "28 Deals",
-      totalValueText: "₹ 47.6 L",
-      badgeColor: "bg-[#15803d] text-white",
-      leads: [
-        {
-          _id: "deal-won-1",
-          fullName: "CityWorks – CRM",
-          company: "CityWorks Ltd.",
-          subject: "Civic Complaints & Staff Dispatch CRM",
-          expectedValue: 1600000,
-          valueFormatted: "₹ 16.00 L",
-          status: "won",
-          phone: "+91 98333 44556",
-          email: "director@cityworks.co",
-          expectedClose: "Nov 10, 2026",
-          source: "Direct Inbound",
-          owner: "Amit Mondal",
-          createdAt: "2026-10-15T12:00:00.000Z",
-          notes: [
-            {
-              _id: "n-6",
-              authorName: "Amit Mondal",
-              text: "Master Service Agreement signed. Initial milestone payment cleared.",
-              createdAt: "2026-11-09T08:30:00.000Z",
-            },
-          ],
-          callLogs: [
-            {
-              _id: "c-5",
-              channel: "email",
-              outcome: "contract_executed",
-              notes: "Signed MSA received and archived.",
-              contactedByName: "Amit Mondal",
-              contactedAt: "2026-11-08T18:00:00.000Z",
-            },
-          ],
-        },
-        {
-          _id: "deal-won-2",
-          fullName: "PowerGrid – IoT",
-          company: "PowerGrid India",
-          subject: "Substation Transformer Thermal Telemetry",
-          expectedValue: 1400000,
-          valueFormatted: "₹ 14.00 L",
-          status: "won",
-          phone: "+91 98101 90283",
-          email: "substation.iot@powergrid.gov.in",
-          expectedClose: "Nov 08, 2026",
-          source: "Tender Bid",
-          owner: "Neha Malhotra",
-          createdAt: "2026-10-10T10:00:00.000Z",
-          notes: [],
-          callLogs: [],
-        },
-        {
-          _id: "deal-won-3",
-          fullName: "AlphaInfra – CCMS",
-          company: "AlphaInfra",
-          subject: "Highway Lighting Automation Control",
-          expectedValue: 1760000,
-          valueFormatted: "₹ 17.60 L",
-          status: "won",
-          phone: "+91 98888 77665",
-          email: "projects@alphainfra.com",
-          expectedClose: "Nov 05, 2026",
-          source: "Referral",
-          owner: "Arjun Mehta",
-          createdAt: "2026-10-05T14:00:00.000Z",
-          notes: [],
-          callLogs: [],
-        },
-      ],
-    },
+    new: { key: "new", title: "New", dealsCount: "0 Deals", totalValueText: "₹ 0", badgeColor: "bg-[#def7ec] text-[#03543f]", leads: [] },
+    qualified: { key: "qualified", title: "Qualified", dealsCount: "0 Deals", totalValueText: "₹ 0", badgeColor: "bg-[#d1fae5] text-[#065f46]", leads: [] },
+    proposal: { key: "proposal", title: "Proposal", dealsCount: "0 Deals", totalValueText: "₹ 0", badgeColor: "bg-[#6ee7b7] text-[#064e3b]", leads: [] },
+    negotiation: { key: "negotiation", title: "Negotiation", dealsCount: "0 Deals", totalValueText: "₹ 0", badgeColor: "bg-[#bbf7d0] text-[#14532d]", leads: [] },
+    won: { key: "won", title: "Won", dealsCount: "0 Deals", totalValueText: "₹ 0", badgeColor: "bg-[#15803d] text-white", leads: [] },
   };
 
   const loadPipeline = async (fDate = fromDate, tDate = toDate) => {
@@ -559,12 +177,8 @@ export default function DealsKanbanPage() {
               : `₹ ${colVal.toLocaleString()}`;
         });
 
-        // If DB has live records, use the live DB directly
-        if (totalCountSum > 0) {
-          setColumns(stageCols);
-        } else {
-          setColumns(defaultColumnsData);
-        }
+        // Set columns directly from live MongoDB aggregations
+        setColumns(stageCols);
       } else {
         setColumns(defaultColumnsData);
       }
@@ -989,33 +603,47 @@ export default function DealsKanbanPage() {
               </div>
 
               {/* Deal Cards Container */}
-              <div className="flex-1 space-y-2.5 py-3 overflow-y-auto no-scrollbar">
-                {colData.leads.map((deal) => {
-                  const isDragging = draggedLeadId === deal._id;
-
-                  return (
-                    <div
-                      key={deal._id}
-                      draggable="true"
-                      onDragStart={(e) => {
-                        setDraggedLeadId(deal._id);
-                        e.dataTransfer.setData("text/plain", deal._id);
-                        e.dataTransfer.effectAllowed = "move";
-                      }}
-                      onDragEnd={() => {
-                        setDraggedLeadId(null);
-                        setDragOverCol(null);
-                      }}
+              <div className="flex-1 space-y-2.5 py-3 overflow-y-auto no-scrollbar min-h-[120px]">
+                {colData.leads.length === 0 ? (
+                  <div className="min-h-[130px] flex flex-col items-center justify-center p-3 border border-dashed border-gray-150 rounded-xl text-center bg-gray-50/50">
+                    <p className="text-[11px] text-gray-400 font-medium">No deals in {stage.title}</p>
+                    <button
                       onClick={() => {
-                        setSelectedLead(deal);
-                        setIsDrawerOpen(true);
+                        setNewDealTargetStage(stage.key);
+                        setShowAddDeal(true);
                       }}
-                      className={`bg-white rounded-xl p-3.5 border transition-all cursor-pointer group hover:border-[#16a34a] hover:shadow-md relative ${
-                        isDragging
-                          ? "opacity-40 scale-95 border-dashed border-[#16a34a]"
-                          : "border-gray-200/80 shadow-2xs"
-                      }`}
+                      className="mt-1.5 text-[11px] font-bold text-[#16a34a] hover:underline inline-flex items-center gap-1 cursor-pointer"
                     >
+                      <Plus className="w-3 h-3" /> Add Deal
+                    </button>
+                  </div>
+                ) : (
+                  colData.leads.map((deal) => {
+                    const isDragging = draggedLeadId === deal._id;
+
+                    return (
+                      <div
+                        key={deal._id}
+                        draggable="true"
+                        onDragStart={(e) => {
+                          setDraggedLeadId(deal._id);
+                          e.dataTransfer.setData("text/plain", deal._id);
+                          e.dataTransfer.effectAllowed = "move";
+                        }}
+                        onDragEnd={() => {
+                          setDraggedLeadId(null);
+                          setDragOverCol(null);
+                        }}
+                        onClick={() => {
+                          setSelectedLead(deal);
+                          setIsDrawerOpen(true);
+                        }}
+                        className={`bg-white rounded-xl p-3.5 border transition-all cursor-pointer group hover:border-[#16a34a] hover:shadow-md relative ${
+                          isDragging
+                            ? "opacity-40 scale-95 border-dashed border-[#16a34a]"
+                            : "border-gray-200/80 shadow-2xs"
+                        }`}
+                      >
                       {/* Deal Header */}
                       <div className="flex items-start justify-between gap-2">
                         <div className="flex items-start gap-2 min-w-0">
@@ -1097,7 +725,8 @@ export default function DealsKanbanPage() {
                       </div>
                     </div>
                   );
-                })}
+                })
+              )}
               </div>
 
               {/* + Add Deal Footer Button */}

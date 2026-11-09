@@ -795,44 +795,52 @@ export default function AdminDashboardPage() {
                 </tr>
               </thead>
               <tbody className="divide-y divide-gray-50">
-                {recentLeads.slice(0, 4).map((deal) => {
-                  const stage = deal.status || deal.stage || "proposal";
-                  return (
-                    <tr key={deal._id} className="hover:bg-gray-50/70 transition-colors">
-                      <td className="py-2.5 font-bold text-gray-900">
-                        {deal.fullName || deal.dealName}
-                      </td>
-                      <td className="py-2.5 text-gray-600 font-medium">
-                        {deal.company || deal.fullName}
-                      </td>
-                      <td className="py-2.5 font-black text-gray-900">
-                        {formatINR(deal.expectedValue)}
-                      </td>
-                      <td className="py-2.5">
-                        <span
-                          className={`text-[10.5px] font-bold px-2 py-0.5 rounded-md capitalize ${
-                            stage === "won"
-                              ? "bg-emerald-100 text-[#15803d]"
-                              : stage === "negotiation"
-                              ? "bg-[#bcf0da] text-[#03543f]"
-                              : stage === "qualified"
-                              ? "bg-[#d1fae5] text-[#065f46]"
-                              : "bg-[#def7ec] text-[#03543f]"
-                          }`}
-                        >
-                          {stage}
-                        </span>
-                      </td>
-                      <td className="py-2.5 text-gray-500 font-medium">
-                        {new Date(deal.expectedClose || deal.createdAt || Date.now()).toLocaleDateString("en-US", {
-                          month: "short",
-                          day: "numeric",
-                          year: "numeric",
-                        })}
-                      </td>
-                    </tr>
-                  );
-                })}
+                {recentLeads.length === 0 ? (
+                  <tr>
+                    <td colSpan="5" className="py-6 text-center text-gray-400 text-xs italic">
+                      No deals recorded yet. Click &quot;+ Create&quot; to add your first deal.
+                    </td>
+                  </tr>
+                ) : (
+                  recentLeads.slice(0, 4).map((deal) => {
+                    const stage = deal.status || deal.stage || "proposal";
+                    return (
+                      <tr key={deal._id} className="hover:bg-gray-50/70 transition-colors">
+                        <td className="py-2.5 font-bold text-gray-900">
+                          {deal.fullName || deal.dealName}
+                        </td>
+                        <td className="py-2.5 text-gray-600 font-medium">
+                          {deal.company || deal.fullName}
+                        </td>
+                        <td className="py-2.5 font-black text-gray-900">
+                          {formatINR(deal.expectedValue)}
+                        </td>
+                        <td className="py-2.5">
+                          <span
+                            className={`text-[10.5px] font-bold px-2 py-0.5 rounded-md capitalize ${
+                              stage === "won"
+                                ? "bg-emerald-100 text-[#15803d]"
+                                : stage === "negotiation"
+                                ? "bg-[#bcf0da] text-[#03543f]"
+                                : stage === "qualified"
+                                ? "bg-[#d1fae5] text-[#065f46]"
+                                : "bg-[#def7ec] text-[#03543f]"
+                            }`}
+                          >
+                            {stage}
+                          </span>
+                        </td>
+                        <td className="py-2.5 text-gray-500 font-medium">
+                          {new Date(deal.expectedClose || deal.createdAt || Date.now()).toLocaleDateString("en-US", {
+                            month: "short",
+                            day: "numeric",
+                            year: "numeric",
+                          })}
+                        </td>
+                      </tr>
+                    );
+                  })
+                )}
               </tbody>
             </table>
           </div>
@@ -855,24 +863,30 @@ export default function AdminDashboardPage() {
           </div>
 
           <div className="space-y-3.5 my-auto">
-            {topAccounts.slice(0, 3).map((acc, aIdx) => (
-              <div key={aIdx} className="flex items-center justify-between text-xs">
-                <div className="flex items-center gap-2.5">
-                  <div className="w-8 h-8 rounded-lg bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
-                    <Building2 className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <div className="font-bold text-gray-900 leading-tight truncate max-w-[140px]">
-                      {acc.name}
+            {topAccounts.length === 0 ? (
+              <p className="text-center text-xs text-gray-400 italic py-6">
+                No enterprise accounts registered yet.
+              </p>
+            ) : (
+              topAccounts.slice(0, 3).map((acc, aIdx) => (
+                <div key={aIdx} className="flex items-center justify-between text-xs">
+                  <div className="flex items-center gap-2.5">
+                    <div className="w-8 h-8 rounded-lg bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                      <Building2 className="w-4 h-4" />
                     </div>
-                    <div className="text-[11px] text-gray-400 font-medium">
-                      {acc.industry} • <span className="text-[#16a34a] font-semibold">{acc.status}</span>
+                    <div>
+                      <div className="font-bold text-gray-900 leading-tight truncate max-w-[140px]">
+                        {acc.name}
+                      </div>
+                      <div className="text-[11px] text-gray-400 font-medium">
+                        {acc.industry} • <span className="text-[#16a34a] font-semibold">{acc.status}</span>
+                      </div>
                     </div>
                   </div>
+                  <span className="font-black text-gray-900 text-sm">{formatINR(acc.totalValue)}</span>
                 </div>
-                <span className="font-black text-gray-900 text-sm">{formatINR(acc.totalValue)}</span>
-              </div>
-            ))}
+              ))
+            )}
           </div>
         </div>
       </div>
