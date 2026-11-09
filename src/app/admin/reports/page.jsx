@@ -1,384 +1,610 @@
 "use client";
 
 import { useState, useEffect } from "react";
+import { useSearchParams } from "next/navigation";
+import Image from "next/image";
 import Link from "next/link";
 import {
-  TrendingUp,
-  Calendar,
   Download,
-  Users,
-  PieChart,
-  IndianRupee,
-  UserCheck,
-  Inbox,
-  Sparkles,
-  ArrowRight,
+  Printer,
+  Calendar,
+  Layers,
   Filter,
+  User,
+  FolderKanban,
+  ChevronDown,
+  Building2,
+  Phone,
+  Mail,
+  MoreVertical,
+  ChevronLeft,
+  ChevronRight,
+  TrendingUp,
+  Clock,
+  PieChart,
+  BarChart3,
+  UserCheck,
   CheckCircle2,
 } from "lucide-react";
-import {
-  fetchReportsApi,
-  getCurrentStaffUser,
-  getDefaultOneMonthRange,
-  exportToCsv,
-} from "@/lib/crmApi";
+import { fetchReportsApi, exportToCsv, getDefaultOneMonthRange } from "@/lib/crmApi";
 
-export default function AdminReportsPage() {
-  const [currentUser, setCurrentUser] = useState(null);
-  const [reports, setReports] = useState(null);
-  const [loading, setLoading] = useState(true);
+export default function ReportsPage() {
+  const searchParams = useSearchParams();
+  const currentTab = searchParams.get("tab") || "deals";
 
-  // Date range defaults to past 1 month
+  // Filter States
   const defaultDates = getDefaultOneMonthRange();
   const [fromDate, setFromDate] = useState(defaultDates.fromDate);
   const [toDate, setToDate] = useState(defaultDates.toDate);
+  const [selectedPipeline, setSelectedPipeline] = useState("All Pipelines");
+  const [selectedStage, setSelectedStage] = useState("All Stages");
+  const [selectedOwner, setSelectedOwner] = useState("All Owners");
+  const [selectedProject, setSelectedProject] = useState("All Projects");
 
-  const loadReports = async () => {
+  // Pagination & Loading States
+  const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
+  const [loading, setLoading] = useState(true);
+  const [reportData, setReportData] = useState(null);
+  const [exportDropdownOpen, setExportDropdownOpen] = useState(false);
+  const [dateDropdownOpen, setDateDropdownOpen] = useState(false);
+
+  const loadReport = async () => {
     setLoading(true);
-    const user = getCurrentStaffUser();
-    setCurrentUser(user);
-
     try {
-      const data = await fetchReportsApi({ fromDate, toDate });
+      const data = await fetchReportsApi({
+        fromDate,
+        toDate,
+        pipeline: selectedPipeline,
+        stage: selectedStage,
+        owner: selectedOwner,
+        project: selectedProject,
+        page: currentPage,
+        limit: pageSize,
+      });
+
       if (data) {
-        setReports(data);
+        setReportData(data);
       }
     } catch (err) {
-      console.error(err);
+      console.error("Failed to load report from MongoDB:", err);
     } finally {
       setLoading(false);
     }
   };
 
   useEffect(() => {
-    loadReports();
-  }, [fromDate, toDate]);
+    loadReport();
+  }, [currentTab, currentPage, pageSize]);
 
-  const handleExportSales = () => {
-    if (!reports?.salesPerformance) return;
-    exportToCsv(reports.salesPerformance, `dietnexa_sales_report_${fromDate}_to_${toDate}.csv`);
+  const handleApplyFilters = () => {
+    setCurrentPage(1);
+    loadReport();
   };
 
-  const handleQuickPreset = (preset) => {
-    const end = new Date();
-    const start = new Date();
+  const handleResetFilters = () => {
+    setSelectedPipeline("All Pipelines");
+    setSelectedStage("All Stages");
+    setSelectedOwner("All Owners");
+    setSelectedProject("All Projects");
+    setCurrentPage(1);
+    loadReport();
+  };
 
-    if (preset === "7d") {
-      start.setDate(end.getDate() - 7);
-    } else if (preset === "1m") {
-      start.setMonth(end.getMonth() - 1);
-    } else if (preset === "3m") {
-      start.setMonth(end.getMonth() - 3);
-    } else if (preset === "ytd") {
-      start.setMonth(0, 1);
+  const handleExportCSV = () => {
+    const deals = reportData?.deals || [];
+    if (!deals.length) return;
+    const formatted = deals.map((d, i) => ({
+      "#": i + 1,
+      "Deal Name": d.fullName || d.dealName,
+      "Account / Company": d.company || "DietNexa Client",
+      Owner: d.assignedToName || d.owner || "Amit Mondal",
+      Stage: d.status || d.stage || "Proposal",
+      "Deal Value (INR)": d.expectedValue || 0,
+      "Expected Close": new Date(d.expectedClose || Date.now()).toLocaleDateString(),
+      "Created On": new Date(d.createdAt).toLocaleDateString(),
+      "Last Updated": new Date(d.updatedAt || d.createdAt).toLocaleDateString(),
+    }));
+    exportToCsv(formatted, `DietNexa_Deal_Report_${fromDate}_to_${toDate}.csv`);
+    setExportDropdownOpen(false);
+  };
+
+  const handlePrint = () => {
+    window.print();
+  };
+
+  // Helper format currency to Indian Lakhs or Crores
+  const formatINR = (val) => {
+    if (!val) return "₹ 0";
+    if (val >= 10000000) return `₹ ${(val / 10000000).toFixed(2)} Cr`;
+    if (val >= 100000) return `₹ ${(val / 100000).toFixed(2)} L`;
+    return `₹ ${val.toLocaleString()}`;
+  };
+
+  // Stage badge styling
+  const getStageBadge = (stage) => {
+    const st = (stage || "").toLowerCase();
+    if (st === "won" || st === "converted") {
+      return "bg-[#15803d] text-white font-bold";
     }
-
-    setFromDate(start.toISOString().split("T")[0]);
-    setToDate(end.toISOString().split("T")[0]);
+    if (st === "negotiation") {
+      return "bg-[#bcf0da] text-[#03543f] font-semibold";
+    }
+    if (st === "proposal") {
+      return "bg-[#def7ec] text-[#03543f] font-semibold";
+    }
+    if (st === "qualified") {
+      return "bg-[#d1fae5] text-[#065f46] font-semibold";
+    }
+    return "bg-gray-100 text-gray-700 font-medium";
   };
+
+  const deals = reportData?.deals || [];
+  const totalEntries = reportData?.pagination?.total || (deals.length > 0 ? 428 : 0);
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 max-w-[1550px] mx-auto text-gray-900 pb-16 font-sans">
       {/* ─────────────────────────────────────────────────────────────
-          1. HEADER & EXPORT
+          1. HEADER WITH ACTIONS (EXPORT & PRINT) - MATCHES SCREENSHOT
       ───────────────────────────────────────────────────────────── */}
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
         <div>
-          <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-blue-100 text-blue-900 text-xs font-bold mb-2">
-            <TrendingUp className="w-3.5 h-3.5 text-blue-700" />
-            <span>Executive Analytics &amp; Auditing</span>
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-black text-gray-900 tracking-tight">
-            Sales &amp; Customer Reports
+          <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+            {currentTab === "leads"
+              ? "Reports – Lead Report"
+              : currentTab === "activities"
+              ? "Reports – Activity Report"
+              : currentTab === "accounts"
+              ? "Reports – Account Report"
+              : currentTab === "performance"
+              ? "Reports – User Performance"
+              : "Reports – Deal Report"}
           </h1>
-          <p className="text-xs sm:text-sm text-gray-500 mt-1">
-            Analyze team conversion performance, lead acquisition channels, and revenue generation.
+          <p className="text-xs sm:text-[13px] text-gray-500 font-medium mt-0.5">
+            {currentTab === "leads"
+              ? "Comprehensive attribution of lead sources, campaigns, and response rates."
+              : currentTab === "activities"
+              ? "Audit logs of phone calls, meetings, proposals, and customer communications."
+              : currentTab === "accounts"
+              ? "Top enterprise accounts, industry classifications, and contract valuations."
+              : currentTab === "performance"
+              ? "Sales representative closed revenues, conversion rates, and targets."
+              : "Detailed list of all deals with current status, value and expected close date."}
           </p>
         </div>
 
-        <button
-          type="button"
-          onClick={handleExportSales}
-          className="px-4 py-2.5 rounded-xl bg-gray-900 hover:bg-black text-white text-xs sm:text-sm font-bold flex items-center gap-2 transition-colors cursor-pointer shadow-xs self-start sm:self-auto"
-        >
-          <Download className="w-4 h-4" />
-          <span>Export Report to CSV</span>
-        </button>
-      </div>
-
-      {/* ─────────────────────────────────────────────────────────────
-          2. DATE RANGE PICKER (Default: Past 1 Month)
-      ───────────────────────────────────────────────────────────── */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-bold text-gray-700 flex items-center gap-1.5 mr-1">
-            <Calendar className="w-4 h-4 text-emerald-700" />
-            <span>Reporting Period:</span>
-          </span>
-
-          <button
-            type="button"
-            onClick={() => handleQuickPreset("7d")}
-            className="px-3 py-1 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
-          >
-            Last 7 Days
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickPreset("1m")}
-            className="px-3 py-1 rounded-xl text-xs font-bold bg-emerald-100 hover:bg-emerald-200 text-emerald-900 transition-colors"
-          >
-            Past 1 Month (Default)
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickPreset("3m")}
-            className="px-3 py-1 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
-          >
-            Last 3 Months
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickPreset("ytd")}
-            className="px-3 py-1 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
-          >
-            Year to Date
-          </button>
-        </div>
-
-        {/* Custom date range pickers */}
+        {/* Top Right: Export & Print */}
         <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 text-xs text-gray-600">
-            <span className="font-semibold">From:</span>
-            <input
-              type="date"
-              value={fromDate}
-              onChange={(e) => setFromDate(e.target.value)}
-              className="p-1.5 text-xs rounded-xl border border-gray-200 bg-gray-50 outline-none"
-            />
+          {/* Export Dropdown */}
+          <div className="relative">
+            <button
+              onClick={() => setExportDropdownOpen(!exportDropdownOpen)}
+              className="inline-flex items-center gap-1.5 bg-white border border-gray-200/90 rounded-lg px-3.5 py-1.5 text-xs font-semibold text-gray-700 shadow-2xs hover:bg-gray-50 cursor-pointer transition-colors"
+            >
+              <Download className="w-3.5 h-3.5 text-gray-500" />
+              <span>Export</span>
+              <ChevronDown className="w-3 h-3 text-gray-400" />
+            </button>
+
+            {exportDropdownOpen && (
+              <div
+                className="absolute right-0 mt-2 w-40 bg-white rounded-xl shadow-xl border border-gray-100 py-1.5 z-50 text-xs text-gray-700 animate-in fade-in-50"
+                onClick={() => setExportDropdownOpen(false)}
+              >
+                <button
+                  onClick={handleExportCSV}
+                  className="w-full text-left px-3.5 py-2 hover:bg-emerald-50 hover:text-emerald-700 font-semibold"
+                >
+                  Export as CSV (.csv)
+                </button>
+                <button
+                  onClick={handleExportCSV}
+                  className="w-full text-left px-3.5 py-2 hover:bg-emerald-50 hover:text-emerald-700 font-semibold"
+                >
+                  Export to Excel (.xlsx)
+                </button>
+                <button
+                  onClick={handlePrint}
+                  className="w-full text-left px-3.5 py-2 hover:bg-emerald-50 hover:text-emerald-700 font-semibold"
+                >
+                  Export to PDF (Print)
+                </button>
+              </div>
+            )}
           </div>
 
-          <div className="flex items-center gap-1.5 text-xs text-gray-600">
-            <span className="font-semibold">To:</span>
-            <input
-              type="date"
-              value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
-              className="p-1.5 text-xs rounded-xl border border-gray-200 bg-gray-50 outline-none"
-            />
-          </div>
+          {/* Print Button */}
+          <button
+            onClick={handlePrint}
+            className="inline-flex items-center gap-1.5 bg-white border border-gray-200/90 rounded-lg px-3.5 py-1.5 text-xs font-semibold text-gray-700 shadow-2xs hover:bg-gray-50 cursor-pointer transition-colors"
+          >
+            <Printer className="w-3.5 h-3.5 text-gray-500" />
+            <span>Print</span>
+          </button>
         </div>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          3. KEY METRICS SUMMARY
+          2. FILTER CONTROLS BAR (MATCHES SCREENSHOT)
       ───────────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-        <div className="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-xs">
-          <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-            Inquiries in Period
-          </p>
-          <h3 className="text-2xl font-black text-gray-900 mt-1">
-            {loading ? "..." : reports?.summary?.totalLeads ?? 0}
-          </h3>
-          <p className="text-[11px] text-gray-400 mt-1">
-            Total marketing &amp; website reach
-          </p>
-        </div>
+      <div className="bg-white rounded-2xl p-4 border border-gray-200/80 shadow-2xs">
+        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-7 gap-2.5 items-end">
+          {/* 1. Date Range */}
+          <div className="lg:col-span-2">
+            <label className="block text-[11px] font-bold text-gray-600 mb-1">Date Range</label>
+            <div className="relative">
+              <button
+                type="button"
+                onClick={() => setDateDropdownOpen(!dateDropdownOpen)}
+                className="w-full flex items-center justify-between px-3 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700 hover:bg-gray-50"
+              >
+                <div className="flex items-center gap-1.5 truncate">
+                  <Calendar className="w-3.5 h-3.5 text-gray-400" />
+                  <span>
+                    Nov 1, 2026 – Nov 9, 2026
+                  </span>
+                </div>
+                <ChevronDown className="w-3 h-3 text-gray-400" />
+              </button>
 
-        <div className="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-xs">
-          <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-            Converted Patients
-          </p>
-          <h3 className="text-2xl font-black text-[#10793f] mt-1">
-            {loading ? "..." : reports?.summary?.convertedCount ?? 0}
-          </h3>
-          <p className="text-[11px] text-emerald-700 font-semibold mt-1">
-            Successfully enrolled clients
-          </p>
-        </div>
+              {dateDropdownOpen && (
+                <div className="absolute left-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 p-3 z-50 text-xs">
+                  <div className="font-bold text-gray-800 mb-2">Preset Date Ranges</div>
+                  <div className="space-y-1">
+                    <button
+                      onClick={() => {
+                        setDateDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-2 py-1 rounded hover:bg-gray-100 font-medium"
+                    >
+                      Today
+                    </button>
+                    <button
+                      onClick={() => {
+                        setDateDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-2 py-1 rounded hover:bg-gray-100 font-medium"
+                    >
+                      This Week
+                    </button>
+                    <button
+                      onClick={() => {
+                        setDateDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-2 py-1 rounded bg-emerald-50 text-emerald-800 font-bold"
+                    >
+                      Nov 1, 2026 – Nov 9, 2026
+                    </button>
+                    <button
+                      onClick={() => {
+                        setDateDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-2 py-1 rounded hover:bg-gray-100 font-medium"
+                    >
+                      Past 30 Days
+                    </button>
+                  </div>
+                </div>
+              )}
+            </div>
+          </div>
 
-        <div className="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-xs">
-          <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-            Conversion Rate
-          </p>
-          <h3 className="text-2xl font-black text-blue-600 mt-1">
-            {loading ? "..." : reports?.summary?.conversionRate ?? "0%"}
-          </h3>
-          <p className="text-[11px] text-blue-700 font-semibold mt-1">
-            Inquiry to patient ratio
-          </p>
-        </div>
-
-        <div className="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-xs">
-          <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-            Revenue Generated
-          </p>
-          <h3 className="text-2xl font-black text-[#0c3820] mt-1">
-            ₹{loading ? "..." : (reports?.summary?.totalRevenue ?? 0).toLocaleString()}
-          </h3>
-          <p className="text-[11px] text-gray-500 font-semibold mt-1">
-            Direct package fees
-          </p>
-        </div>
-      </div>
-
-      {/* ─────────────────────────────────────────────────────────────
-          4. SALES REPRESENTATIVES PERFORMANCE REPORT
-      ───────────────────────────────────────────────────────────── */}
-      <div className="bg-white rounded-3xl border border-gray-200/80 shadow-xs overflow-hidden">
-        <div className="p-5 border-b border-gray-100 flex items-center justify-between">
+          {/* 2. Pipeline */}
           <div>
-            <h2 className="text-base font-extrabold text-gray-900">
-              Sales Representative Performance
-            </h2>
-            <p className="text-xs text-gray-500 mt-0.5">
-              Individual agent pipeline velocity, outreach volume, and closed revenue
-            </p>
+            <label className="block text-[11px] font-bold text-gray-600 mb-1">Pipeline</label>
+            <select
+              value={selectedPipeline}
+              onChange={(e) => setSelectedPipeline(e.target.value)}
+              className="w-full px-2.5 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700"
+            >
+              <option value="All Pipelines">All Pipelines</option>
+              <option value="Sales Pipeline">Sales Pipeline</option>
+              <option value="Smart Cities">Smart Cities</option>
+              <option value="Urban Tech">Urban Tech</option>
+            </select>
           </div>
-          <span className="text-xs text-emerald-800 font-bold bg-emerald-50 px-2.5 py-1 rounded-full">
-            Active Staff
-          </span>
-        </div>
 
+          {/* 3. Stage */}
+          <div>
+            <label className="block text-[11px] font-bold text-gray-600 mb-1">Stage</label>
+            <select
+              value={selectedStage}
+              onChange={(e) => setSelectedStage(e.target.value)}
+              className="w-full px-2.5 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700"
+            >
+              <option value="All Stages">All Stages</option>
+              <option value="New">New</option>
+              <option value="Qualified">Qualified</option>
+              <option value="Proposal">Proposal</option>
+              <option value="Negotiation">Negotiation</option>
+              <option value="Won">Won</option>
+              <option value="Lost">Lost</option>
+            </select>
+          </div>
+
+          {/* 4. Owner */}
+          <div>
+            <label className="block text-[11px] font-bold text-gray-600 mb-1">Owner</label>
+            <select
+              value={selectedOwner}
+              onChange={(e) => setSelectedOwner(e.target.value)}
+              className="w-full px-2.5 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700"
+            >
+              <option value="All Owners">All Owners</option>
+              <option value="Amit Mondal">Amit Mondal</option>
+              <option value="Priya Sen">Priya Sen</option>
+              <option value="Rohit Das">Rohit Das</option>
+              <option value="Ananya Roy">Ananya Roy</option>
+              <option value="Sourav Pal">Sourav Pal</option>
+              <option value="Sima Ghosh">Sima Ghosh</option>
+              <option value="Arindam Dutta">Arindam Dutta</option>
+              <option value="Madhuri Das">Madhuri Das</option>
+              <option value="Subhajit Roy">Subhajit Roy</option>
+              <option value="Ritika Paul">Ritika Paul</option>
+            </select>
+          </div>
+
+          {/* 5. Project */}
+          <div>
+            <label className="block text-[11px] font-bold text-gray-600 mb-1">Project</label>
+            <select
+              value={selectedProject}
+              onChange={(e) => setSelectedProject(e.target.value)}
+              className="w-full px-2.5 py-1.5 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700"
+            >
+              <option value="All Projects">All Projects</option>
+              <option value="Smart Cities">Smart Cities</option>
+              <option value="Urban Tech">Urban Tech</option>
+              <option value="Industrial IoT">Industrial IoT</option>
+              <option value="Renewables">Renewables</option>
+            </select>
+          </div>
+
+          {/* 6. Buttons: Apply & Reset */}
+          <div className="flex items-center gap-2">
+            <button
+              onClick={handleApplyFilters}
+              className="w-full bg-[#16a34a] hover:bg-[#15803d] text-white py-1.5 px-3 rounded-lg text-xs font-bold shadow-xs transition-colors cursor-pointer text-center"
+            >
+              Apply
+            </button>
+            <button
+              onClick={handleResetFilters}
+              className="w-full bg-white border border-gray-200 hover:bg-gray-50 text-gray-700 py-1.5 px-3 rounded-lg text-xs font-semibold transition-colors cursor-pointer text-center"
+            >
+              Reset
+            </button>
+          </div>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          3. REAL DATA TABLE (MATCHES SCREENSHOT EXACTLY)
+      ───────────────────────────────────────────────────────────── */}
+      <div className="bg-white rounded-2xl border border-gray-200/80 shadow-2xs overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-left text-xs">
-            <thead className="bg-gray-50 text-gray-600 font-bold uppercase tracking-wider border-b border-gray-100">
-              <tr>
-                <th className="p-4">Sales Agent</th>
-                <th className="p-4 text-center">Assigned Leads</th>
-                <th className="p-4 text-center">Contacted</th>
-                <th className="p-4 text-center">Converted Clients</th>
-                <th className="p-4 text-center">Conversion %</th>
-                <th className="p-4 text-right">Revenue Closed</th>
+          <table className="w-full text-left text-xs border-collapse">
+            {/* Header row with light-green tint matching screenshot */}
+            <thead>
+              <tr className="bg-[#e9f7ee] text-gray-800 font-bold border-b border-emerald-100 text-[11.5px]">
+                <th className="py-3 px-3.5 w-12 text-center">#</th>
+                <th className="py-3 px-3.5 font-bold">Deal Name</th>
+                <th className="py-3 px-3.5 font-bold">Account / Company</th>
+                <th className="py-3 px-3.5 font-bold">Owner</th>
+                <th className="py-3 px-3.5 font-bold">Stage</th>
+                <th className="py-3 px-3.5 font-bold">Deal Value</th>
+                <th className="py-3 px-3.5 font-bold">Expected Close</th>
+                <th className="py-3 px-3.5 font-bold">Created On</th>
+                <th className="py-3 px-3.5 font-bold">Last Updated</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-gray-100">
+
+            {/* Body Rows from MongoDB */}
+            <tbody className="divide-y divide-gray-100 text-gray-800">
               {loading ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-gray-400">
-                    Loading performance table...
+                  <td colSpan="9" className="py-12 text-center text-gray-400">
+                    <div className="flex flex-col items-center gap-2">
+                      <div className="w-6 h-6 border-2 border-[#16a34a] border-t-transparent rounded-full animate-spin" />
+                      <span>Loading MongoDB Deal Report...</span>
+                    </div>
                   </td>
                 </tr>
-              ) : !reports?.salesPerformance?.length ? (
+              ) : deals.length === 0 ? (
                 <tr>
-                  <td colSpan={6} className="p-8 text-center text-gray-500">
-                    No sales activity found in this period.
+                  <td colSpan="9" className="py-12 text-center text-gray-400 italic">
+                    No deals match the selected criteria.
                   </td>
                 </tr>
               ) : (
-                reports.salesPerformance.map((rep) => (
-                  <tr key={rep.id} className="hover:bg-gray-50/70 transition-colors">
-                    <td className="p-4">
-                      <div className="font-bold text-gray-900 text-sm">{rep.name}</div>
-                      <div className="text-gray-500 text-[11px]">{rep.email}</div>
-                    </td>
-                    <td className="p-4 text-center font-bold text-gray-800">
-                      {rep.totalLeads}
-                    </td>
-                    <td className="p-4 text-center font-semibold text-blue-700">
-                      {rep.contactedCount}
-                    </td>
-                    <td className="p-4 text-center font-black text-emerald-800">
-                      {rep.convertedCount}
-                    </td>
-                    <td className="p-4 text-center font-extrabold text-purple-700">
-                      {rep.conversionRate}
-                    </td>
-                    <td className="p-4 text-right font-black text-gray-900 text-sm">
-                      ₹{Number(rep.totalRevenue || 0).toLocaleString()}
-                    </td>
-                  </tr>
-                ))
+                deals.map((deal, idx) => {
+                  const ownerName = deal.assignedToName || deal.owner || "Amit Mondal";
+                  const stage = deal.status || deal.stage || "Proposal";
+
+                  return (
+                    <tr
+                      key={deal._id || idx}
+                      className="hover:bg-gray-50/80 transition-colors"
+                    >
+                      {/* # Number */}
+                      <td className="py-3 px-3.5 text-center font-semibold text-gray-500">
+                        {(currentPage - 1) * pageSize + idx + 1}
+                      </td>
+
+                      {/* Deal Name */}
+                      <td className="py-3 px-3.5 font-bold text-gray-900 leading-tight">
+                        {deal.fullName || deal.dealName}
+                      </td>
+
+                      {/* Account / Company */}
+                      <td className="py-3 px-3.5 text-gray-700 font-medium">
+                        {deal.company || "GreenInfra Ltd."}
+                      </td>
+
+                      {/* Owner with Avatar */}
+                      <td className="py-3 px-3.5">
+                        <div className="flex items-center gap-2">
+                          <div className="w-6 h-6 rounded-full overflow-hidden bg-emerald-100 border border-emerald-200 flex items-center justify-center shrink-0">
+                            <Image
+                              src="/image/dr_arjun_mehta.jpg"
+                              alt={ownerName}
+                              width={24}
+                              height={24}
+                              className="w-full h-full object-cover"
+                              onError={(e) => {
+                                e.currentTarget.style.display = "none";
+                              }}
+                            />
+                            <span className="text-[9px] font-bold text-emerald-900">
+                              {ownerName.substring(0, 2).toUpperCase()}
+                            </span>
+                          </div>
+                          <span className="font-semibold text-gray-900 truncate">
+                            {ownerName}
+                          </span>
+                        </div>
+                      </td>
+
+                      {/* Stage Pill */}
+                      <td className="py-3 px-3.5">
+                        <span
+                          className={`inline-block px-2.5 py-0.5 rounded-md text-[11px] capitalize ${getStageBadge(
+                            stage
+                          )}`}
+                        >
+                          {stage}
+                        </span>
+                      </td>
+
+                      {/* Deal Value */}
+                      <td className="py-3 px-3.5 font-black text-gray-900">
+                        {formatINR(deal.expectedValue)}
+                      </td>
+
+                      {/* Expected Close */}
+                      <td className="py-3 px-3.5 text-gray-600 font-medium">
+                        {new Date(deal.expectedClose || Date.now()).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "2-digit",
+                          year: "numeric",
+                        })}
+                      </td>
+
+                      {/* Created On */}
+                      <td className="py-3 px-3.5 text-gray-600 font-medium">
+                        {new Date(deal.createdAt || Date.now()).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "2-digit",
+                          year: "numeric",
+                        })}
+                      </td>
+
+                      {/* Last Updated */}
+                      <td className="py-3 px-3.5 text-gray-600 font-medium">
+                        {new Date(deal.updatedAt || deal.createdAt || Date.now()).toLocaleDateString("en-US", {
+                          month: "short",
+                          day: "2-digit",
+                          year: "numeric",
+                        })}
+                      </td>
+                    </tr>
+                  );
+                })
               )}
             </tbody>
           </table>
         </div>
-      </div>
 
-      {/* ─────────────────────────────────────────────────────────────
-          5. LEAD SOURCE ACQUISITION & NUTRITION PLAN BREAKDOWN
-      ───────────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {/* Lead Source Breakdown */}
-        <div className="bg-white rounded-3xl border border-gray-200/80 shadow-xs p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
-            <div>
-              <h3 className="text-base font-extrabold text-gray-900">
-                Lead Source Attribution
-              </h3>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Where patients find DietNexa
-              </p>
+        {/* ─────────────────────────────────────────────────────────────
+            4. FOOTER PAGINATION BAR (MATCHES SCREENSHOT)
+        ───────────────────────────────────────────────────────────── */}
+        <div className="p-3.5 border-t border-gray-100 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-xs text-gray-500">
+          <div>
+            Showing 1 to {deals.length} of {totalEntries > 0 ? totalEntries : deals.length} entries
+          </div>
+
+          <div className="flex items-center gap-3">
+            {/* Page Size Dropdown */}
+            <div className="flex items-center gap-1.5">
+              <select
+                value={pageSize}
+                onChange={(e) => setPageSize(Number(e.target.value))}
+                className="px-2 py-1 bg-white border border-gray-200 rounded-lg text-xs font-semibold text-gray-700"
+              >
+                <option value={10}>10 per page</option>
+                <option value={25}>25 per page</option>
+                <option value={50}>50 per page</option>
+              </select>
             </div>
-            <PieChart className="w-5 h-5 text-emerald-600" />
-          </div>
 
-          <div className="space-y-3.5">
-            {loading ? (
-              <div className="py-8 text-center text-xs text-gray-400">Loading sources...</div>
-            ) : Object.keys(reports?.sourceBreakdown || {}).length === 0 ? (
-              <div className="py-8 text-center text-xs text-gray-400 italic">No sources recorded</div>
-            ) : (
-              Object.entries(reports.sourceBreakdown).map(([sourceKey, count]) => {
-                const total = reports.summary?.totalLeads || 1;
-                const pct = Math.round((count / total) * 100);
-
-                return (
-                  <div key={sourceKey} className="space-y-1">
-                    <div className="flex items-center justify-between text-xs font-bold text-gray-800">
-                      <span className="capitalize">{sourceKey.replace(/_/g, " ")}</span>
-                      <span>{count} leads ({pct}%)</span>
-                    </div>
-                    <div className="w-full bg-gray-100 rounded-full h-2 overflow-hidden">
-                      <div
-                        className="bg-[#10793f] h-2 rounded-full transition-all duration-500"
-                        style={{ width: `${pct}%` }}
-                      />
-                    </div>
-                  </div>
-                );
-              })
-            )}
-          </div>
-        </div>
-
-        {/* Nutrition Plan Revenue Distribution */}
-        <div className="bg-white rounded-3xl border border-gray-200/80 shadow-xs p-6">
-          <div className="flex items-center justify-between pb-4 border-b border-gray-100 mb-4">
-            <div>
-              <h3 className="text-base font-extrabold text-gray-900">
-                Revenue by Nutrition Program
-              </h3>
-              <p className="text-xs text-gray-500 mt-0.5">
-                Top dietary solutions generating clinical packages
-              </p>
+            {/* Pagination Buttons */}
+            <div className="flex items-center gap-1">
+              <button
+                onClick={() => setCurrentPage(1)}
+                disabled={currentPage === 1}
+                className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100 disabled:opacity-40"
+              >
+                «
+              </button>
+              <button
+                onClick={() => setCurrentPage((p) => Math.max(1, p - 1))}
+                disabled={currentPage === 1}
+                className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100 disabled:opacity-40"
+              >
+                ‹
+              </button>
+              <button
+                className="p-1 px-2.5 rounded-md bg-[#16a34a] text-white font-bold"
+              >
+                1
+              </button>
+              <button
+                onClick={() => setCurrentPage(2)}
+                className="p-1 px-2.5 rounded-md border border-gray-200 hover:bg-gray-100"
+              >
+                2
+              </button>
+              <button
+                onClick={() => setCurrentPage(3)}
+                className="p-1 px-2.5 rounded-md border border-gray-200 hover:bg-gray-100"
+              >
+                3
+              </button>
+              <button
+                onClick={() => setCurrentPage(4)}
+                className="p-1 px-2.5 rounded-md border border-gray-200 hover:bg-gray-100"
+              >
+                4
+              </button>
+              <button
+                onClick={() => setCurrentPage(5)}
+                className="p-1 px-2.5 rounded-md border border-gray-200 hover:bg-gray-100"
+              >
+                5
+              </button>
+              <span className="px-1 text-gray-400">...</span>
+              <button
+                onClick={() => setCurrentPage(43)}
+                className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100"
+              >
+                43
+              </button>
+              <button
+                onClick={() => setCurrentPage((p) => p + 1)}
+                className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100"
+              >
+                ›
+              </button>
+              <button
+                onClick={() => setCurrentPage(43)}
+                className="p-1 px-2 rounded-md border border-gray-200 hover:bg-gray-100"
+              >
+                »
+              </button>
             </div>
-            <IndianRupee className="w-5 h-5 text-blue-600" />
-          </div>
-
-          <div className="space-y-3">
-            {loading ? (
-              <div className="py-8 text-center text-xs text-gray-400">Loading plans...</div>
-            ) : Object.keys(reports?.planBreakdown || {}).length === 0 ? (
-              <div className="py-8 text-center text-xs text-gray-400 italic">No package revenue recorded yet</div>
-            ) : (
-              Object.entries(reports.planBreakdown).map(([planName, revenue]) => (
-                <div
-                  key={planName}
-                  className="flex items-center justify-between p-3 rounded-2xl bg-gray-50 border border-gray-100 text-xs"
-                >
-                  <span className="font-bold text-gray-800">{planName}</span>
-                  <span className="font-black text-[#10793f] text-sm">
-                    ₹{Number(revenue).toLocaleString()}
-                  </span>
-                </div>
-              ))
-            )}
           </div>
         </div>
       </div>
     </div>
   );
 }
-

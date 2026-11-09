@@ -16,19 +16,11 @@ const callLogSchema = new mongoose.Schema(
     },
     channel: {
       type: String,
-      enum: ["phone", "whatsapp", "email", "in_person"],
+      enum: ["phone", "whatsapp", "email", "in_person", "meeting"],
       default: "phone",
     },
     outcome: {
       type: String,
-      enum: [
-        "connected_interested",
-        "connected_followup_needed",
-        "busy_no_answer",
-        "wrong_number",
-        "not_interested",
-        "converted",
-      ],
       default: "connected_interested",
     },
     notes: {
@@ -116,6 +108,16 @@ const leadSchema = new mongoose.Schema(
       required: [true, "Full name is required"],
       trim: true,
     },
+    dealName: {
+      type: String,
+      trim: true,
+      default: "",
+    },
+    company: {
+      type: String,
+      trim: true,
+      default: "",
+    },
     email: {
       type: String,
       required: [true, "Email is required"],
@@ -139,18 +141,14 @@ const leadSchema = new mongoose.Schema(
     },
     source: {
       type: String,
-      default: "contact_page", // 'contact_page', 'consultation_modal', 'google_ads', 'facebook_instagram', 'referral', 'manual_entry', 'whatsapp_inquiry'
+      default: "contact_page",
     },
     status: {
       type: String,
-      enum: [
-        "new",
-        "contacted",
-        "in_discussion",
-        "followup_scheduled",
-        "converted",
-        "lost",
-      ],
+      default: "new",
+    },
+    stage: {
+      type: String,
       default: "new",
     },
     priority: {
@@ -161,6 +159,18 @@ const leadSchema = new mongoose.Schema(
     expectedValue: {
       type: Number,
       default: 7500, // Estimated deal size in INR
+    },
+    expectedClose: {
+      type: Date,
+      default: () => new Date(Date.now() + 14 * 24 * 60 * 60 * 1000),
+    },
+    pipeline: {
+      type: String,
+      default: "Sales Pipeline",
+    },
+    project: {
+      type: String,
+      default: "DietNexa Core",
     },
     stageOrder: {
       type: Number,
@@ -174,7 +184,11 @@ const leadSchema = new mongoose.Schema(
     },
     assignedToName: {
       type: String,
-      default: "Unassigned",
+      default: "Amit Mondal",
+    },
+    ownerAvatar: {
+      type: String,
+      default: "/image/dr_arjun_mehta.jpg",
     },
     // Follow-up details
     followUpDate: {
@@ -201,6 +215,7 @@ const leadSchema = new mongoose.Schema(
 );
 
 leadSchema.index({ status: 1 });
+leadSchema.index({ stage: 1 });
 leadSchema.index({ source: 1 });
 leadSchema.index({ assignedTo: 1 });
 leadSchema.index({ followUpDate: 1 });

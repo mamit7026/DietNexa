@@ -1,6 +1,7 @@
 // Frontend CRM API Client for DietNexa Fastify Backend
 const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api";
+  process.env.NEXT_PUBLIC_API_URL ||
+  (typeof window !== "undefined" ? "/api" : "http://127.0.0.1:5000/api");
 
 // Helper to retrieve staff token from localStorage
 export function getAuthToken() {
@@ -524,7 +525,7 @@ export async function updateLeadApi(leadId, updates) {
     if (updates.expectedValue) leads[idx].expectedValue = updates.expectedValue;
     if (updates.note) {
       const user = getCurrentStaffUser();
-      leads[idx].notes.push({
+      leads[idx].notes.unshift({
         _id: "n-" + Date.now(),
         authorName: user?.name || "Staff",
         text: updates.note,
@@ -535,6 +536,55 @@ export async function updateLeadApi(leadId, updates) {
     return { success: true, lead: leads[idx] };
   }
   return { success: false };
+}
+
+// 8b. Add Note / Remark directly with Date-Time
+export async function addRemarkApi(leadId, remarkText) {
+  const token = getAuthToken();
+  const user = getCurrentStaffUser();
+  try {
+    const res = await fetch(`${API_BASE_URL}/leads/${leadId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ note: remarkText }),
+    });
+    if (res.ok) return await res.json();
+  } catch (e) {}
+
+  const leads = getLocalLeads();
+  const idx = leads.findIndex((l) => l._id === leadId);
+  if (idx !== -1) {
+    leads[idx].notes = leads[idx].notes || [];
+    const newNote = {
+      _id: "n-" + Date.now(),
+      authorName: user?.name || "Staff",
+      text: remarkText,
+      createdAt: new Date().toISOString(),
+    };
+    leads[idx].notes.unshift(newNote);
+    saveLocalLeads(leads);
+    return { success: true, note: newNote, lead: leads[idx] };
+  }
+  return { success: false };
+}
+
+// 8c. Delete Lead
+export async function deleteLeadApi(leadId) {
+  const token = getAuthToken();
+  try {
+    const res = await fetch(`${API_BASE_URL}/leads/${leadId}`, {
+      method: "DELETE",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    if (res.ok) return await res.json();
+  } catch (e) {}
+
+  const leads = getLocalLeads().filter((l) => l._id !== leadId);
+  saveLocalLeads(leads);
+  return { success: true };
 }
 
 // 9. Schedule Follow-up

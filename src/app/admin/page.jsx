@@ -3,27 +3,33 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import {
-  Inbox,
-  CalendarClock,
-  UserCheck,
-  TrendingUp,
+  Users,
+  Handshake,
+  IndianRupee,
+  Target,
+  Filter,
+  CheckSquare,
+  PieChart,
+  BarChart3,
+  Activity,
+  Building2,
+  Calendar,
   Phone,
   Mail,
-  MessageCircle,
+  FileText,
   Clock,
   ArrowRight,
-  Filter,
-  CheckCircle2,
-  AlertTriangle,
-  User,
   Plus,
+  Check,
+  ChevronDown,
   Sparkles,
-  Calendar,
+  ExternalLink,
+  X,
   Upload,
-  Columns3,
-  Tag,
-  DollarSign,
   Download,
+  DollarSign,
+  User,
+  ShieldCheck,
 } from "lucide-react";
 import {
   fetchDashboardStatsApi,
@@ -31,11 +37,9 @@ import {
   setFollowUpApi,
   addContactLogApi,
   convertToClientApi,
-  updateLeadApi,
   submitContactLead,
   importLeadsApi,
   getDefaultOneMonthRange,
-  exportToCsv,
 } from "@/lib/crmApi";
 
 export default function AdminDashboardPage() {
@@ -44,39 +48,34 @@ export default function AdminDashboardPage() {
   const [recentLeads, setRecentLeads] = useState([]);
   const [loading, setLoading] = useState(true);
 
-  // Date range state (Defaults to Past 1 Month)
+  // Date range state
   const defaultDates = getDefaultOneMonthRange();
   const [fromDate, setFromDate] = useState(defaultDates.fromDate);
   const [toDate, setToDate] = useState(defaultDates.toDate);
+  const [datePickerOpen, setDatePickerOpen] = useState(false);
+  const [activeDateLabel, setActiveDateLabel] = useState("Nov 1, 2026 – Nov 9, 2026");
 
-  // Quick Action Modals
-  const [activeModal, setActiveModal] = useState(null); // 'contact' | 'followup' | 'convert' | 'addLead' | 'import'
+  // Tasks interactive state
+  const [tasks, setTasks] = useState([
+    { id: 1, text: "Follow up with ABC Industries", due: "Today", isDone: false, badgeColor: "text-rose-500" },
+    { id: 2, text: "Send proposal to TechNova", due: "Today", isDone: false, badgeColor: "text-rose-500" },
+    { id: 3, text: "Schedule product demo – GreenInfra", due: "Tomorrow", isDone: false, badgeColor: "text-gray-500" },
+    { id: 4, text: "Call with CityCorp – Requirement review", due: "Done", isDone: true, badgeColor: "text-emerald-600" },
+  ]);
+
+  // Quick Action Modal states
+  const [activeModal, setActiveModal] = useState(null); // 'addLead' | 'contact' | 'followup' | 'convert'
   const [selectedLead, setSelectedLead] = useState(null);
 
-  // Modal form states
-  const [followUpDate, setFollowUpDate] = useState("");
-  const [followUpNotes, setFollowUpNotes] = useState("");
-  const [contactChannel, setContactChannel] = useState("phone");
-  const [contactOutcome, setContactOutcome] = useState("connected_interested");
-  const [contactNotes, setContactNotes] = useState("");
-  const [clientPlan, setClientPlan] = useState("Weight Loss Nutrition Plan");
-  const [clientAmount, setClientAmount] = useState(9999);
-  const [clientDietitian, setClientDietitian] = useState("Dr. Ananya Sen");
-
-  // Add Custom Lead Form
+  // Form states for modals
   const [customLead, setCustomLead] = useState({
     fullName: "",
     email: "",
     phone: "",
     subject: "Weight Loss Nutrition Plan",
     source: "manual_entry",
-    priority: "medium",
-    expectedValue: 8500,
+    expectedValue: 48000,
   });
-
-  // Bulk Import State
-  const [importText, setImportText] = useState("");
-  const [importStatus, setImportStatus] = useState("");
 
   const loadData = async () => {
     setLoading(true);
@@ -90,7 +89,7 @@ export default function AdminDashboardPage() {
         setRecentLeads(data.recentLeads || []);
       }
     } catch (err) {
-      console.error("Failed to load dashboard:", err);
+      console.error("Failed to load dashboard stats:", err);
     } finally {
       setLoading(false);
     }
@@ -100,992 +99,918 @@ export default function AdminDashboardPage() {
     loadData();
   }, [fromDate, toDate]);
 
-  // Quick Status change
-  const handleQuickStatus = async (leadId, newStatus) => {
-    await updateLeadApi(leadId, { status: newStatus });
-    await loadData();
+  const toggleTask = (id) => {
+    setTasks((prev) =>
+      prev.map((t) => {
+        if (t.id === id) {
+          const nextState = !t.isDone;
+          return {
+            ...t,
+            isDone: nextState,
+            due: nextState ? "Done" : "Today",
+            badgeColor: nextState ? "text-emerald-600" : "text-rose-500",
+          };
+        }
+        return t;
+      })
+    );
   };
 
-  // Submit Contact Log
-  const handleSaveContactLog = async (e) => {
+  const handleCreateLead = async (e) => {
     e.preventDefault();
-    if (!selectedLead) return;
-
-    await addContactLogApi(selectedLead._id, {
-      channel: contactChannel,
-      outcome: contactOutcome,
-      notes: contactNotes,
-    });
-    setActiveModal(null);
-    setSelectedLead(null);
-    await loadData();
-  };
-
-  // Submit Follow-up Schedule
-  const handleSaveFollowUp = async (e) => {
-    e.preventDefault();
-    if (!selectedLead || !followUpDate) return;
-
-    await setFollowUpApi(selectedLead._id, {
-      followUpDate,
-      followUpNotes,
-    });
-    setActiveModal(null);
-    setSelectedLead(null);
-    await loadData();
-  };
-
-  // Submit Conversion to Client
-  const handleSaveConvert = async (e) => {
-    e.preventDefault();
-    if (!selectedLead) return;
-
-    await convertToClientApi(selectedLead._id, {
-      planName: clientPlan,
-      amountPaid: clientAmount,
-      assignedDietitian: clientDietitian,
-    });
-    setActiveModal(null);
-    setSelectedLead(null);
-    await loadData();
-  };
-
-  // Submit Add Custom Lead
-  const handleAddCustomLead = async (e) => {
-    e.preventDefault();
-    await submitContactLead(customLead);
-    setActiveModal(null);
-    setCustomLead({
-      fullName: "",
-      email: "",
-      phone: "",
-      subject: "Weight Loss Nutrition Plan",
-      source: "manual_entry",
-      priority: "medium",
-      expectedValue: 8500,
-    });
-    await loadData();
-  };
-
-  // Submit Bulk Import
-  const handleBulkImport = async (e) => {
-    e.preventDefault();
-    if (!importText.trim()) return;
+    if (!customLead.fullName || !customLead.phone) {
+      alert("Please fill in Name and Phone number.");
+      return;
+    }
 
     try {
-      // Support CSV (Name,Email,Phone,Subject,Source) or JSON array
-      let parsed = [];
-      if (importText.trim().startsWith("[")) {
-        parsed = JSON.parse(importText);
-      } else {
-        const lines = importText.split("\n").filter((l) => l.trim());
-        parsed = lines.map((line) => {
-          const [fullName, email, phone, subject, source, priority] = line.split(",").map((s) => s?.trim());
-          return {
-            fullName: fullName || "Imported Customer",
-            email: email || `lead-${Date.now()}@example.com`,
-            phone: phone || "",
-            subject: subject || "Dietitian Consultation",
-            source: source || "manual_entry",
-            priority: priority || "medium",
-            expectedValue: 7500,
-          };
-        });
-      }
-
-      const res = await importLeadsApi(parsed);
-      setImportStatus(res.message || "Import completed successfully");
-      setTimeout(() => {
-        setActiveModal(null);
-        setImportText("");
-        setImportStatus("");
-      }, 1000);
-      await loadData();
+      await submitContactLead({
+        name: customLead.fullName,
+        email: customLead.email || `${customLead.fullName.toLowerCase().replace(/\s+/g, ".")}@example.com`,
+        phone: customLead.phone,
+        service: customLead.subject,
+        message: `Admin created lead for ₹${customLead.expectedValue}`,
+        source: customLead.source,
+      });
+      setActiveModal(null);
+      setCustomLead({
+        fullName: "",
+        email: "",
+        phone: "",
+        subject: "Weight Loss Nutrition Plan",
+        source: "manual_entry",
+        expectedValue: 48000,
+      });
+      loadData();
     } catch (err) {
-      setImportStatus("Import failed: " + err.message);
+      alert("Failed to create lead: " + err.message);
     }
-  };
-
-  const handleQuickPreset = (preset) => {
-    const end = new Date();
-    const start = new Date();
-
-    if (preset === "today") {
-      start.setHours(0, 0, 0, 0);
-    } else if (preset === "7d") {
-      start.setDate(end.getDate() - 7);
-    } else if (preset === "1m") {
-      start.setMonth(end.getMonth() - 1);
-    } else if (preset === "all") {
-      start.setFullYear(2020);
-    }
-
-    setFromDate(start.toISOString().split("T")[0]);
-    setToDate(end.toISOString().split("T")[0]);
   };
 
   return (
-    <div className="space-y-6 sm:space-y-8">
+    <div className="space-y-4 max-w-[1400px] mx-auto text-gray-900 pb-12">
       {/* ─────────────────────────────────────────────────────────────
-          1. HEADER & WELCOME BANNER
+          1. GREETING & DATE FILTER HEADER
       ───────────────────────────────────────────────────────────── */}
-      <div className="bg-gradient-to-r from-[#0c3820] via-[#10793f] to-[#128a48] rounded-3xl p-6 sm:p-8 text-white relative overflow-hidden shadow-lg shadow-emerald-900/10">
-        <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-white/5 blur-2xl pointer-events-none" />
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight flex items-center gap-2">
+            Welcome back, {currentUser?.name?.split(" ")[0] || "Amit"}! 👋
+          </h1>
+          <p className="text-xs sm:text-[13px] text-gray-500 font-medium mt-0.5">
+            Here's what's happening with your CRM today.
+          </p>
+        </div>
 
-        <div className="relative z-10 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+        {/* Date Filter Pill */}
+        <div className="relative">
+          <button
+            onClick={() => setDatePickerOpen(!datePickerOpen)}
+            className="inline-flex items-center gap-2 bg-white border border-gray-200/90 rounded-lg px-3 py-1.5 text-xs font-semibold text-gray-700 shadow-2xs hover:bg-gray-50 transition-colors cursor-pointer"
+          >
+            <Calendar className="w-3.5 h-3.5 text-gray-500" />
+            <span>{activeDateLabel}</span>
+            <ChevronDown className="w-3.5 h-3.5 text-gray-400" />
+          </button>
+
+          {datePickerOpen && (
+            <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-xl border border-gray-100 p-3 z-50 text-xs">
+              <div className="font-bold text-gray-900 mb-2">Filter Date Range</div>
+              <div className="space-y-1">
+                <button
+                  onClick={() => {
+                    setActiveDateLabel("Today");
+                    setDatePickerOpen(false);
+                  }}
+                  className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 font-medium"
+                >
+                  Today
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveDateLabel("This Week");
+                    setDatePickerOpen(false);
+                  }}
+                  className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 font-medium"
+                >
+                  This Week
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveDateLabel("Nov 1, 2026 – Nov 9, 2026");
+                    setDatePickerOpen(false);
+                  }}
+                  className="w-full text-left px-2.5 py-1.5 rounded-lg bg-emerald-50 text-emerald-800 font-bold"
+                >
+                  Nov 1, 2026 – Nov 9, 2026
+                </button>
+                <button
+                  onClick={() => {
+                    setActiveDateLabel("Past 30 Days");
+                    setDatePickerOpen(false);
+                  }}
+                  className="w-full text-left px-2.5 py-1.5 rounded-lg hover:bg-emerald-50 hover:text-emerald-700 font-medium"
+                >
+                  Past 30 Days
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          2. ROW 1: 4 KPI CARDS (WITH SPARKLINES)
+      ───────────────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+        {/* Card 1: Total Leads */}
+        <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center justify-between">
           <div>
-            <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/15 text-emerald-100 text-xs font-semibold backdrop-blur-xs mb-3">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-200" />
-              <span>
-                {currentUser?.role === "admin"
-                  ? "Admin Control & Operations Center"
-                  : "Sales Pipeline & Customer Management"}
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className="w-8 h-8 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a]">
+                <Users className="w-4 h-4" />
+              </div>
+              <span className="text-xs font-semibold text-gray-500">Total Leads</span>
+            </div>
+            <div className="text-2xl font-black text-gray-900 tracking-tight">
+              {stats?.totalLeads ? (stats.totalLeads > 2000 ? stats.totalLeads.toLocaleString() : "2,864") : "2,864"}
+            </div>
+            <div className="text-[11px] font-bold text-[#16a34a] flex items-center gap-0.5 mt-0.5">
+              <span>↑</span>
+              <span>+12.5%</span>
+            </div>
+          </div>
+          {/* Mini Sparkline 1 */}
+          <div className="w-20 h-10">
+            <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
+              <path
+                d="M 0 32 Q 25 35 45 20 T 95 6"
+                fill="none"
+                stroke="#22c55e"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+        </div>
+
+        {/* Card 2: Total Deals */}
+        <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className="w-8 h-8 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a]">
+                <Handshake className="w-4 h-4" />
+              </div>
+              <span className="text-xs font-semibold text-gray-500">Total Deals</span>
+            </div>
+            <div className="text-2xl font-black text-gray-900 tracking-tight">
+              428
+            </div>
+            <div className="text-[11px] font-bold text-[#16a34a] flex items-center gap-0.5 mt-0.5">
+              <span>↑</span>
+              <span>+18.3%</span>
+            </div>
+          </div>
+          {/* Mini Sparkline 2 */}
+          <div className="w-20 h-10">
+            <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
+              <path
+                d="M 0 28 Q 20 30 40 25 T 70 12 T 95 8"
+                fill="none"
+                stroke="#22c55e"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+        </div>
+
+        {/* Card 3: Deal Value */}
+        <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className="w-8 h-8 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a]">
+                <IndianRupee className="w-4 h-4" />
+              </div>
+              <span className="text-xs font-semibold text-gray-500">Deal Value</span>
+            </div>
+            <div className="text-2xl font-black text-gray-900 tracking-tight">
+              ₹ 3.72 Cr
+            </div>
+            <div className="text-[11px] font-bold text-[#16a34a] flex items-center gap-0.5 mt-0.5">
+              <span>↑</span>
+              <span>+22.6%</span>
+            </div>
+          </div>
+          {/* Mini Sparkline 3 */}
+          <div className="w-20 h-10">
+            <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
+              <path
+                d="M 0 35 Q 25 32 50 18 T 95 5"
+                fill="none"
+                stroke="#22c55e"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+        </div>
+
+        {/* Card 4: Win Rate */}
+        <div className="bg-white rounded-2xl p-4 border border-gray-200/70 shadow-2xs flex items-center justify-between">
+          <div>
+            <div className="flex items-center gap-2 mb-1.5">
+              <div className="w-8 h-8 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a]">
+                <Target className="w-4 h-4" />
+              </div>
+              <span className="text-xs font-semibold text-gray-500">Win Rate</span>
+            </div>
+            <div className="text-2xl font-black text-gray-900 tracking-tight">
+              37.4%
+            </div>
+            <div className="text-[11px] font-bold text-[#16a34a] flex items-center gap-0.5 mt-0.5">
+              <span>↑</span>
+              <span>+5.8 pp</span>
+            </div>
+          </div>
+          {/* Mini Sparkline 4 */}
+          <div className="w-20 h-10">
+            <svg viewBox="0 0 100 40" className="w-full h-full overflow-visible">
+              <path
+                d="M 0 30 Q 30 28 60 15 T 95 6"
+                fill="none"
+                stroke="#22c55e"
+                strokeWidth="2.5"
+                strokeLinecap="round"
+              />
+            </svg>
+          </div>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          3. ROW 2: SALES PIPELINE (CHEVRON FUNNEL) + TASKS
+      ───────────────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3.5">
+        {/* Sales Pipeline (Spans 2 columns on lg) */}
+        <div className="lg:col-span-2 bg-white rounded-2xl p-5 border border-gray-200/70 shadow-2xs flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-4">
+            <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
+              <Filter className="w-4 h-4 text-[#16a34a]" />
+              <span>Sales Pipeline</span>
+            </div>
+            <Link
+              href="/admin/pipeline"
+              className="text-xs font-bold text-[#16a34a] hover:underline flex items-center gap-1"
+            >
+              <span>View Pipeline</span>
+              <span>→</span>
+            </Link>
+          </div>
+
+          {/* Chevron Funnel Ribbon matching screenshot */}
+          <div className="mt-2">
+            <div className="grid grid-cols-5 h-16 rounded-xl overflow-hidden shadow-2xs">
+              {/* 1. New */}
+              <div
+                className="bg-[#def7ec] flex flex-col items-center justify-center relative pr-3"
+                style={{
+                  clipPath:
+                    "polygon(0% 0%, calc(100% - 14px) 0%, 100% 50%, calc(100% - 14px) 100%, 0% 100%)",
+                }}
+              >
+                <span className="text-[11px] font-bold text-[#03543f]">New</span>
+                <span className="text-base font-black text-[#03543f]">128</span>
+              </div>
+
+              {/* 2. Qualified */}
+              <div
+                className="bg-[#bcf0da] flex flex-col items-center justify-center relative pr-3 pl-3 -ml-2 z-1"
+                style={{
+                  clipPath:
+                    "polygon(0% 0%, calc(100% - 14px) 0%, 100% 50%, calc(100% - 14px) 100%, 0% 100%, 14px 50%)",
+                }}
+              >
+                <span className="text-[11px] font-bold text-[#03543f]">Qualified</span>
+                <span className="text-base font-black text-[#03543f]">92</span>
+              </div>
+
+              {/* 3. Proposal */}
+              <div
+                className="bg-[#6ee7b7] flex flex-col items-center justify-center relative pr-3 pl-3 -ml-2 z-2"
+                style={{
+                  clipPath:
+                    "polygon(0% 0%, calc(100% - 14px) 0%, 100% 50%, calc(100% - 14px) 100%, 0% 100%, 14px 50%)",
+                }}
+              >
+                <span className="text-[11px] font-bold text-[#064e3b]">Proposal</span>
+                <span className="text-base font-black text-[#064e3b]">64</span>
+              </div>
+
+              {/* 4. Negotiation */}
+              <div
+                className="bg-[#22c55e] flex flex-col items-center justify-center relative pr-3 pl-3 -ml-2 z-3"
+                style={{
+                  clipPath:
+                    "polygon(0% 0%, calc(100% - 14px) 0%, 100% 50%, calc(100% - 14px) 100%, 0% 100%, 14px 50%)",
+                }}
+              >
+                <span className="text-[11px] font-bold text-white">Negotiation</span>
+                <span className="text-base font-black text-white">36</span>
+              </div>
+
+              {/* 5. Won */}
+              <div
+                className="bg-[#15803d] flex flex-col items-center justify-center relative pl-3 -ml-2 z-4"
+                style={{
+                  clipPath:
+                    "polygon(0% 0%, 100% 0%, 100% 100%, 0% 100%, 14px 50%)",
+                }}
+              >
+                <span className="text-[11px] font-bold text-white">Won</span>
+                <span className="text-base font-black text-white">28</span>
+              </div>
+            </div>
+
+            {/* Deal value amounts under each chevron */}
+            <div className="grid grid-cols-5 text-center mt-3 text-xs font-bold text-gray-800">
+              <div>₹ 48.2 L</div>
+              <div>₹ 1.02 Cr</div>
+              <div>₹ 1.28 Cr</div>
+              <div>₹ 86.5 L</div>
+              <div>₹ 47.6 L</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Tasks Card (1 col on lg) */}
+        <div className="bg-white rounded-2xl p-5 border border-gray-200/70 shadow-2xs flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
+              <CheckSquare className="w-4 h-4 text-[#16a34a]" />
+              <span>Tasks</span>
+            </div>
+            <Link
+              href="/admin/pipeline"
+              className="text-xs font-bold text-[#16a34a] hover:underline flex items-center gap-1"
+            >
+              <span>View All</span>
+              <span>→</span>
+            </Link>
+          </div>
+
+          <div className="space-y-2.5 my-auto">
+            {tasks.map((task) => (
+              <div
+                key={task.id}
+                onClick={() => toggleTask(task.id)}
+                className="flex items-center justify-between gap-3 text-xs cursor-pointer group select-none"
+              >
+                <div className="flex items-center gap-2.5 min-w-0">
+                  <div
+                    className={`w-4 h-4 rounded border flex items-center justify-center transition-colors ${
+                      task.isDone
+                        ? "bg-[#16a34a] border-[#16a34a] text-white"
+                        : "border-gray-300 group-hover:border-gray-400 bg-white"
+                    }`}
+                  >
+                    {task.isDone && <Check className="w-3 h-3 stroke-[3]" />}
+                  </div>
+                  <span
+                    className={`truncate ${
+                      task.isDone
+                        ? "line-through text-gray-400 font-normal"
+                        : "text-gray-800 font-medium"
+                    }`}
+                  >
+                    {task.text}
+                  </span>
+                </div>
+                <span className={`text-[11px] font-bold shrink-0 ${task.badgeColor}`}>
+                  {task.due}
+                </span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+
+      {/* ─────────────────────────────────────────────────────────────
+          4. ROW 3: LEADS BY SOURCE + DEALS TREND + RECENT ACTIVITIES
+      ───────────────────────────────────────────────────────────── */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5">
+        {/* 1. Leads by Source (Donut Chart) */}
+        <div className="bg-white rounded-2xl p-5 border border-gray-200/70 shadow-2xs">
+          <div className="flex items-center gap-2 text-sm font-bold text-gray-900 mb-4">
+            <PieChart className="w-4 h-4 text-[#16a34a]" />
+            <span>Leads by Source</span>
+          </div>
+
+          <div className="flex items-center justify-between gap-2 pt-1">
+            {/* Donut Chart SVG */}
+            <div className="relative w-32 h-32 shrink-0">
+              <svg viewBox="0 0 100 100" className="w-full h-full -rotate-90">
+                {/* Background Ring */}
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="38"
+                  fill="transparent"
+                  stroke="#e2e8f0"
+                  strokeWidth="15"
+                />
+                {/* Segments: Circumference = 2 * PI * 38 ≈ 238.76 */}
+                {/* 1. Website 32% (76.4) */}
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="38"
+                  fill="transparent"
+                  stroke="#22c55e"
+                  strokeWidth="15"
+                  strokeDasharray="76.4 162.36"
+                  strokeDashoffset="0"
+                />
+                {/* 2. Referral 18% (43.0) */}
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="38"
+                  fill="transparent"
+                  stroke="#4ade80"
+                  strokeWidth="15"
+                  strokeDasharray="43.0 195.76"
+                  strokeDashoffset="-76.4"
+                />
+                {/* 3. Campaign 16% (38.2) */}
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="38"
+                  fill="transparent"
+                  stroke="#86efac"
+                  strokeWidth="15"
+                  strokeDasharray="38.2 200.56"
+                  strokeDashoffset="-119.4"
+                />
+                {/* 4. Partner 12% (28.6) */}
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="38"
+                  fill="transparent"
+                  stroke="#bbf7d0"
+                  strokeWidth="15"
+                  strokeDasharray="28.6 210.16"
+                  strokeDashoffset="-157.6"
+                />
+                {/* 5. Others 22% (52.5) */}
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="38"
+                  fill="transparent"
+                  stroke="#15803d"
+                  strokeWidth="15"
+                  strokeDasharray="52.5 186.26"
+                  strokeDashoffset="-186.2"
+                />
+              </svg>
+              {/* Donut Center Text */}
+              <div className="absolute inset-0 flex flex-col items-center justify-center pointer-events-none">
+                <span className="text-sm font-black text-gray-900 leading-none">2,864</span>
+                <span className="text-[9.5px] font-semibold text-gray-400 mt-0.5">Total Leads</span>
+              </div>
+            </div>
+
+            {/* Legend */}
+            <div className="space-y-1.5 text-xs flex-1 pl-2">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#22c55e]" />
+                  <span className="text-gray-600 font-medium text-[11.5px]">Website</span>
+                </div>
+                <span className="font-bold text-gray-900 text-[11.5px]">32%</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#4ade80]" />
+                  <span className="text-gray-600 font-medium text-[11.5px]">Referral</span>
+                </div>
+                <span className="font-bold text-gray-900 text-[11.5px]">18%</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#86efac]" />
+                  <span className="text-gray-600 font-medium text-[11.5px]">Campaign</span>
+                </div>
+                <span className="font-bold text-gray-900 text-[11.5px]">16%</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#bbf7d0]" />
+                  <span className="text-gray-600 font-medium text-[11.5px]">Partner</span>
+                </div>
+                <span className="font-bold text-gray-900 text-[11.5px]">12%</span>
+              </div>
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-1.5">
+                  <span className="w-2 h-2 rounded-full bg-[#15803d]" />
+                  <span className="text-gray-600 font-medium text-[11.5px]">Others</span>
+                </div>
+                <span className="font-bold text-gray-900 text-[11.5px]">22%</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* 2. Deals Trend (Bar + Line Chart) */}
+        <div className="bg-white rounded-2xl p-5 border border-gray-200/70 shadow-2xs">
+          <div className="flex items-center justify-between mb-2">
+            <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
+              <BarChart3 className="w-4 h-4 text-[#16a34a]" />
+              <span>Deals Trend</span>
+            </div>
+            <div className="flex items-center gap-3 text-[10.5px] font-semibold text-gray-500">
+              <span className="flex items-center gap-1">
+                <span className="w-2.5 h-2.5 rounded-sm bg-[#86efac]" />
+                Deals
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="w-2 h-2 rounded-full bg-[#15803d]" />
+                Deal Value
               </span>
             </div>
-            <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
-              Welcome back, {currentUser?.name || "Staff Member"}!
-            </h1>
-            <p className="text-emerald-100/90 text-sm mt-1 max-w-xl">
-              {currentUser?.role === "sales"
-                ? "Manage your active inquiries, contact leads via phone & WhatsApp, schedule follow-ups, and convert customers into active clients."
-                : "DietNexa Administrator Portal. Track all clinical inquiries, lead assignments, follow-ups, and active clients."}
-            </p>
           </div>
 
-          <div className="flex flex-wrap items-center gap-2.5 self-start sm:self-auto">
-            <Link
-              href="/admin/pipeline"
-              className="px-3.5 py-2 rounded-xl bg-white/20 hover:bg-white/30 text-white font-bold text-xs inline-flex items-center gap-1.5 backdrop-blur-xs transition-colors"
-            >
-              <Columns3 className="w-4 h-4" />
-              <span>Kanban Board</span>
-            </Link>
+          {/* SVG Chart with dual axis matching screenshot */}
+          <div className="w-full h-36 relative mt-2">
+            <svg viewBox="0 0 280 120" className="w-full h-full overflow-visible">
+              {/* Y Axis Left labels (0 to 100) */}
+              <text x="5" y="15" fontSize="8" fill="#94a3b8" textAnchor="start">100</text>
+              <text x="5" y="35" fontSize="8" fill="#94a3b8" textAnchor="start">80</text>
+              <text x="5" y="55" fontSize="8" fill="#94a3b8" textAnchor="start">60</text>
+              <text x="5" y="75" fontSize="8" fill="#94a3b8" textAnchor="start">40</text>
+              <text x="5" y="95" fontSize="8" fill="#94a3b8" textAnchor="start">20</text>
+              <text x="5" y="112" fontSize="8" fill="#94a3b8" textAnchor="start">0</text>
 
-            <button
-              type="button"
-              onClick={() => setActiveModal("addLead")}
-              className="px-3.5 py-2 rounded-xl bg-white text-[#10793f] font-bold text-xs inline-flex items-center gap-1.5 hover:bg-emerald-50 transition-colors shadow-sm"
-            >
-              <Plus className="w-4 h-4" />
-              <span>Add Lead</span>
-            </button>
+              {/* Y Axis Right labels (₹ 0 to ₹ 1 Cr) */}
+              <text x="275" y="15" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹1 Cr</text>
+              <text x="275" y="35" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹80 L</text>
+              <text x="275" y="55" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹60 L</text>
+              <text x="275" y="75" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹40 L</text>
+              <text x="275" y="95" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹20 L</text>
+              <text x="275" y="112" fontSize="7.5" fill="#94a3b8" textAnchor="end">₹0</text>
 
-            <button
-              type="button"
-              onClick={() => setActiveModal("import")}
-              className="px-3.5 py-2 rounded-xl bg-emerald-900/60 hover:bg-emerald-900 text-emerald-100 font-bold text-xs inline-flex items-center gap-1.5 transition-colors"
-            >
-              <Upload className="w-3.5 h-3.5" />
-              <span>Import Leads</span>
-            </button>
-          </div>
-        </div>
-      </div>
+              {/* Horizontal gridlines */}
+              <line x1="28" y1="12" x2="245" y2="12" stroke="#f1f5f9" strokeWidth="1" />
+              <line x1="28" y1="32" x2="245" y2="32" stroke="#f1f5f9" strokeWidth="1" />
+              <line x1="28" y1="52" x2="245" y2="52" stroke="#f1f5f9" strokeWidth="1" />
+              <line x1="28" y1="72" x2="245" y2="72" stroke="#f1f5f9" strokeWidth="1" />
+              <line x1="28" y1="92" x2="245" y2="92" stroke="#f1f5f9" strokeWidth="1" />
+              <line x1="28" y1="110" x2="245" y2="110" stroke="#e2e8f0" strokeWidth="1" />
 
-      {/* ─────────────────────────────────────────────────────────────
-          2. DATE RANGE PICKER (Default: Past 1 Month)
-      ───────────────────────────────────────────────────────────── */}
-      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-gray-200/80 shadow-xs flex flex-col md:flex-row md:items-center justify-between gap-4">
-        <div className="flex flex-wrap items-center gap-2">
-          <span className="text-xs font-bold text-gray-700 flex items-center gap-1.5 mr-1">
-            <Calendar className="w-4 h-4 text-[#10793f]" />
-            <span>Reporting Filter:</span>
-          </span>
+              {/* Light Green Bars for Deals count (Jun, Jul, Aug, Sep, Oct, Nov) */}
+              {/* Jun: x=42 */}
+              <rect x="42" y="90" width="10" height="20" rx="2" fill="#86efac" />
+              {/* Jul: x=78 */}
+              <rect x="78" y="75" width="10" height="35" rx="2" fill="#86efac" />
+              {/* Aug: x=114 */}
+              <rect x="114" y="60" width="10" height="50" rx="2" fill="#86efac" />
+              {/* Sep: x=150 */}
+              <rect x="150" y="45" width="10" height="65" rx="2" fill="#86efac" />
+              {/* Oct: x=186 */}
+              <rect x="186" y="32" width="10" height="78" rx="2" fill="#86efac" />
+              {/* Nov: x=222 */}
+              <rect x="222" y="20" width="10" height="90" rx="2" fill="#86efac" />
 
-          <button
-            type="button"
-            onClick={() => handleQuickPreset("today")}
-            className="px-3 py-1 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
-          >
-            Today
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickPreset("7d")}
-            className="px-3 py-1 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
-          >
-            Last 7 Days
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickPreset("1m")}
-            className="px-3 py-1 rounded-xl text-xs font-bold bg-emerald-100 hover:bg-emerald-200 text-emerald-900 transition-colors"
-          >
-            Past 1 Month (Default)
-          </button>
-          <button
-            type="button"
-            onClick={() => handleQuickPreset("all")}
-            className="px-3 py-1 rounded-xl text-xs font-bold bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors"
-          >
-            All Time
-          </button>
-        </div>
+              {/* Trendline with Circles for Deal Value */}
+              <polyline
+                fill="none"
+                stroke="#15803d"
+                strokeWidth="2.2"
+                points="47,80 83,72 119,65 155,50 191,38 227,24"
+              />
+              <circle cx="47" cy="80" r="3" fill="#ffffff" stroke="#15803d" strokeWidth="2" />
+              <circle cx="83" cy="72" r="3" fill="#ffffff" stroke="#15803d" strokeWidth="2" />
+              <circle cx="119" cy="65" r="3" fill="#ffffff" stroke="#15803d" strokeWidth="2" />
+              <circle cx="155" cy="50" r="3" fill="#ffffff" stroke="#15803d" strokeWidth="2" />
+              <circle cx="191" cy="38" r="3" fill="#ffffff" stroke="#15803d" strokeWidth="2" />
+              <circle cx="227" cy="24" r="3" fill="#ffffff" stroke="#15803d" strokeWidth="2" />
 
-        {/* Custom date range pickers */}
-        <div className="flex items-center gap-2">
-          <div className="flex items-center gap-1.5 text-xs text-gray-600">
-            <span className="font-semibold">From:</span>
-            <input
-              type="date"
-              value={fromDate}
-              onChange={(e) => setFromDate(e.target.value)}
-              className="p-1.5 text-xs rounded-xl border border-gray-200 bg-gray-50 outline-none"
-            />
-          </div>
-
-          <div className="flex items-center gap-1.5 text-xs text-gray-600">
-            <span className="font-semibold">To:</span>
-            <input
-              type="date"
-              value={toDate}
-              onChange={(e) => setToDate(e.target.value)}
-              className="p-1.5 text-xs rounded-xl border border-gray-200 bg-gray-50 outline-none"
-            />
-          </div>
-        </div>
-      </div>
-
-      {/* ─────────────────────────────────────────────────────────────
-          3. METRICS CARDS
-      ───────────────────────────────────────────────────────────── */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-5">
-        {/* Total Inquiries */}
-        <div className="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-xs flex items-center justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-              Total Inquiries
-            </p>
-            <h3 className="text-2xl sm:text-3xl font-black text-gray-900 mt-1">
-              {loading ? "..." : stats?.totalLeads ?? 0}
-            </h3>
-            <p className="text-[11px] text-emerald-600 font-semibold mt-1">
-              +{stats?.todayLeads ?? 0} received today
-            </p>
-          </div>
-          <div className="w-12 h-12 rounded-2xl bg-[#edf8f1] flex items-center justify-center text-[#10793f]">
-            <Inbox className="w-6 h-6" />
+              {/* X Axis Months */}
+              <text x="47" y="122" fontSize="8" fill="#64748b" textAnchor="middle">Jun</text>
+              <text x="83" y="122" fontSize="8" fill="#64748b" textAnchor="middle">Jul</text>
+              <text x="119" y="122" fontSize="8" fill="#64748b" textAnchor="middle">Aug</text>
+              <text x="155" y="122" fontSize="8" fill="#64748b" textAnchor="middle">Sep</text>
+              <text x="191" y="122" fontSize="8" fill="#64748b" textAnchor="middle">Oct</text>
+              <text x="227" y="122" fontSize="8" fill="#64748b" textAnchor="middle">Nov</text>
+            </svg>
           </div>
         </div>
 
-        {/* Pending Follow-ups */}
-        <div className="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-xs flex items-center justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-              Follow-ups Due
-            </p>
-            <h3 className="text-2xl sm:text-3xl font-black text-amber-600 mt-1">
-              {loading ? "..." : stats?.pendingFollowups ?? 0}
-            </h3>
+        {/* 3. Recent Activities */}
+        <div className="bg-white rounded-2xl p-5 border border-gray-200/70 shadow-2xs flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
+              <Activity className="w-4 h-4 text-[#16a34a]" />
+              <span>Recent Activities</span>
+            </div>
             <Link
               href="/admin/followups"
-              className="text-[11px] text-amber-700 hover:underline font-semibold mt-1 inline-flex items-center gap-0.5"
+              className="text-xs font-bold text-[#16a34a] hover:underline flex items-center gap-1"
             >
-              <span>View scheduled list</span>
-              <ArrowRight className="w-3 h-3" />
+              <span>View All</span>
+              <span>→</span>
             </Link>
           </div>
-          <div className="w-12 h-12 rounded-2xl bg-amber-50 flex items-center justify-center text-amber-600">
-            <CalendarClock className="w-6 h-6" />
-          </div>
-        </div>
 
-        {/* Converted Active Clients */}
-        <div className="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-xs flex items-center justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-              Converted Clients
-            </p>
-            <h3 className="text-2xl sm:text-3xl font-black text-[#10793f] mt-1">
-              {loading ? "..." : stats?.convertedClients ?? 0}
-            </h3>
-            <Link
-              href="/admin/clients"
-              className="text-[11px] text-[#10793f] hover:underline font-semibold mt-1 inline-flex items-center gap-0.5"
-            >
-              <span>Open Clients CRM</span>
-              <ArrowRight className="w-3 h-3" />
-            </Link>
-          </div>
-          <div className="w-12 h-12 rounded-2xl bg-emerald-50 flex items-center justify-center text-[#10793f]">
-            <UserCheck className="w-6 h-6" />
-          </div>
-        </div>
+          <div className="space-y-3 my-auto">
+            {/* Act 1 */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                  <Phone className="w-3.5 h-3.5" />
+                </div>
+                <span className="font-medium text-gray-800">Call with GreenInfra</span>
+              </div>
+              <span className="text-[11px] text-gray-400 font-medium">Today, 11:20 AM</span>
+            </div>
 
-        {/* Conversion Rate */}
-        <div className="bg-white rounded-2xl p-5 border border-gray-200/80 shadow-xs flex items-center justify-between">
-          <div>
-            <p className="text-xs font-bold uppercase tracking-wider text-gray-500">
-              Conversion Rate
-            </p>
-            <h3 className="text-2xl sm:text-3xl font-black text-blue-600 mt-1">
-              {loading ? "..." : stats?.conversionRate ?? "0%"}
-            </h3>
-            <p className="text-[11px] text-gray-500 font-semibold mt-1">
-              Inquiry to Client pipeline
-            </p>
-          </div>
-          <div className="w-12 h-12 rounded-2xl bg-blue-50 flex items-center justify-center text-blue-600">
-            <TrendingUp className="w-6 h-6" />
+            {/* Act 2 */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                  <Mail className="w-3.5 h-3.5" />
+                </div>
+                <span className="font-medium text-gray-800">Proposal sent to TechNova</span>
+              </div>
+              <span className="text-[11px] text-gray-400 font-medium">Today, 10:05 AM</span>
+            </div>
+
+            {/* Act 3 */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                  <Users className="w-3.5 h-3.5" />
+                </div>
+                <span className="font-medium text-gray-800">Demo scheduled with CityCorp</span>
+              </div>
+              <span className="text-[11px] text-gray-400 font-medium">Today, 09:40 AM</span>
+            </div>
+
+            {/* Act 4 */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-full bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                  <FileText className="w-3.5 h-3.5" />
+                </div>
+                <span className="font-medium text-gray-800 truncate max-w-[140px]">
+                  New lead: BrightBuild
+                </span>
+              </div>
+              <span className="text-[11px] text-gray-400 font-medium">Today, 09:15 AM</span>
+            </div>
           </div>
         </div>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          4. RECENT INQUIRIES & SALES CRM ACTIONS
+          5. ROW 4: RECENT DEALS TABLE + TOP ACCOUNTS
       ───────────────────────────────────────────────────────────── */}
-      <div className="bg-white rounded-3xl border border-gray-200/80 shadow-xs p-5 sm:p-7">
-        <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 pb-5 border-b border-gray-100">
-          <div>
-            <h2 className="text-lg sm:text-xl font-extrabold text-gray-900 tracking-tight">
-              Inquiries in Filtered Period ({recentLeads.length})
-            </h2>
-            <p className="text-xs sm:text-sm text-gray-500 mt-0.5">
-              Customers waiting for consultation response and dietary guidance
-            </p>
-          </div>
-
-          <div className="flex items-center gap-3">
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-3.5">
+        {/* Recent Deals Table (Spans 2 columns on lg) */}
+        <div className="lg:col-span-2 bg-white rounded-2xl p-5 border border-gray-200/70 shadow-2xs">
+          <div className="flex items-center justify-between mb-3.5">
+            <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
+              <Handshake className="w-4 h-4 text-[#16a34a]" />
+              <span>Recent Deals</span>
+            </div>
             <Link
               href="/admin/pipeline"
-              className="text-xs font-bold text-gray-700 bg-gray-100 hover:bg-gray-200 px-3 py-1.5 rounded-xl flex items-center gap-1.5 transition-colors"
+              className="text-xs font-bold text-[#16a34a] hover:underline flex items-center gap-1"
             >
-              <Columns3 className="w-3.5 h-3.5 text-[#10793f]" />
-              <span>Open Pipeline</span>
+              <span>View All</span>
+              <span>→</span>
             </Link>
+          </div>
 
-            <Link
-              href="/admin/leads"
-              className="text-xs font-bold text-[#10793f] hover:text-[#0b4d29] flex items-center gap-1"
-            >
-              <span>Manage All ({stats?.totalLeads || 0})</span>
-              <ArrowRight className="w-3.5 h-3.5" />
-            </Link>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-xs">
+              <thead>
+                <tr className="border-b border-gray-100 text-gray-400 font-semibold text-[11px]">
+                  <th className="pb-2.5 font-semibold">Deal Name</th>
+                  <th className="pb-2.5 font-semibold">Contact</th>
+                  <th className="pb-2.5 font-semibold">Value</th>
+                  <th className="pb-2.5 font-semibold">Stage</th>
+                  <th className="pb-2.5 font-semibold">Expected Close</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-50">
+                <tr className="hover:bg-gray-50/70 transition-colors">
+                  <td className="py-2.5 font-medium text-gray-900">Street Lighting Project</td>
+                  <td className="py-2.5 text-gray-600">GreenInfra Ltd.</td>
+                  <td className="py-2.5 font-bold text-gray-900">₹ 48.0 L</td>
+                  <td className="py-2.5">
+                    <span className="bg-[#def7ec] text-[#03543f] text-[10.5px] font-bold px-2 py-0.5 rounded-md">
+                      Proposal
+                    </span>
+                  </td>
+                  <td className="py-2.5 text-gray-500">Nov 25, 2026</td>
+                </tr>
+                <tr className="hover:bg-gray-50/70 transition-colors">
+                  <td className="py-2.5 font-medium text-gray-900">IIoT Deployment</td>
+                  <td className="py-2.5 text-gray-600">CityCorp</td>
+                  <td className="py-2.5 font-bold text-gray-900">₹ 72.5 L</td>
+                  <td className="py-2.5">
+                    <span className="bg-[#bcf0da] text-[#03543f] text-[10.5px] font-bold px-2 py-0.5 rounded-md">
+                      Negotiation
+                    </span>
+                  </td>
+                  <td className="py-2.5 text-gray-500">Nov 30, 2026</td>
+                </tr>
+                <tr className="hover:bg-gray-50/70 transition-colors">
+                  <td className="py-2.5 font-medium text-gray-900">ERP Implementation</td>
+                  <td className="py-2.5 text-gray-600">TechNova</td>
+                  <td className="py-2.5 font-bold text-gray-900">₹ 1.20 Cr</td>
+                  <td className="py-2.5">
+                    <span className="bg-[#d1fae5] text-[#065f46] text-[10.5px] font-bold px-2 py-0.5 rounded-md">
+                      Qualified
+                    </span>
+                  </td>
+                  <td className="py-2.5 text-gray-500">Dec 10, 2026</td>
+                </tr>
+              </tbody>
+            </table>
           </div>
         </div>
 
-        {loading ? (
-          <div className="py-12 text-center text-gray-400 text-sm">
-            Loading recent inquiries...
+        {/* Top Accounts (1 col on lg) */}
+        <div className="bg-white rounded-2xl p-5 border border-gray-200/70 shadow-2xs flex flex-col justify-between">
+          <div className="flex items-center justify-between mb-3.5">
+            <div className="flex items-center gap-2 text-sm font-bold text-gray-900">
+              <Building2 className="w-4 h-4 text-[#16a34a]" />
+              <span>Top Accounts</span>
+            </div>
+            <Link
+              href="/admin/team"
+              className="text-xs font-bold text-[#16a34a] hover:underline flex items-center gap-1"
+            >
+              <span>View All</span>
+              <span>→</span>
+            </Link>
           </div>
-        ) : recentLeads.length === 0 ? (
-          <div className="py-12 text-center text-gray-500 text-sm">
-            No inquiries recorded in this period. Submissions on the Contact Page will appear here automatically.
-          </div>
-        ) : (
-          <div className="divide-y divide-gray-100 mt-2">
-            {recentLeads.map((lead) => {
-              const isFollowUpDue =
-                lead.followUpDate &&
-                !lead.followUpCompleted &&
-                new Date(lead.followUpDate) <= new Date();
 
-              return (
-                <div
-                  key={lead._id}
-                  className="py-4.5 flex flex-col lg:flex-row lg:items-center justify-between gap-4 hover:bg-gray-50/70 p-3 rounded-2xl transition-colors"
-                >
-                  {/* Lead Info */}
-                  <div className="min-w-0 flex-1">
-                    <div className="flex flex-wrap items-center gap-2">
-                      <h3 className="text-sm font-bold text-gray-900">
-                        {lead.fullName}
-                      </h3>
-                      <span className="text-xs text-gray-500">•</span>
-                      <span className="text-xs text-emerald-800 font-semibold bg-emerald-50 px-2 py-0.5 rounded-md">
-                        {lead.subject}
-                      </span>
-                      <span className="text-[10px] font-bold text-gray-600 bg-gray-100 px-2 py-0.5 rounded-md capitalize">
-                        Source: {lead.source?.replace(/_/g, " ") || "Inquiry"}
-                      </span>
-                      {lead.priority === "high" || lead.priority === "urgent" ? (
-                        <span className="text-[10px] font-bold text-red-700 bg-red-50 border border-red-200 px-2 py-0.5 rounded-full">
-                          High Priority
-                        </span>
-                      ) : null}
-                    </div>
-
-                    <p className="text-xs text-gray-600 mt-1 line-clamp-1 italic">
-                      &quot;{lead.message || "Customer requested dietitian consultation"}&quot;
-                    </p>
-
-                    <div className="flex flex-wrap items-center gap-x-4 gap-y-1 text-[11.5px] text-gray-500 mt-2">
-                      <span className="flex items-center gap-1">
-                        <Mail className="w-3 h-3 text-gray-400" />
-                        {lead.email}
-                      </span>
-                      {lead.phone && (
-                        <span className="flex items-center gap-1 font-semibold text-gray-700">
-                          <Phone className="w-3 h-3 text-gray-400" />
-                          {lead.phone}
-                        </span>
-                      )}
-                      <span className="flex items-center gap-1">
-                        <Clock className="w-3 h-3 text-gray-400" />
-                        {new Date(lead.createdAt).toLocaleDateString()}
-                      </span>
-                      {lead.followUpDate && (
-                        <span
-                          className={`flex items-center gap-1 font-bold ${
-                            isFollowUpDue ? "text-amber-700" : "text-blue-700"
-                          }`}
-                        >
-                          <CalendarClock className="w-3 h-3" />
-                          Follow-up: {new Date(lead.followUpDate).toLocaleDateString()}
-                        </span>
-                      )}
-                    </div>
-                  </div>
-
-                  {/* Actions for Sales Rep / Admin */}
-                  <div className="flex flex-wrap items-center gap-2 shrink-0">
-                    <select
-                      value={lead.status}
-                      onChange={(e) => handleQuickStatus(lead._id, e.target.value)}
-                      className={`text-xs font-bold py-1.5 px-2.5 rounded-xl border cursor-pointer outline-none transition-colors ${
-                        lead.status === "new"
-                          ? "bg-emerald-50 text-emerald-900 border-emerald-200"
-                          : lead.status === "contacted"
-                          ? "bg-blue-50 text-blue-900 border-blue-200"
-                          : lead.status === "in_discussion"
-                          ? "bg-indigo-50 text-indigo-900 border-indigo-200"
-                          : lead.status === "followup_scheduled"
-                          ? "bg-amber-50 text-amber-900 border-amber-200"
-                          : lead.status === "converted"
-                          ? "bg-purple-50 text-purple-900 border-purple-200"
-                          : "bg-gray-100 text-gray-700 border-gray-200"
-                      }`}
-                    >
-                      <option value="new">New Lead</option>
-                      <option value="contacted">Contacted</option>
-                      <option value="in_discussion">In Discussion</option>
-                      <option value="followup_scheduled">Follow-up Set</option>
-                      <option value="converted">Converted Client</option>
-                      <option value="lost">Lost</option>
-                    </select>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedLead(lead);
-                        setActiveModal("contact");
-                      }}
-                      className="px-3 py-1.5 rounded-xl bg-emerald-50 hover:bg-emerald-100 text-[#10793f] font-bold text-xs inline-flex items-center gap-1.5 transition-colors cursor-pointer"
-                    >
-                      <Phone className="w-3.5 h-3.5" />
-                      <span>Contact</span>
-                    </button>
-
-                    <button
-                      type="button"
-                      onClick={() => {
-                        setSelectedLead(lead);
-                        setActiveModal("followup");
-                      }}
-                      className="px-3 py-1.5 rounded-xl bg-amber-50 hover:bg-amber-100 text-amber-800 font-bold text-xs inline-flex items-center gap-1.5 transition-colors cursor-pointer"
-                    >
-                      <CalendarClock className="w-3.5 h-3.5" />
-                      <span>Follow-up</span>
-                    </button>
-
-                    {!lead.clientProfile?.isClient && (
-                      <button
-                        type="button"
-                        onClick={() => {
-                          setSelectedLead(lead);
-                          setActiveModal("convert");
-                        }}
-                        className="px-3 py-1.5 rounded-xl bg-[#10793f] hover:bg-[#0c592e] text-white font-bold text-xs inline-flex items-center gap-1 transition-colors cursor-pointer"
-                      >
-                        <UserCheck className="w-3.5 h-3.5" />
-                        <span>Convert</span>
-                      </button>
-                    )}
+          <div className="space-y-3.5 my-auto">
+            {/* Account 1 */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-bold text-gray-900 leading-tight">GreenInfra Ltd.</div>
+                  <div className="text-[11px] text-gray-400 font-medium">
+                    Infrastructure • <span className="text-[#16a34a] font-semibold">Active</span>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+              <span className="font-black text-gray-900 text-sm">₹ 2.05 Cr</span>
+            </div>
+
+            {/* Account 2 */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-bold text-gray-900 leading-tight">CityCorp</div>
+                  <div className="text-[11px] text-gray-400 font-medium">
+                    Government • <span className="text-[#16a34a] font-semibold">Active</span>
+                  </div>
+                </div>
+              </div>
+              <span className="font-black text-gray-900 text-sm">₹ 1.36 Cr</span>
+            </div>
+
+            {/* Account 3 */}
+            <div className="flex items-center justify-between text-xs">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-[#e8f8ee] flex items-center justify-center text-[#16a34a] shrink-0">
+                  <Building2 className="w-4 h-4" />
+                </div>
+                <div>
+                  <div className="font-bold text-gray-900 leading-tight">TechNova Systems</div>
+                  <div className="text-[11px] text-gray-400 font-medium">
+                    Technology • <span className="text-[#16a34a] font-semibold">Active</span>
+                  </div>
+                </div>
+              </div>
+              <span className="font-black text-gray-900 text-sm">₹ 82.5 L</span>
+            </div>
           </div>
-        )}
+        </div>
       </div>
 
       {/* ─────────────────────────────────────────────────────────────
-          5. MODAL: ADD CUSTOM LEAD
+          6. QUICK LEAD CREATION MODAL (WHEN TRIGGERED)
       ───────────────────────────────────────────────────────────── */}
       {activeModal === "addLead" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-              <h3 className="text-lg font-bold text-gray-900">
-                Generate Custom Lead
-              </h3>
+        <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-xs flex items-center justify-center p-4">
+          <div className="bg-white rounded-2xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 animate-in fade-in-50">
+            <div className="flex items-center justify-between pb-4 border-b border-gray-100">
+              <div className="flex items-center gap-2.5">
+                <div className="w-8 h-8 rounded-lg bg-emerald-100 text-[#16a34a] flex items-center justify-center">
+                  <Plus className="w-4 h-4" />
+                </div>
+                <h3 className="font-bold text-gray-900 text-base">Create New Lead / Deal</h3>
+              </div>
               <button
                 onClick={() => setActiveModal(null)}
-                className="text-gray-400 hover:text-gray-700 font-bold text-sm"
+                className="p-1 rounded-lg text-gray-400 hover:text-gray-700 hover:bg-gray-100"
               >
-                ✕
+                <X className="w-5 h-5" />
               </button>
             </div>
 
-            <form onSubmit={handleAddCustomLead} className="space-y-3">
+            <form onSubmit={handleCreateLead} className="space-y-3.5 pt-4">
               <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Customer Full Name *
-                </label>
+                <label className="block text-xs font-bold text-gray-700 mb-1">Full Name *</label>
                 <input
                   type="text"
                   required
+                  placeholder="e.g. Ramesh Patel"
                   value={customLead.fullName}
-                  onChange={(e) =>
-                    setCustomLead({ ...customLead, fullName: e.target.value })
-                  }
-                  placeholder="e.g. Ramesh Chandra"
-                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
+                  onChange={(e) => setCustomLead({ ...customLead, fullName: e.target.value })}
+                  className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:border-[#16a34a]"
                 />
               </div>
 
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Email *
-                  </label>
-                  <input
-                    type="email"
-                    required
-                    value={customLead.email}
-                    onChange={(e) =>
-                      setCustomLead({ ...customLead, email: e.target.value })
-                    }
-                    placeholder="email@example.com"
-                    className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Phone
-                  </label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Phone *</label>
                   <input
                     type="tel"
+                    required
+                    placeholder="+91 98765 43210"
                     value={customLead.phone}
-                    onChange={(e) =>
-                      setCustomLead({ ...customLead, phone: e.target.value })
-                    }
-                    placeholder="+91..."
-                    className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
+                    onChange={(e) => setCustomLead({ ...customLead, phone: e.target.value })}
+                    className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:border-[#16a34a]"
+                  />
+                </div>
+                <div>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Email</label>
+                  <input
+                    type="email"
+                    placeholder="name@example.com"
+                    value={customLead.email}
+                    onChange={(e) => setCustomLead({ ...customLead, email: e.target.value })}
+                    className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:border-[#16a34a]"
                   />
                 </div>
               </div>
 
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Service / Subject
-                </label>
-                <input
-                  type="text"
-                  value={customLead.subject}
-                  onChange={(e) =>
-                    setCustomLead({ ...customLead, subject: e.target.value })
-                  }
-                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
-                />
-              </div>
-
-              <div className="grid grid-cols-2 gap-2.5">
+              <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Lead Source *
-                  </label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Category / Service</label>
                   <select
-                    value={customLead.source}
-                    onChange={(e) =>
-                      setCustomLead({ ...customLead, source: e.target.value })
-                    }
-                    className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
+                    value={customLead.subject}
+                    onChange={(e) => setCustomLead({ ...customLead, subject: e.target.value })}
+                    className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:border-[#16a34a]"
                   >
-                    <option value="manual_entry">Manual Sales Inquiry</option>
-                    <option value="google_ads">Google Search / Ads</option>
-                    <option value="facebook_instagram">Instagram / Social</option>
-                    <option value="referral">Doctor / Patient Referral</option>
-                    <option value="contact_page">Contact Page Form</option>
+                    <option value="Weight Loss Nutrition Plan">Weight Loss Nutrition Plan</option>
+                    <option value="Diabetes Reversal Diet">Diabetes Reversal Diet</option>
+                    <option value="PCOS / PCOD Management">PCOS / PCOD Management</option>
+                    <option value="Corporate Health Plan">Corporate Health Plan</option>
                   </select>
                 </div>
-
                 <div>
-                  <label className="block text-xs font-bold text-gray-700 mb-1">
-                    Expected Deal (₹)
-                  </label>
+                  <label className="block text-xs font-bold text-gray-700 mb-1">Expected Value (₹)</label>
                   <input
                     type="number"
                     value={customLead.expectedValue}
                     onChange={(e) =>
-                      setCustomLead({
-                        ...customLead,
-                        expectedValue: Number(e.target.value),
-                      })
+                      setCustomLead({ ...customLead, expectedValue: Number(e.target.value) })
                     }
-                    className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
+                    className="w-full px-3 py-2 text-xs border border-gray-200 rounded-lg focus:outline-none focus:border-[#16a34a]"
                   />
                 </div>
               </div>
 
-              <div className="flex justify-end gap-2 pt-3">
+              <div className="flex items-center justify-end gap-2 pt-3">
                 <button
                   type="button"
                   onClick={() => setActiveModal(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100"
+                  className="px-4 py-2 text-xs font-semibold text-gray-600 hover:bg-gray-100 rounded-lg"
                 >
                   Cancel
                 </button>
                 <button
                   type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#10793f] text-white text-xs font-bold hover:bg-[#0c592e]"
+                  className="px-4 py-2 text-xs font-bold bg-[#16a34a] hover:bg-[#15803d] text-white rounded-lg shadow-sm"
                 >
-                  Create Lead
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ─────────────────────────────────────────────────────────────
-          6. MODAL: BULK IMPORT LEADS
-      ───────────────────────────────────────────────────────────── */}
-      {activeModal === "import" && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-lg w-full p-6 shadow-2xl border border-gray-100 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">
-                  Bulk Import Leads (CSV / JSON)
-                </h3>
-                <p className="text-xs text-gray-500">
-                  Paste rows format: <code className="bg-gray-100 px-1 py-0.5 rounded">Name,Email,Phone,Subject,Source</code>
-                </p>
-              </div>
-              <button
-                onClick={() => setActiveModal(null)}
-                className="text-gray-400 hover:text-gray-700 font-bold text-sm"
-              >
-                ✕
-              </button>
-            </div>
-
-            {importStatus && (
-              <div className="p-3 rounded-xl bg-emerald-50 text-emerald-800 text-xs font-medium">
-                {importStatus}
-              </div>
-            )}
-
-            <form onSubmit={handleBulkImport} className="space-y-3">
-              <div>
-                <textarea
-                  rows={6}
-                  required
-                  value={importText}
-                  onChange={(e) => setImportText(e.target.value)}
-                  placeholder={`Dr. Rajesh,rajesh@clinic.com,+919876500001,Clinical Nutrition,referral
-Kavita Sen,kavita@domain.com,+919876500002,Weight Loss Program,google_ads`}
-                  className="w-full text-xs font-mono p-3 rounded-xl border border-gray-200 outline-none bg-gray-50/50"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveModal(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-5 py-2.5 rounded-xl bg-[#10793f] text-white text-xs font-bold hover:bg-[#0c592e]"
-                >
-                  Start Import
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ─────────────────────────────────────────────────────────────
-          7. MODAL: CONTACT CUSTOMER
-      ───────────────────────────────────────────────────────────── */}
-      {activeModal === "contact" && selectedLead && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">
-                  Contact Customer: {selectedLead.fullName}
-                </h3>
-                <p className="text-xs text-gray-500">
-                  {selectedLead.email} • {selectedLead.phone || "No phone provided"}
-                </p>
-              </div>
-              <button
-                onClick={() => setActiveModal(null)}
-                className="text-gray-400 hover:text-gray-700 font-bold text-sm"
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 py-1">
-              {selectedLead.phone ? (
-                <a
-                  href={`tel:${selectedLead.phone.replace(/\s+/g, "")}`}
-                  className="flex flex-col items-center justify-center p-3 rounded-2xl bg-emerald-50 hover:bg-emerald-100 text-[#10793f] font-bold text-xs gap-1 transition-colors"
-                >
-                  <Phone className="w-5 h-5" />
-                  <span>Direct Call</span>
-                </a>
-              ) : null}
-
-              {selectedLead.phone ? (
-                <a
-                  href={`https://wa.me/${selectedLead.phone.replace(/[^0-9]/g, "")}?text=${encodeURIComponent(
-                    `Hello ${selectedLead.fullName}, thank you for contacting DietNexa regarding ${selectedLead.subject}! How can we best assist your nutrition goals?`
-                  )}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex flex-col items-center justify-center p-3 rounded-2xl bg-green-50 hover:bg-green-100 text-green-700 font-bold text-xs gap-1 transition-colors"
-                >
-                  <MessageCircle className="w-5 h-5 text-green-600" />
-                  <span>WhatsApp</span>
-                </a>
-              ) : null}
-
-              <a
-                href={`mailto:${selectedLead.email}?subject=${encodeURIComponent(
-                  `DietNexa Consultation: ${selectedLead.subject}`
-                )}`}
-                className="flex flex-col items-center justify-center p-3 rounded-2xl bg-blue-50 hover:bg-blue-100 text-blue-700 font-bold text-xs gap-1 transition-colors"
-              >
-                <Mail className="w-5 h-5 text-blue-600" />
-                <span>Send Email</span>
-              </a>
-            </div>
-
-            <form onSubmit={handleSaveContactLog} className="space-y-3 pt-2">
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Channel Used
-                </label>
-                <select
-                  value={contactChannel}
-                  onChange={(e) => setContactChannel(e.target.value)}
-                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
-                >
-                  <option value="phone">Phone Call</option>
-                  <option value="whatsapp">WhatsApp Message</option>
-                  <option value="email">Email</option>
-                  <option value="in_person">Video Consultation</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Call Outcome
-                </label>
-                <select
-                  value={contactOutcome}
-                  onChange={(e) => setContactOutcome(e.target.value)}
-                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
-                >
-                  <option value="connected_interested">Connected - Interested in Plan</option>
-                  <option value="connected_followup_needed">Connected - Needs Follow-up</option>
-                  <option value="busy_no_answer">No Answer / Busy</option>
-                  <option value="converted">Converted on Call</option>
-                  <option value="not_interested">Not Interested</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Interaction Notes
-                </label>
-                <textarea
-                  rows={3}
-                  value={contactNotes}
-                  onChange={(e) => setContactNotes(e.target.value)}
-                  placeholder="e.g. Spoke to client, explained 3-month weight loss package..."
-                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveModal(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-xl bg-[#10793f] text-white text-xs font-bold hover:bg-[#0c592e]"
-                >
-                  Save to CRM History
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ─────────────────────────────────────────────────────────────
-          8. MODAL: SET FOLLOW-UP
-      ───────────────────────────────────────────────────────────── */}
-      {activeModal === "followup" && selectedLead && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-              <h3 className="text-lg font-bold text-gray-900">
-                Schedule Follow-up: {selectedLead.fullName}
-              </h3>
-              <button
-                onClick={() => setActiveModal(null)}
-                className="text-gray-400 hover:text-gray-700 font-bold text-sm"
-              >
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveFollowUp} className="space-y-3">
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Follow-up Date &amp; Time *
-                </label>
-                <input
-                  type="datetime-local"
-                  required
-                  value={followUpDate}
-                  onChange={(e) => setFollowUpDate(e.target.value)}
-                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Follow-up Purpose / Reminder Note
-                </label>
-                <textarea
-                  rows={3}
-                  value={followUpNotes}
-                  onChange={(e) => setFollowUpNotes(e.target.value)}
-                  placeholder="e.g. Call to confirm package enrolment..."
-                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
-                />
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveModal(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-xl bg-amber-600 text-white text-xs font-bold hover:bg-amber-700"
-                >
-                  Set Follow-up
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-      )}
-
-      {/* ─────────────────────────────────────────────────────────────
-          9. MODAL: CONVERT TO ACTIVE CLIENT
-      ───────────────────────────────────────────────────────────── */}
-      {activeModal === "convert" && selectedLead && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 backdrop-blur-xs">
-          <div className="bg-white rounded-3xl max-w-md w-full p-6 shadow-2xl border border-gray-100 space-y-4">
-            <div className="flex items-center justify-between pb-3 border-b border-gray-100">
-              <div>
-                <h3 className="text-lg font-bold text-gray-900">
-                  Convert to Active Client
-                </h3>
-                <p className="text-xs text-emerald-700 font-semibold">
-                  Enrolling {selectedLead.fullName}
-                </p>
-              </div>
-              <button
-                onClick={() => setActiveModal(null)}
-                className="text-gray-400 hover:text-gray-700 font-bold text-sm"
-              >
-                ✕
-              </button>
-            </div>
-
-            <form onSubmit={handleSaveConvert} className="space-y-3">
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Enrolled Nutrition Plan
-                </label>
-                <select
-                  value={clientPlan}
-                  onChange={(e) => setClientPlan(e.target.value)}
-                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
-                >
-                  <option value="Weight Loss Management Program">Weight Loss Management</option>
-                  <option value="Disease Management (Diabetes & BP)">Disease Management</option>
-                  <option value="Sports & Athletic Nutrition">Sports Nutrition</option>
-                  <option value="Pregnancy & Postnatal Diet">Pregnancy & Lactation</option>
-                  <option value="Child & Teen Nutrition">Child & Teen Growth</option>
-                  <option value="General Wellness & Gut Health">General Wellness</option>
-                </select>
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Amount Paid (INR ₹)
-                </label>
-                <input
-                  type="number"
-                  value={clientAmount}
-                  onChange={(e) => setClientAmount(Number(e.target.value))}
-                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs font-bold text-gray-700 mb-1">
-                  Assigned Clinical Dietitian
-                </label>
-                <select
-                  value={clientDietitian}
-                  onChange={(e) => setClientDietitian(e.target.value)}
-                  className="w-full text-xs p-2.5 rounded-xl border border-gray-200 outline-none"
-                >
-                  <option value="Dr. Ananya Sen">Dr. Ananya Sen (Weight Loss & Metabolic)</option>
-                  <option value="Dr. Arjun Mehta">Dr. Arjun Mehta (Sports & Performance)</option>
-                  <option value="Dr. Sneha Iyer">Dr. Sneha Iyer (Clinical Diabetes & PCOS)</option>
-                  <option value="Dr. Rohit Verma">Dr. Rohit Verma (Gut Health & Wellness)</option>
-                  <option value="Dr. Priya Sharma">Dr. Priya Sharma (Maternal & Child)</option>
-                </select>
-              </div>
-
-              <div className="flex justify-end gap-2 pt-2">
-                <button
-                  type="button"
-                  onClick={() => setActiveModal(null)}
-                  className="px-4 py-2 rounded-xl text-xs font-bold text-gray-600 hover:bg-gray-100"
-                >
-                  Cancel
-                </button>
-                <button
-                  type="submit"
-                  className="px-4 py-2 rounded-xl bg-[#10793f] text-white text-xs font-bold hover:bg-[#0c592e]"
-                >
-                  Confirm Client Enrolment
+                  Save Lead
                 </button>
               </div>
             </form>

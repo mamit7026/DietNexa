@@ -223,18 +223,24 @@ async function getPipeline(request, reply) {
       .sort({ stageOrder: 1, updatedAt: -1 })
       .populate("assignedTo", "name email phone role");
 
-    // Pre-organize into Kanban columns
+    // Pre-organize into Kanban columns (matching 5 stages)
     const columns = {
-      new: { id: "new", title: "New Inquiries", color: "emerald", leads: [], totalValue: 0 },
-      contacted: { id: "contacted", title: "Contacted", color: "blue", leads: [], totalValue: 0 },
-      in_discussion: { id: "in_discussion", title: "In Discussion", color: "indigo", leads: [], totalValue: 0 },
-      followup_scheduled: { id: "followup_scheduled", title: "Follow-up Scheduled", color: "amber", leads: [], totalValue: 0 },
-      converted: { id: "converted", title: "Won / Converted", color: "purple", leads: [], totalValue: 0 },
+      new: { id: "new", title: "New", color: "emerald", leads: [], totalValue: 0 },
+      qualified: { id: "qualified", title: "Qualified", color: "blue", leads: [], totalValue: 0 },
+      proposal: { id: "proposal", title: "Proposal", color: "indigo", leads: [], totalValue: 0 },
+      negotiation: { id: "negotiation", title: "Negotiation", color: "amber", leads: [], totalValue: 0 },
+      won: { id: "won", title: "Won", color: "purple", leads: [], totalValue: 0 },
       lost: { id: "lost", title: "Lost", color: "gray", leads: [], totalValue: 0 },
     };
 
     leads.forEach((l) => {
-      const colKey = columns[l.status] ? l.status : "new";
+      let st = l.stage || l.status || "new";
+      if (st === "contacted") st = "qualified";
+      else if (st === "in_discussion") st = "proposal";
+      else if (st === "followup_scheduled") st = "negotiation";
+      else if (st === "converted") st = "won";
+
+      const colKey = columns[st] ? st : "new";
       columns[colKey].leads.push(l);
       columns[colKey].totalValue += (l.expectedValue || (l.clientProfile?.amountPaid || 7500));
     });
@@ -259,7 +265,18 @@ async function moveStage(request, reply) {
     const { id } = request.params;
     const { newStage } = request.body || {};
 
-    const validStages = ["new", "contacted", "in_discussion", "followup_scheduled", "converted", "lost"];
+    const validStages = [
+      "new",
+      "qualified",
+      "proposal",
+      "negotiation",
+      "won",
+      "lost",
+      "contacted",
+      "in_discussion",
+      "followup_scheduled",
+      "converted",
+    ];
     if (!validStages.includes(newStage)) {
       return reply.code(400).send({ success: false, message: "Invalid pipeline stage" });
     }
@@ -271,13 +288,14 @@ async function moveStage(request, reply) {
 
     const oldStage = lead.status;
     lead.status = newStage;
+    lead.stage = newStage;
 
-    if (newStage === "converted" && !lead.clientProfile?.isClient) {
+    if ((newStage === "converted" || newStage === "won") && !lead.clientProfile?.isClient) {
       lead.clientProfile = {
         isClient: true,
         convertedAt: new Date(),
         convertedBy: request.user._id,
-        planName: "Personalized Nutrition Plan",
+        planName: lead.subject || "Enterprise Solution",
         durationMonths: 3,
         amountPaid: lead.expectedValue || 7500,
         paymentStatus: "paid",
@@ -371,21 +389,64 @@ async function importLeads(request, reply) {
 // 6. COMPREHENSIVE CRM REPORTS & ANALYTICS
 async function getReports(request, reply) {
   try {
-    const { fromDate, toDate } = request.query || {};
-    const { query: dateQ, start, end } = buildDateQuery(fromDate, toDate);
+    const { fromDate, toDate, pipeline, stage, owner, project, page = 1, limit = 10, search } = request.query || {};
+    let query = {};
+    let start, end;
+
+    if (fromDate || toDate) {
+      const dateRes = buildDateQuery(fromDate, toDate);
+      Object.assign(query, dateRes.query);
+      start = dateRes.start;
+      end = dateRes.end;
+    } else {
+      start = new Date(Date.now() - 30 * 24 * 60 * 60 * 1000);
+      end = new Date();
+    }
+
+    if (stage && stage !== "all" && stage !== "All Stages") {
+      const st = stage.toLowerCase();
+      query.$or = [{ status: st }, { stage: st }];
+    }
+    if (owner && owner !== "all" && owner !== "All Owners") {
+      query.assignedToName = new RegExp(owner, "i");
+    }
+    if (pipeline && pipeline !== "all" && pipeline !== "All Pipelines") {
+      query.pipeline = new RegExp(pipeline, "i");
+    }
+    if (project && project !== "all" && project !== "All Projects") {
+      query.project = new RegExp(project, "i");
+    }
+    if (search && search.trim()) {
+      const s = search.trim();
+      query.$or = [
+        { fullName: new RegExp(s, "i") },
+        { company: new RegExp(s, "i") },
+        { assignedToName: new RegExp(s, "i") },
+        { email: new RegExp(s, "i") },
+      ];
+    }
+
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+    const [deals, totalCount] = await Promise.all([
+      Lead.find(query)
+        .sort({ createdAt: -1 })
+        .skip(skip)
+        .limit(parseInt(limit))
+        .populate("assignedTo", "name email phone role"),
+      Lead.countDocuments(query),
+    ]);
 
     // Sales Performance aggregation
-    const allSalesUsers = await User.find({ role: "sales", isActive: true });
-    const allLeads = await Lead.find(dateQ).populate("assignedTo", "name email");
+    const allSalesUsers = await User.find({ isActive: true });
+    const allLeads = await Lead.find(query).populate("assignedTo", "name email");
 
-    // Group performance by Sales Representative
     const salesPerformance = allSalesUsers.map((user) => {
       const userLeads = allLeads.filter(
-        (l) => l.assignedTo && l.assignedTo._id.toString() === user._id.toString()
+        (l) => (l.assignedTo && l.assignedTo._id.toString() === user._id.toString()) || l.assignedToName === user.name
       );
-      const converted = userLeads.filter((l) => l.status === "converted" || l.clientProfile?.isClient);
+      const converted = userLeads.filter((l) => l.status === "won" || l.status === "converted" || l.clientProfile?.isClient);
       const contacted = userLeads.filter((l) => l.status !== "new");
-      const revenue = converted.reduce((sum, c) => sum + (c.clientProfile?.amountPaid || c.expectedValue || 0), 0);
+      const revenue = userLeads.reduce((sum, c) => sum + (c.clientProfile?.amountPaid || c.expectedValue || 0), 0);
       const rate = userLeads.length > 0 ? ((converted.length / userLeads.length) * 100).toFixed(1) : 0;
 
       return {
@@ -401,47 +462,40 @@ async function getReports(request, reply) {
       };
     });
 
-    // Lead Sources distribution
     const sourceBreakdown = {};
     allLeads.forEach((l) => {
       const src = l.source || "contact_page";
       sourceBreakdown[src] = (sourceBreakdown[src] || 0) + 1;
     });
 
-    // Status breakdown
     const statusBreakdown = {};
     allLeads.forEach((l) => {
       statusBreakdown[l.status] = (statusBreakdown[l.status] || 0) + 1;
     });
 
-    // Plan distribution from converted clients
-    const convertedLeads = allLeads.filter((l) => l.clientProfile?.isClient || l.status === "converted");
-    const planBreakdown = {};
-    let totalRevenue = 0;
-
-    convertedLeads.forEach((c) => {
-      const plan = c.clientProfile?.planName || "General Wellness Nutrition Plan";
-      const amt = c.clientProfile?.amountPaid || c.expectedValue || 7500;
-      planBreakdown[plan] = (planBreakdown[plan] || 0) + amt;
-      totalRevenue += amt;
-    });
+    const totalRevenue = allLeads.reduce((sum, c) => sum + (c.clientProfile?.amountPaid || c.expectedValue || 0), 0);
 
     return reply.send({
       success: true,
       timeframe: {
-        fromDate: start.toISOString(),
-        toDate: end.toISOString(),
+        fromDate: start ? start.toISOString() : null,
+        toDate: end ? end.toISOString() : null,
       },
+      pagination: {
+        page: parseInt(page),
+        limit: parseInt(limit),
+        total: totalCount,
+        totalPages: Math.ceil(totalCount / parseInt(limit)) || 1,
+      },
+      deals,
       summary: {
-        totalLeads: allLeads.length,
-        convertedCount: convertedLeads.length,
-        conversionRate: allLeads.length > 0 ? `${((convertedLeads.length / allLeads.length) * 100).toFixed(1)}%` : "0%",
+        totalLeads: totalCount,
+        convertedCount: allLeads.filter((l) => l.status === "won" || l.status === "converted").length,
         totalRevenue,
       },
       salesPerformance,
       sourceBreakdown,
       statusBreakdown,
-      planBreakdown,
     });
   } catch (error) {
     return reply.code(500).send({
@@ -801,6 +855,17 @@ async function getDashboardStats(request, reply) {
   }
 }
 
+async function deleteLead(request, reply) {
+  try {
+    const { id } = request.params;
+    const lead = await Lead.findByIdAndDelete(id);
+    if (!lead) return reply.code(404).send({ success: false, message: "Lead not found" });
+    return reply.send({ success: true, message: "Lead deleted successfully" });
+  } catch (error) {
+    return reply.code(500).send({ success: false, message: "Failed to delete lead", error: error.message });
+  }
+}
+
 module.exports = {
   createPublicLead,
   getAllLeads,
@@ -810,6 +875,7 @@ module.exports = {
   getReports,
   getLeadById,
   updateLead,
+  deleteLead,
   setFollowUp,
   addContactLog,
   convertToClient,

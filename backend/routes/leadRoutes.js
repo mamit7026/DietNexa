@@ -116,6 +116,15 @@ async function leadRoutes(fastify, options) {
     },
     leadController.convertToClient
   );
+
+  // Delete Lead
+  fastify.delete(
+    "/:id",
+    {
+      preHandler: [authenticate],
+    },
+    leadController.deleteLead
+  );
 }
 
 module.exports = leadRoutes;
