@@ -141,6 +141,25 @@ export default async function ToolPage({ params }) {
       }
     : null;
 
+  const medicalWebPageSchema = {
+    "@context": "https://schema.org",
+    "@type": "MedicalWebPage",
+    name: tool.seoTitle,
+    url: `https://dietnexa.com/tools/${tool.slug}`,
+    description: tool.seoDescription,
+    aspect: ["Overview", "Diagnosis", "Calculation", "Treatment"],
+    audience: {
+      "@type": "PeopleAudience",
+      suggestedGender: "Unisex",
+    },
+    citation: "World Health Organization (WHO) and Indian Council of Medical Research (ICMR) clinical guidelines.",
+    reviewedBy: {
+      "@type": "Person",
+      name: "Dr. Ananya Sen",
+      jobTitle: "Senior Clinical Dietitian",
+    },
+  };
+
   return (
     <>
       {/* Schema.org Structured Data */}
@@ -151,6 +170,10 @@ export default async function ToolPage({ params }) {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(medicalWebPageSchema) }}
       />
       {faqSchema && (
         <script

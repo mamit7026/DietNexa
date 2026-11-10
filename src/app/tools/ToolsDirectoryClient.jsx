@@ -466,11 +466,6 @@ export default function ToolsDirectoryClient() {
                       </p>
                     </div>
                   </div>
-
-                  {/* Category Tools Count Badge */}
-                  <span className="text-xs font-bold text-[#10793f] bg-emerald-50 border border-emerald-200/80 px-3 py-1 rounded-full whitespace-nowrap shadow-2xs">
-                    {cat.tools.length} Tools Available
-                  </span>
                 </div>
 
                 {/* All Tool Cards Grid (All Tools Visible, None Hidden) */}
