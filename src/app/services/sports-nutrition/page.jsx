@@ -185,28 +185,28 @@ export default function SportsNutritionPage() {
       id: "endurance",
       title: "Endurance\nPerformance",
       desc: "Sustain energy for longer workouts and tournaments.",
-      image: "/image/Determined Runner in the Green Park.png",
+      image: "/image/determined-runner-in-the-green-park.webp",
       icon: RunnerFigureIcon,
     },
     {
       id: "muscle-gain",
       title: "Muscle Gain\n& Strength",
       desc: "Build lean muscle with the right nutrition and meal timing.",
-      image: "/image/Focused EZ-Bar Curl in a Modern Gym.png",
+      image: "/image/focused-ez-bar-curl-in-a-modern-gym.webp",
       icon: DumbbellIcon,
     },
     {
       id: "fat-loss",
       title: "Fat Loss &\nBody Recomposition",
       desc: "Reduce excess fat while maintaining performance and muscle.",
-      image: "/image/Focused Indoor Gym Run.png",
+      image: "/image/focused-indoor-gym-run.webp",
       icon: Scale,
     },
     {
       id: "recovery",
       title: "Recovery &\nInjury Support",
       desc: "Replenish nutrients, reduce muscle soreness and recover faster.",
-      image: "/image/Focused Outdoor Crunch Workout.png",
+      image: "/image/focused-outdoor-crunch-workout.webp",
       icon: RefreshRecoveryIcon,
     },
   ];
@@ -301,7 +301,7 @@ export default function SportsNutritionPage() {
           {/* Dreamy Teal and Green Bokeh Background — Spreads edge-to-edge */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
             <Image
-              src="/image/Dreamy Teal and Green Bokeh.png"
+              src="/image/dreamy-teal-and-green-bokeh.webp"
               alt="Dreamy Teal and Green Bokeh Background"
               fill
               priority
@@ -328,7 +328,7 @@ export default function SportsNutritionPage() {
           {/* Leaf accents on edges */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Dewy Green Leafy Branch.png"
+              src="/image/dewy-green-leafy-branch.webp"
               alt=""
               fill
               unoptimized
@@ -337,7 +337,7 @@ export default function SportsNutritionPage() {
           </div>
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Glossy Green Leaf Branch.png"
+              src="/image/glossy-green-leaf-branch.webp"
               alt=""
               fill
               unoptimized
@@ -423,7 +423,7 @@ export default function SportsNutritionPage() {
                 {/* Main Hero Visual: Athletic Man with Shaker & Towel — Large & Hero Dominating */}
                 <div className="relative w-[420px] sm:w-[530px] lg:w-[620px] h-[390px] sm:h-[460px] lg:h-[505px] z-10 flex items-end justify-center">
                   <Image
-                    src="/image/Fitness Nutrition Shake and Healthy Meal.png"
+                    src="/image/fitness-nutrition-shake-and-healthy-meal.webp"
                     alt="Fitness Nutrition Shake and Healthy Meal — Expert Sports Nutrition"
                     fill
                     priority
@@ -437,7 +437,7 @@ export default function SportsNutritionPage() {
                   className="absolute z-20 pointer-events-none bottom-0 left-[2%] sm:left-[5%] lg:left-[8%] w-[270px] sm:w-[340px] lg:w-[410px] h-[95px] sm:h-[125px] lg:h-[150px] drop-shadow-md"
                 >
                   <Image
-                    src="/image/Healthy Breakfast and Salad Spread.png"
+                    src="/image/healthy-breakfast-and-salad-spread.webp"
                     alt="Healthy Breakfast and Salad Spread — Fresh Bananas, Smoothie & Lean Protein"
                     fill
                     priority
@@ -627,7 +627,7 @@ export default function SportsNutritionPage() {
               <div className="lg:col-span-4 relative flex items-center justify-center">
                 <div className="relative w-48 h-48 sm:w-60 sm:h-60 rounded-full overflow-hidden shadow-md border-4 border-white">
                   <Image
-                    src="/image/Colorful Grilled Chicken Salad Bowl.png"
+                    src="/image/colorful-grilled-chicken-salad-bowl.webp"
                     alt="Nutrient-Dense Sports Nutrition Meal Bowl"
                     fill
                     unoptimized

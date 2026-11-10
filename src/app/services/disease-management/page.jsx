@@ -37,7 +37,7 @@ const programs = [
     id: "diabetes",
     title: "Diabetes Management",
     description: "Maintain healthy blood sugar levels with a balanced, practical diet plan.",
-    image: "/image/dm_diabetes_glucometer.png",
+    image: "/image/dm-diabetes-glucometer.webp",
     cardBg: "#fff0ee",
     tag: "HbA1c & Glucose Control",
     overview:
@@ -54,7 +54,7 @@ const programs = [
     id: "bp",
     title: "BP Management",
     description: "Support healthy blood pressure through a heart-friendly diet.",
-    image: "/image/dm_bp_heart_monitor.png",
+    image: "/image/dm-bp-heart-monitor.webp",
     cardBg: "#eef7ff",
     tag: "Cardiovascular Health",
     overview:
@@ -71,7 +71,7 @@ const programs = [
     id: "thyroid",
     title: "Thyroid Nutrition",
     description: "Nutritional support for hypothyroidism and hyperthyroidism.",
-    image: "/image/dm_thyroid_gland.png",
+    image: "/image/dm-thyroid-gland.webp",
     cardBg: "#f6effb",
     tag: "Hormone & Metabolism",
     overview:
@@ -88,7 +88,7 @@ const programs = [
     id: "pcos",
     title: "PCOS / PCOD Care",
     description: "Hormone-friendly diet plans to manage symptoms, support weight balance and improve metabolic health.",
-    image: "/image/dm_pcos_uterus.png",
+    image: "/image/dm-pcos-uterus.webp",
     cardBg: "#fef2e9",
     tag: "Hormone Balance & Ovulation",
     overview:
@@ -105,7 +105,7 @@ const programs = [
     id: "cholesterol",
     title: "Cholesterol Management",
     description: "Heart-healthy nutrition to manage cholesterol levels and support overall cardiovascular health.",
-    image: "/image/dm_cholesterol_artery.png",
+    image: "/image/dm-cholesterol-artery.webp",
     cardBg: "#ecfaf1",
     tag: "Lipid Profile Optimization",
     overview:
@@ -122,7 +122,7 @@ const programs = [
     id: "more",
     title: "More Conditions",
     description: "Personalized nutrition care for weight management, fatty liver, Digestive issues, uric acid, and more.",
-    image: "/image/dm_medical_shield.png",
+    image: "/image/dm-medical-shield.webp",
     cardBg: "#edf6fe",
     tag: "Comprehensive Clinical Care",
     overview:
@@ -239,7 +239,7 @@ export default function DiseaseManagementPage() {
           {/* Serene Greenhouse Bokeh Background — Spreads edge-to-edge */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
             <Image
-              src="/image/Serene Greenhouse Bokeh Background.png"
+              src="/image/serene-greenhouse-bokeh-background.webp"
               alt="Serene Greenhouse Setting"
               fill
               priority
@@ -266,7 +266,7 @@ export default function DiseaseManagementPage() {
           {/* Subtle green leaves on the far left edge */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Dewy Green Leafy Branch.png"
+              src="/image/dewy-green-leafy-branch.webp"
               alt=""
               fill
               unoptimized
@@ -277,7 +277,7 @@ export default function DiseaseManagementPage() {
           {/* Subtle green leaves on the far right edge */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Glossy Green Leaf Branch.png"
+              src="/image/glossy-green-leaf-branch.webp"
               alt=""
               fill
               unoptimized
@@ -355,7 +355,7 @@ export default function DiseaseManagementPage() {
                 {/* Hero Doctor Visual - Resting flush on the bottom */}
                 <div className="relative w-[240px] sm:w-[280px] lg:w-[315px] h-[310px] sm:h-[340px] lg:h-[365px] z-10 flex items-end justify-center -mr-4 sm:-mr-5">
                   <Image
-                    src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                    src="/image/hero-section-smiling-doctor-in-green-scrubs.webp"
                     alt="Smiling Doctor in Green Scrubs — Disease Management"
                     fill
                     priority
@@ -389,7 +389,7 @@ export default function DiseaseManagementPage() {
                 {/* Bottom Right Foreground Salad & Green Smoothie */}
                 <div className="absolute bottom-0 right-0 sm:right-1 z-30 w-[150px] sm:w-[185px] lg:w-[210px] h-[110px] sm:h-[135px] lg:h-[155px] drop-shadow-md pointer-events-none">
                   <Image
-                    src="/image/Healthy Green Feast with Smoothie and Salad.png"
+                    src="/image/healthy-green-feast-with-smoothie-and-salad.webp"
                     alt="Fresh healthy salad and detox green smoothie"
                     fill
                     unoptimized
@@ -628,7 +628,7 @@ export default function DiseaseManagementPage() {
                 <div className="lg:col-span-5 flex items-center justify-center relative">
                   <div className="relative w-[240px] sm:w-[320px] lg:w-[360px] h-[200px] sm:h-[240px] lg:h-[270px] transition-transform duration-300 hover:scale-[1.02]">
                     <Image
-                      src="/image/dm_salad_smoothie_tape.png"
+                      src="/image/dm-salad-smoothie-tape.webp"
                       alt="Personalized healthy disease management nutrition with smoothie and measuring tape"
                       fill
                       unoptimized

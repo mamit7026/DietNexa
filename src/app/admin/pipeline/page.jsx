@@ -705,7 +705,7 @@ export default function DealsKanbanPage() {
                           title={deal.owner || "Amit Mondal"}
                         >
                           <Image
-                            src="/image/dr_arjun_mehta.jpg"
+                            src="/image/dr-arjun-mehta.webp"
                             alt={deal.owner || "Amit Mondal"}
                             width={20}
                             height={20}

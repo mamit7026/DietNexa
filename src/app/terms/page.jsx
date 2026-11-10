@@ -43,7 +43,7 @@ export default function TermsPage() {
       "@type": "Organization",
       name: "DietNexa",
       url: "https://dietnexa.com",
-      logo: "https://dietnexa.com/image/DietNexa%20White%20Logo.png",
+      logo: "https://dietnexa.com/image/dietnexa-white-logo.webp",
     },
     breadcrumb: {
       "@type": "BreadcrumbList",

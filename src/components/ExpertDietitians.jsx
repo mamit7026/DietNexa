@@ -11,7 +11,7 @@ const dietitians = [
     role: "Clinical Dietitian",
     rating: "4.9",
     reviews: "2,300+",
-    image: "/image/dr_ananya_sen.jpg",
+    image: "/image/dr-ananya-sen.webp",
   },
   {
     id: "ms-riya",
@@ -19,7 +19,7 @@ const dietitians = [
     role: "Sports Nutritionist",
     rating: "4.8",
     reviews: "1,500+",
-    image: "/image/ms_riya_kapoor.jpg",
+    image: "/image/ms-riya-kapoor.webp",
   },
   {
     id: "dr-neha",
@@ -27,7 +27,7 @@ const dietitians = [
     role: "Women's Health Dietitian",
     rating: "4.9",
     reviews: "1,800+",
-    image: "/image/dr_neha_malhotra.jpg",
+    image: "/image/dr-neha-malhotra.webp",
   },
 ];
 
@@ -48,7 +48,7 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
       {/* Decorative leaf — hidden on mobile */}
       <div className="absolute -left-10 top-1/2 -translate-y-1/2 w-44 h-80 pointer-events-none select-none z-0 hidden xl:block">
         <Image
-          src="/image/Glossy Green Leaf Branch.png"
+          src="/image/glossy-green-leaf-branch.webp"
           alt=""
           fill
           unoptimized
@@ -72,7 +72,7 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
               }}
             >
               <Image
-                src="/image/Colorful Grilled Chicken Salad Bowl.png"
+                src="/image/colorful-grilled-chicken-salad-bowl.webp"
                 alt="Nutritious colourful salad bowl"
                 fill
                 unoptimized

@@ -42,7 +42,7 @@ export const metadata = {
       "Consult certified clinical dietitians, receive customized medical diet plans, and access 100 free scientific nutrition calculators.",
     images: [
       {
-        url: "/image/DietNexa Logo.png",
+        url: "/image/dietnexa-logo.webp",
         width: 1200,
         height: 630,
         alt: "DietNexa - Personalized Nutrition Platform",
@@ -54,7 +54,7 @@ export const metadata = {
     title: "DietNexa — Personalized Nutrition & Clinical Dietitian Consultation",
     description:
       "Consult certified clinical dietitians, receive customized medical diet plans, and access 100 free scientific nutrition calculators.",
-    images: ["/image/DietNexa Logo.png"],
+    images: ["/image/dietnexa-logo.webp"],
   },
   robots: {
     index: true,
@@ -75,8 +75,8 @@ export default function RootLayout({ children }) {
     "@type": "MedicalBusiness",
     name: "DietNexa",
     url: "https://dietnexa.com",
-    logo: "https://dietnexa.com/image/DietNexa%20Logo.png",
-    image: "https://dietnexa.com/image/DietNexa%20Logo.png",
+    logo: "https://dietnexa.com/image/dietnexa-logo.webp",
+    image: "https://dietnexa.com/image/dietnexa-logo.webp",
     description:
       "DietNexa provides evidence-based personalized nutrition therapy, certified clinical dietitian consultations, and 100 scientific health calculators.",
     telephone: "+91 98765 43210",

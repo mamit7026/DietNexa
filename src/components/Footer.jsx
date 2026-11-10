@@ -18,7 +18,7 @@ export default function Footer() {
           <div className="flex flex-col items-start sm:col-span-2 lg:col-span-1">
             <Link href="/" className="inline-block relative w-48 h-12 mb-3">
               <Image
-                src="/image/DietNexa White Logo.png"
+                src="/image/dietnexa-white-logo.webp"
                 alt="DietNexa - Your Health, Our Nutrition Expertise"
                 fill
                 unoptimized

@@ -41,7 +41,7 @@ const allDietitians = [
     tags: ["Weight Management", "Diabetes Care"],
     experience: "8+ Years Experience",
     education: "M.Sc. in Nutrition & Dietetics",
-    image: "/image/dr_ananya_sen.jpg",
+    image: "/image/dr-ananya-sen.webp",
   },
   {
     id: "ms-riya-kapoor",
@@ -53,7 +53,7 @@ const allDietitians = [
     tags: ["Sports Nutrition", "Weight Loss"],
     experience: "6+ Years Experience",
     education: "M.Sc. in Sports Nutrition",
-    image: "/image/ms_riya_kapoor.jpg",
+    image: "/image/ms-riya-kapoor.webp",
   },
   {
     id: "dr-neha-malhotra",
@@ -65,7 +65,7 @@ const allDietitians = [
     tags: ["Pregnancy Nutrition", "PCOS/PCOD"],
     experience: "10+ Years Experience",
     education: "Ph.D. in Clinical Nutrition",
-    image: "/image/dr_neha_malhotra.jpg",
+    image: "/image/dr-neha-malhotra.webp",
   },
   {
     id: "dr-arjun-mehta",
@@ -77,7 +77,7 @@ const allDietitians = [
     tags: ["Diabetes Care", "Heart Health"],
     experience: "9+ Years Experience",
     education: "M.Sc. in Clinical Nutrition",
-    image: "/image/dr_arjun_mehta.jpg",
+    image: "/image/dr-arjun-mehta.webp",
   },
   {
     id: "dr-priya-sharma",
@@ -89,7 +89,7 @@ const allDietitians = [
     tags: ["Child Nutrition", "Growth & Development"],
     experience: "7+ Years Experience",
     education: "M.Sc. in Pediatric Nutrition",
-    image: "/image/dr_priya_sharma.jpg",
+    image: "/image/dr-priya-sharma.webp",
   },
   {
     id: "dr-rohit-verma",
@@ -101,7 +101,7 @@ const allDietitians = [
     tags: ["Lifestyle Management", "General Wellness"],
     experience: "8+ Years Experience",
     education: "M.Sc. in Nutrition",
-    image: "/image/dr_rohit_verma.jpg",
+    image: "/image/dr-rohit-verma.webp",
   },
   {
     id: "ms-kavita-rao",
@@ -113,7 +113,7 @@ const allDietitians = [
     tags: ["Weight Loss", "Metabolic Health"],
     experience: "6+ Years Experience",
     education: "M.Sc. in Dietetics",
-    image: "/image/ms_kavita_rao.jpg",
+    image: "/image/ms-kavita-rao.webp",
   },
   {
     id: "dr-sneha-iyer",
@@ -125,7 +125,7 @@ const allDietitians = [
     tags: ["Thyroid Care", "Hormonal Health"],
     experience: "7+ Years Experience",
     education: "M.Sc. in Clinical Nutrition",
-    image: "/image/dr_sneha_iyer.jpg",
+    image: "/image/dr-sneha-iyer.webp",
   },
 ];
 
@@ -201,7 +201,7 @@ export default function DietitiansPage() {
           {/* Serene Greenhouse Bokeh Background — Spreads edge-to-edge */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
             <Image
-              src="/image/Serene Greenhouse Bokeh Background.png"
+              src="/image/serene-greenhouse-bokeh-background.webp"
               alt="Clinic Greenhouse Setting"
               fill
               priority
@@ -230,7 +230,7 @@ export default function DietitiansPage() {
             className="absolute -top-4 -left-4 pointer-events-none z-10 hidden sm:block w-[180px] h-[220px] opacity-70 select-none"
           >
             <Image
-              src="/image/Dewy Green Leafy Branch.png"
+              src="/image/dewy-green-leafy-branch.webp"
               alt=""
               fill
               priority
@@ -322,7 +322,7 @@ export default function DietitiansPage() {
                   >
                     <div className="relative w-full h-full">
                       <Image
-                        src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                        src="/image/hero-section-smiling-doctor-in-green-scrubs.webp"
                         alt="DietNexa Certified Clinical Dietitian"
                         fill
                         priority
@@ -344,7 +344,7 @@ export default function DietitiansPage() {
                   >
                     <div className="relative w-full h-full">
                       <Image
-                        src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                        src="/image/hero-sectionfresh-vegetable-medley-cutout.webp"
                         alt="Fresh Healthy Vegetables"
                         fill
                         priority
@@ -434,7 +434,7 @@ export default function DietitiansPage() {
                     {/* Centered Doctor Cutout */}
                     <div className="absolute inset-0 z-10 pointer-events-none">
                       <Image
-                        src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                        src="/image/hero-section-smiling-doctor-in-green-scrubs.webp"
                         alt="DietNexa Certified Clinical Dietitian"
                         fill
                         priority
@@ -455,7 +455,7 @@ export default function DietitiansPage() {
                     >
                       <div className="relative w-full h-full">
                         <Image
-                          src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                          src="/image/hero-sectionfresh-vegetable-medley-cutout.webp"
                           alt="Fresh Healthy Vegetables"
                           fill
                           priority
@@ -863,7 +863,7 @@ export default function DietitiansPage() {
               {/* Right Graphic: Nutrition Assessment Checklist & Green Apple */}
               <div className="relative w-48 sm:w-56 md:w-64 h-48 sm:h-56 md:h-64 shrink-0">
                 <Image
-                  src="/image/diet_match_clipboard.png"
+                  src="/image/diet-match-clipboard.webp"
                   alt="Nutrition Assessment Checklist & Apple with Measuring Tape"
                   fill
                   unoptimized

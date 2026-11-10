@@ -356,7 +356,7 @@ export default function ChildTeenNutritionPage() {
       id: "fussy-eating",
       title: "Fussy Eating",
       desc: "Practical strategies to build healthy food habits.",
-      image: "/image/happy_girl_healthy_salad.png",
+      image: "/image/happy-girl-healthy-salad.webp",
       icon: CutleryHabitsIcon,
       badgeBg: "bg-amber-50 text-amber-700",
       cardBg: "bg-[#fcfaf4]",
@@ -366,7 +366,7 @@ export default function ChildTeenNutritionPage() {
       id: "low-immunity",
       title: "Low Immunity",
       desc: "Nutrient-rich guidance to strengthen natural defenses.",
-      image: "/image/smiling_boy_flexing_blue_shirt.png",
+      image: "/image/smiling-boy-flexing-blue-shirt.webp",
       icon: ImmunityShieldIcon,
       badgeBg: "bg-emerald-50 text-emerald-700",
       cardBg: "bg-[#f3faf6]",
@@ -376,7 +376,7 @@ export default function ChildTeenNutritionPage() {
       id: "underweight",
       title: "Underweight Concerns",
       desc: "Support healthy and steady weight gain.",
-      image: "/image/smiling_boy_two_thumbs_up.png",
+      image: "/image/smiling-boy-two-thumbs-up.webp",
       icon: SproutGrowthIcon,
       badgeBg: "bg-emerald-50 text-emerald-700",
       cardBg: "bg-[#f4faf6]",
@@ -386,7 +386,7 @@ export default function ChildTeenNutritionPage() {
       id: "overweight",
       title: "Overweight Tendency",
       desc: "Balanced, enjoyable nutrition for a healthy weight.",
-      image: "/image/smiling_girl_triumphant_pose.png",
+      image: "/image/smiling-girl-triumphant-pose.webp",
       icon: ScaleWeightIcon,
       badgeBg: "bg-emerald-50 text-emerald-700",
       cardBg: "bg-[#fcfaf6]",
@@ -396,7 +396,7 @@ export default function ChildTeenNutritionPage() {
       id: "bone-health",
       title: "Bone Health",
       desc: "Calcium and Vitamin D support for strong bones.",
-      image: "/image/milk_swiss_cheese_broccoli.png",
+      image: "/image/milk-swiss-cheese-broccoli.webp",
       icon: Activity,
       badgeBg: "bg-emerald-50 text-emerald-700",
       cardBg: "bg-[#f4faf6]",
@@ -406,7 +406,7 @@ export default function ChildTeenNutritionPage() {
       id: "active-sports",
       title: "Active & Sports Kids",
       desc: "Nutrition for energy, performance and recovery.",
-      image: "/image/soccer_water_bottle_bananas.png",
+      image: "/image/soccer-water-bottle-bananas.webp",
       icon: RunningAthleteIcon,
       badgeBg: "bg-emerald-50 text-emerald-700",
       cardBg: "bg-[#f3faf6]",
@@ -486,7 +486,7 @@ export default function ChildTeenNutritionPage() {
           {/* Serene Greenhouse Bokeh Background */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
             <Image
-              src="/image/Serene Greenhouse Bokeh Background.png"
+              src="/image/serene-greenhouse-bokeh-background.webp"
               alt="Serene Greenhouse Setting"
               fill
               priority
@@ -513,7 +513,7 @@ export default function ChildTeenNutritionPage() {
           {/* Leaf accents */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Dewy Green Leafy Branch.png"
+              src="/image/dewy-green-leafy-branch.webp"
               alt=""
               fill
               unoptimized
@@ -522,7 +522,7 @@ export default function ChildTeenNutritionPage() {
           </div>
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Glossy Green Leaf Branch.png"
+              src="/image/glossy-green-leaf-branch.webp"
               alt=""
               fill
               unoptimized
@@ -624,7 +624,7 @@ export default function ChildTeenNutritionPage() {
                     style={{ left: "8%", top: "14%" }}
                   >
                     <Image
-                      src="/image/doodle_burst.png"
+                      src="/image/doodle-burst.webp"
                       alt=""
                       fill
                       unoptimized
@@ -638,7 +638,7 @@ export default function ChildTeenNutritionPage() {
                     style={{ right: "3%", top: "4%" }}
                   >
                     <Image
-                      src="/image/doodle_chart.png"
+                      src="/image/doodle-chart.webp"
                       alt=""
                       fill
                       unoptimized
@@ -652,7 +652,7 @@ export default function ChildTeenNutritionPage() {
                     style={{ right: "-4%", top: "22%" }}
                   >
                     <Image
-                      src="/image/doodle_cap.png"
+                      src="/image/doodle-cap.webp"
                       alt=""
                       fill
                       unoptimized
@@ -666,7 +666,7 @@ export default function ChildTeenNutritionPage() {
                     style={{ right: "1%", top: "42%" }}
                   >
                     <Image
-                      src="/image/doodle_bulb.png"
+                      src="/image/doodle-bulb.webp"
                       alt=""
                       fill
                       unoptimized
@@ -680,7 +680,7 @@ export default function ChildTeenNutritionPage() {
                     style={{ right: "-3%", top: "62%" }}
                   >
                     <Image
-                      src="/image/doodle_star.png"
+                      src="/image/doodle-star.webp"
                       alt=""
                       fill
                       unoptimized
@@ -690,7 +690,7 @@ export default function ChildTeenNutritionPage() {
 
                   {/* The Kids Image */}
                   <Image
-                    src="/image/Happy Siblings with Books and Strength.png"
+                    src="/image/happy-siblings-with-books-and-strength.webp"
                     alt="Happy Siblings with Books and Strength — Child & Teen Nutrition"
                     fill
                     priority
@@ -705,7 +705,7 @@ export default function ChildTeenNutritionPage() {
                   className="absolute z-20 pointer-events-none bottom-0 left-[18%] sm:left-[22%] w-[190px] sm:w-[230px] lg:w-[260px] h-[75px] sm:h-[95px] lg:h-[108px] drop-shadow-md"
                 >
                   <Image
-                    src="/image/Healthy Food Still Life Arrangement.png"
+                    src="/image/healthy-food-still-life-arrangement.webp"
                     alt="Healthy Food Still Life — Fresh Milk, Fruits & Balanced Nutrition"
                     fill
                     priority
@@ -758,7 +758,7 @@ export default function ChildTeenNutritionPage() {
               <div className="lg:col-span-6 relative">
                 <div className="relative h-[260px] sm:h-[320px] lg:h-[350px] w-full rounded-3xl overflow-hidden shadow-lg border-4 border-white/90">
                   <Image
-                    src="/image/Joyful Soccer Game in the Park.png"
+                    src="/image/joyful-soccer-game-in-the-park.webp"
                     alt="Joyful Soccer Game in the Park — Nutrition Support for Growing Minds & Bodies"
                     fill
                     priority
@@ -772,7 +772,7 @@ export default function ChildTeenNutritionPage() {
                 {/* Decorative floating leaf on the corner */}
                 <div className="absolute -top-5 -right-5 w-20 h-20 pointer-events-none opacity-85 z-10">
                   <Image
-                    src="/image/Dewy Green Leafy Branch.png"
+                    src="/image/dewy-green-leafy-branch.webp"
                     alt=""
                     fill
                     unoptimized
@@ -1022,7 +1022,7 @@ export default function ChildTeenNutritionPage() {
                       }}
                     >
                       <Image
-                        src="/image/Colorful Balanced Meal Plate.png"
+                        src="/image/colorful-balanced-meal-plate.webp"
                         alt="A Balanced Plate for Children & Teens"
                         fill
                         unoptimized

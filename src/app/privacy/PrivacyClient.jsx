@@ -283,7 +283,7 @@ export default function PrivacyClient() {
         <section className="relative overflow-hidden pt-8 pb-10 lg:pt-12 lg:pb-14 border-b border-gray-100">
           <div className="absolute inset-0 z-0">
             <Image
-              src="/image/Serene Greenhouse Bokeh Background.png"
+              src="/image/serene-greenhouse-bokeh-background.webp"
               alt="DietNexa Background"
               fill
               priority

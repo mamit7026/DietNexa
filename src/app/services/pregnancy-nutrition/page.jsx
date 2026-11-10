@@ -210,7 +210,7 @@ export default function PregnancyNutritionPage() {
       themeBorder: "border-[#fae0e0]",
       badgeBg: "bg-[#fce9e9]",
       badgeText: "text-[#d64555]",
-      image: "/image/Pregnant Woman Holding Belly.png",
+      image: "/image/pregnant-woman-holding-belly.webp",
       bullets: [
         "Manage nausea and food aversions",
         "Get key nutrients like folic acid, iron and B12",
@@ -225,7 +225,7 @@ export default function PregnancyNutritionPage() {
       themeBorder: "border-[#d8f0e1]",
       badgeBg: "bg-[#e5f7ed]",
       badgeText: "text-[#10793f]",
-      image: "/image/Serene Pregnant Woman Cradling Belly.png",
+      image: "/image/serene-pregnant-woman-cradling-belly.webp",
       bullets: [
         "Meet higher nutrient needs for you and your growing baby",
         "Support baby's bone, brain and organ development",
@@ -240,7 +240,7 @@ export default function PregnancyNutritionPage() {
       themeBorder: "border-[#d7ebfa]",
       badgeBg: "bg-[#e4f2fc]",
       badgeText: "text-[#1e74b3]",
-      image: "/image/Pregnant Woman in Blue Maternity Dress.png",
+      image: "/image/pregnant-woman-in-blue-maternity-dress.webp",
       bullets: [
         "Support baby's brain and weight gain",
         "Prepare your body for delivery",
@@ -344,7 +344,7 @@ export default function PregnancyNutritionPage() {
           {/* Softly Lit Airy Living Room Background — Spreads edge-to-edge */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
             <Image
-              src="/image/Softly Lit Airy Living Room.png"
+              src="/image/softly-lit-airy-living-room.webp"
               alt="Softly Lit Airy Living Room Setting"
               fill
               priority
@@ -371,7 +371,7 @@ export default function PregnancyNutritionPage() {
           {/* Subtle green leaves on the far left edge */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Dewy Green Leafy Branch.png"
+              src="/image/dewy-green-leafy-branch.webp"
               alt=""
               fill
               unoptimized
@@ -382,7 +382,7 @@ export default function PregnancyNutritionPage() {
           {/* Subtle green leaves on the far right edge */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Glossy Green Leaf Branch.png"
+              src="/image/glossy-green-leaf-branch.webp"
               alt=""
               fill
               unoptimized
@@ -478,7 +478,7 @@ export default function PregnancyNutritionPage() {
                   style={{ left: "10%", top: "8%" }}
                 >
                   <Image
-                    src="/image/Mother and Baby Heart Emblem.png"
+                    src="/image/mother-and-baby-heart-emblem.webp"
                     alt="Mother and Baby Heart Emblem"
                     fill
                     unoptimized
@@ -489,7 +489,7 @@ export default function PregnancyNutritionPage() {
                 {/* Hero Pregnant Woman Visual - Resting flush on the bottom */}
                 <div className="relative w-[340px] sm:w-[410px] lg:w-[460px] h-[310px] sm:h-[345px] lg:h-[365px] z-10 flex items-end justify-center">
                   <Image
-                    src="/image/Pregnant Woman Enjoying Healthy Snacks.png"
+                    src="/image/pregnant-woman-enjoying-healthy-snacks.webp"
                     alt="Pregnant Woman Enjoying Healthy Snacks — Safe Pregnancy Nutrition"
                     fill
                     priority
@@ -503,7 +503,7 @@ export default function PregnancyNutritionPage() {
                   className="absolute z-20 pointer-events-none bottom-0 left-[8%] sm:left-[12%] w-[190px] sm:w-[230px] lg:w-[260px] h-[75px] sm:h-[95px] lg:h-[108px] drop-shadow-md"
                 >
                   <Image
-                    src="/image/Healthy Foods and Fresh Fruit Arrangement.png"
+                    src="/image/healthy-foods-and-fresh-fruit-arrangement.webp"
                     alt="Healthy Foods and Fresh Fruit Arrangement — Milk, Fruits & Nourishing Snacks"
                     fill
                     priority
@@ -630,7 +630,7 @@ export default function PregnancyNutritionPage() {
               <div className="lg:col-span-4 relative flex">
                 <div className="relative w-full h-[220px] sm:h-[240px] lg:h-auto min-h-[220px] rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-gray-100">
                   <Image
-                    src="/image/Grilled Chicken Quinoa Salad Bowl.png"
+                    src="/image/grilled-chicken-quinoa-salad-bowl.webp"
                     alt="Nutrient-Rich Balanced Pregnancy Meal Bowl with Lean Grilled Chicken, Greens, Avocado & Quinoa"
                     fill
                     unoptimized
@@ -721,7 +721,7 @@ export default function PregnancyNutritionPage() {
               <div className="lg:col-span-5 relative flex items-center justify-center">
                 <div className="relative w-full aspect-16/10 rounded-2xl sm:rounded-3xl overflow-hidden shadow-sm border border-gray-100">
                   <Image
-                    src="/image/Cozy Ultrasound Baby Announcement Still Life.png"
+                    src="/image/cozy-ultrasound-baby-announcement-still-life.webp"
                     alt="Cozy Ultrasound Baby Announcement with Soft Booties and Plush Toy"
                     fill
                     unoptimized
@@ -745,7 +745,7 @@ export default function PregnancyNutritionPage() {
                 <div className="lg:col-span-3 flex items-center justify-center">
                   <div className="relative w-[180px] sm:w-[210px] lg:w-[230px] h-[190px] sm:h-[220px] lg:h-[240px]">
                     <Image
-                      src="/image/Friendly Medical Professional Portrait.png"
+                      src="/image/friendly-medical-professional-portrait.webp"
                       alt="Qualified Friendly Pregnancy Dietitian in White Lab Coat"
                       fill
                       unoptimized

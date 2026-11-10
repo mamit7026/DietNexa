@@ -436,7 +436,7 @@ export default function Navbar({ onOpenModal }) {
             >
               <div className="relative h-[38px] w-[136px] min-[380px]:w-[155px] sm:h-[44px] sm:w-[185px] md:h-[48px] md:w-[200px]">
                 <Image
-                  src="/image/DietNexa Logo.png"
+                  src="/image/dietnexa-logo.webp"
                   alt="DietNexa — Your Health, Our Nutrition Expertise"
                   fill
                   priority
@@ -573,7 +573,7 @@ export default function Navbar({ onOpenModal }) {
                             {/* Corner leaf accent */}
                             <div className="absolute top-0 right-0 w-20 h-20 pointer-events-none opacity-40">
                               <Image
-                                src="/image/Glossy Green Leaf Branch.png"
+                                src="/image/glossy-green-leaf-branch.webp"
                                 alt=""
                                 fill
                                 unoptimized
@@ -593,7 +593,7 @@ export default function Navbar({ onOpenModal }) {
                             {/* Salad bowl image at bottom */}
                             <div className="relative w-full h-[115px] sm:h-[130px] mt-4 flex items-end justify-center">
                               <Image
-                                src="/image/services_menu_salad.png"
+                                src="/image/services-menu-salad.webp"
                                 alt="Our Services Healthy Nutrition"
                                 fill
                                 unoptimized
@@ -664,7 +664,7 @@ export default function Navbar({ onOpenModal }) {
                             {/* Corner leaf accent */}
                             <div className="absolute top-0 right-0 w-20 h-20 pointer-events-none opacity-40">
                               <Image
-                                src="/image/Glossy Green Leaf Branch.png"
+                                src="/image/glossy-green-leaf-branch.webp"
                                 alt=""
                                 fill
                                 unoptimized
@@ -684,7 +684,7 @@ export default function Navbar({ onOpenModal }) {
                             {/* Healthy food arrangement image at bottom */}
                             <div className="relative w-full h-[115px] sm:h-[130px] mt-4 flex items-end justify-center">
                               <Image
-                                src="/image/Healthy Foods and Fresh Fruit Arrangement.png"
+                                src="/image/healthy-foods-and-fresh-fruit-arrangement.webp"
                                 alt="Healthy Foods & Nutrition Resources"
                                 fill
                                 unoptimized

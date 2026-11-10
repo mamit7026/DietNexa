@@ -28,7 +28,7 @@ export default function NotFound() {
         className="absolute -top-4 -left-4 sm:-top-2 sm:-left-2 pointer-events-none z-10 w-[170px] h-[220px] sm:w-[240px] sm:h-[300px] md:w-[300px] md:h-[360px]"
       >
         <Image
-          src="/image/Dewy Green Leafy Branch.png"
+          src="/image/dewy-green-leafy-branch.webp"
           alt="Green Leaves"
           fill
           priority
@@ -42,7 +42,7 @@ export default function NotFound() {
         className="absolute top-[28%] -right-6 sm:-right-4 pointer-events-none z-10 w-[150px] h-[240px] sm:w-[210px] sm:h-[310px] md:w-[260px] md:h-[380px]"
       >
         <Image
-          src="/image/Glossy Green Leaf Branch.png"
+          src="/image/glossy-green-leaf-branch.webp"
           alt="Glossy Leaves"
           fill
           priority
@@ -56,7 +56,7 @@ export default function NotFound() {
         <Link href="/" className="inline-block transition-transform hover:scale-105">
           <div className="relative h-[38px] w-[150px] sm:h-[46px] sm:w-[185px]">
             <Image
-              src="/image/DietNexa Logo.png"
+              src="/image/dietnexa-logo.webp"
               alt="DietNexa Logo"
               fill
               priority
@@ -260,7 +260,7 @@ export default function NotFound() {
           >
             <div className="relative w-full h-full">
               <Image
-                src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                src="/image/hero-sectionfresh-vegetable-medley-cutout.webp"
                 alt="Fresh produce"
                 fill
                 priority

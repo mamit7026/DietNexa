@@ -411,7 +411,7 @@ function AdminLayoutContent({ children }) {
               >
                 <div className="w-8 h-8 rounded-full overflow-hidden bg-emerald-100 border border-emerald-200 flex items-center justify-center text-xs font-bold text-emerald-800">
                   <Image
-                    src="/image/dr_arjun_mehta.jpg"
+                    src="/image/dr-arjun-mehta.webp"
                     alt={currentUser?.name || "Amit Mondal"}
                     width={32}
                     height={32}

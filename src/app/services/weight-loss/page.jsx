@@ -206,7 +206,7 @@ export default function WeightLossPage() {
           {/* Serene Greenhouse Bokeh Background — Spreads edge-to-edge */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
             <Image
-              src="/image/Serene Greenhouse Bokeh Background.png"
+              src="/image/serene-greenhouse-bokeh-background.webp"
               alt="Serene Greenhouse Setting"
               fill
               priority
@@ -233,7 +233,7 @@ export default function WeightLossPage() {
           {/* Subtle green leaves on the far left edge */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Dewy Green Leafy Branch.png"
+              src="/image/dewy-green-leafy-branch.webp"
               alt=""
               fill
               unoptimized
@@ -244,7 +244,7 @@ export default function WeightLossPage() {
           {/* Subtle green leaves on the far right edge */}
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Glossy Green Leaf Branch.png"
+              src="/image/glossy-green-leaf-branch.webp"
               alt=""
               fill
               unoptimized
@@ -328,7 +328,7 @@ export default function WeightLossPage() {
                 {/* Hero Woman Visual - Resting flush on the bottom */}
                 <div className="relative w-[240px] sm:w-[280px] lg:w-[315px] h-[310px] sm:h-[340px] lg:h-[365px] z-10 flex items-end justify-center -mr-4 sm:-mr-5">
                   <Image
-                    src="/image/Smiling Woman Measuring Waist in Green Sportswear.png"
+                    src="/image/smiling-woman-measuring-waist-in-green-sportswear.webp"
                     alt="Smiling Woman Measuring Waist — Safe Sustainable Weight Loss"
                     fill
                     priority
@@ -364,7 +364,7 @@ export default function WeightLossPage() {
                   className="absolute bottom-0 right-0 sm:right-1 z-30 w-[150px] sm:w-[185px] lg:w-[210px] h-[110px] sm:h-[135px] lg:h-[155px] drop-shadow-md pointer-events-none"
                 >
                   <Image
-                    src="/image/Healthy Green Feast with Smoothie and Salad.png"
+                    src="/image/healthy-green-feast-with-smoothie-and-salad.webp"
                     alt="Fresh healthy salad and detox green smoothie"
                     fill
                     unoptimized
@@ -432,7 +432,7 @@ export default function WeightLossPage() {
                   {/* Decorative green leaves behind the bowl */}
                   <div className="absolute -top-8 -left-6 w-32 h-32 pointer-events-none opacity-40 -rotate-45 z-0">
                     <Image
-                      src="/image/Dewy Green Leafy Branch.png"
+                      src="/image/dewy-green-leafy-branch.webp"
                       alt=""
                       fill
                       unoptimized
@@ -442,7 +442,7 @@ export default function WeightLossPage() {
 
                   <div className="absolute -bottom-6 -right-4 w-28 h-28 pointer-events-none opacity-30 rotate-45 z-0">
                     <Image
-                      src="/image/Glossy Green Leaf Branch.png"
+                      src="/image/glossy-green-leaf-branch.webp"
                       alt=""
                       fill
                       unoptimized
@@ -451,7 +451,7 @@ export default function WeightLossPage() {
                   </div>
 
                   <Image
-                    src="/image/Colorful Grilled Chicken Salad Bowl.png"
+                    src="/image/colorful-grilled-chicken-salad-bowl.webp"
                     alt="Nutritious grilled chicken and avocado salad bowl"
                     fill
                     unoptimized
@@ -629,7 +629,7 @@ export default function WeightLossPage() {
                   <div className="flex flex-col items-center">
                     <div className="relative w-[130px] sm:w-[155px] aspect-[4/5] rounded-2xl overflow-hidden shadow-sm border border-gray-200">
                       <Image
-                        src="/image/priya_before_78kg.jpg"
+                        src="/image/priya-before-78kg.webp"
                         alt="Priya Sharma before weight loss program"
                         fill
                         unoptimized
@@ -656,7 +656,7 @@ export default function WeightLossPage() {
                   <div className="flex flex-col items-center">
                     <div className="relative w-[130px] sm:w-[155px] aspect-[4/5] rounded-2xl overflow-hidden shadow-sm border-2 border-[#10793f]/40">
                       <Image
-                        src="/image/priya_after_68kg.jpg"
+                        src="/image/priya-after-68kg.webp"
                         alt="Priya Sharma after completing DietNexa weight loss program"
                         fill
                         unoptimized
@@ -757,7 +757,7 @@ export default function WeightLossPage() {
                 <div className="md:col-span-4 flex justify-center md:justify-start">
                   <div className="relative w-[190px] sm:w-[220px] md:w-[240px] h-[150px] sm:h-[180px] drop-shadow-md">
                     <Image
-                      src="/image/green-scale-apple-measuring-tape.png"
+                      src="/image/green-scale-apple-measuring-tape.webp"
                       alt="DietNexa Weight Loss Scale and Green Apple"
                       fill
                       unoptimized

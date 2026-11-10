@@ -402,7 +402,7 @@ function ReportsPageContent() {
                         <div className="flex items-center gap-2">
                           <div className="w-6 h-6 rounded-full overflow-hidden bg-emerald-100 border border-emerald-200 flex items-center justify-center shrink-0">
                             <Image
-                              src="/image/dr_arjun_mehta.jpg"
+                              src="/image/dr-arjun-mehta.webp"
                               alt={ownerName}
                               width={24}
                               height={24}

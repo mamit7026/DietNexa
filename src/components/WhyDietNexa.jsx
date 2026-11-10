@@ -53,7 +53,7 @@ export default function WhyDietNexa() {
               style={{ top: "0px", left: "0px", width: "150px", height: "180px" }}
             >
               <Image
-                src="/image/Glossy Green Leaf Branch.png"
+                src="/image/glossy-green-leaf-branch.webp"
                 alt=""
                 fill
                 unoptimized
@@ -68,7 +68,7 @@ export default function WhyDietNexa() {
               style={{ bottom: "0px", right: "10px", width: "110px", height: "140px" }}
             >
               <Image
-                src="/image/Dewy Green Leafy Branch.png"
+                src="/image/dewy-green-leafy-branch.webp"
                 alt=""
                 fill
                 unoptimized
@@ -80,7 +80,7 @@ export default function WhyDietNexa() {
             {/* Phone mockup */}
             <div className="relative z-10" style={{ width: "250px", height: "390px" }}>
               <Image
-                src="/image/DietNexa Healthy Meal Planner Mockup.png"
+                src="/image/dietnexa-healthy-meal-planner-mockup.webp"
                 alt="DietNexa app today's plan calorie tracker"
                 fill
                 unoptimized

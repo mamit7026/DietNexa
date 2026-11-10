@@ -33,7 +33,7 @@ export default function AboutPage() {
           {/* Greenhouse Bokeh Background — Spreads edge-to-edge from left to right */}
           <div className="absolute inset-0 z-0">
             <Image
-              src="/image/Serene Greenhouse Bokeh Background.png"
+              src="/image/serene-greenhouse-bokeh-background.webp"
               alt="Clinic Greenhouse Setting"
               fill
               priority
@@ -55,7 +55,7 @@ export default function AboutPage() {
             className="absolute -top-4 -left-4 pointer-events-none z-10 hidden sm:block w-[180px] h-[220px] opacity-70"
           >
             <Image
-              src="/image/Dewy Green Leafy Branch.png"
+              src="/image/dewy-green-leafy-branch.webp"
               alt=""
               fill
               priority
@@ -122,7 +122,7 @@ export default function AboutPage() {
                 >
                   <div className="relative w-full h-full">
                     <Image
-                      src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                      src="/image/hero-section-smiling-doctor-in-green-scrubs.webp"
                       alt="DietNexa Doctor"
                       fill
                       priority
@@ -144,7 +144,7 @@ export default function AboutPage() {
                 >
                   <div className="relative w-full h-full">
                     <Image
-                      src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                      src="/image/hero-sectionfresh-vegetable-medley-cutout.webp"
                       alt="Fresh Produce"
                       fill
                       priority
@@ -173,7 +173,7 @@ export default function AboutPage() {
                 >
                   <div className="relative w-full h-full">
                     <Image
-                      src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                      src="/image/hero-section-smiling-doctor-in-green-scrubs.webp"
                       alt="DietNexa Doctor"
                       fill
                       priority
@@ -195,7 +195,7 @@ export default function AboutPage() {
                 >
                   <div className="relative w-full h-full">
                     <Image
-                      src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                      src="/image/hero-sectionfresh-vegetable-medley-cutout.webp"
                       alt="Fresh Produce"
                       fill
                       priority
@@ -219,7 +219,7 @@ export default function AboutPage() {
             style={{ transform: "rotate(35deg)" }}
           >
             <Image
-              src="/image/Glossy Green Leaf Branch.png"
+              src="/image/glossy-green-leaf-branch.webp"
               alt=""
               width={1024}
               height={1536}
@@ -235,7 +235,7 @@ export default function AboutPage() {
               <div className="lg:col-span-6">
                 <div className="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-md border border-emerald-100/70">
                   <Image
-                    src="/image/about Friendly Nutrition Consultation.png"
+                    src="/image/about-friendly-nutrition-consultation.webp"
                     alt="DietNexa friendly personalized nutrition consultation"
                     width={1774}
                     height={887}
@@ -364,7 +364,7 @@ export default function AboutPage() {
             style={{ transform: "rotate(-35deg) translateY(-50%)" }}
           >
             <Image
-              src="/image/Glossy Green Leaf Branch.png"
+              src="/image/glossy-green-leaf-branch.webp"
               alt=""
               width={1024}
               height={1536}
@@ -738,7 +738,7 @@ export default function AboutPage() {
             style={{ transform: "rotate(35deg) translateY(-50%)" }}
           >
             <Image
-              src="/image/Glossy Green Leaf Branch.png"
+              src="/image/glossy-green-leaf-branch.webp"
               alt=""
               width={1024}
               height={1536}
@@ -753,7 +753,7 @@ export default function AboutPage() {
               <div className="lg:col-span-5 flex justify-center lg:justify-start">
                 <div className="w-full max-w-[460px]">
                   <Image
-                    src="/image/Smiling Medical Team Cutout.png"
+                    src="/image/smiling-medical-team-cutout.webp"
                     alt="DietNexa certified medical and dietitian team"
                     width={1621}
                     height={970}
@@ -888,7 +888,7 @@ export default function AboutPage() {
             style={{ transform: "rotate(-25deg)" }}
           >
             <Image
-              src="/image/Glossy Green Leaf Branch.png"
+              src="/image/glossy-green-leaf-branch.webp"
               alt=""
               width={1024}
               height={1536}
@@ -926,7 +926,7 @@ export default function AboutPage() {
                 <div className="lg:col-span-5 flex justify-center lg:justify-end z-10">
                   <div className="w-full max-w-[460px]">
                     <Image
-                      src="/image/Vibrant Healthy Foods with Measuring Tape.png"
+                      src="/image/vibrant-healthy-foods-with-measuring-tape.webp"
                       alt="Fresh fruits, vegetables, green smoothie, and fitness measuring tape"
                       width={2172}
                       height={724}

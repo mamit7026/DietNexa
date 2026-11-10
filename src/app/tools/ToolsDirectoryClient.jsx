@@ -186,7 +186,7 @@ export default function ToolsDirectoryClient() {
             }}
           >
             <Image
-              src="/image/Serene Greenhouse Bokeh Background.png"
+              src="/image/serene-greenhouse-bokeh-background.webp"
               alt="Greenhouse Botanical Bokeh"
               fill
               priority
@@ -325,7 +325,7 @@ export default function ToolsDirectoryClient() {
             <div className="lg:col-span-5 relative flex justify-center lg:justify-end">
               <div className="relative w-full max-w-[480px] h-[330px] sm:h-[370px] lg:h-[410px]">
                 <Image
-                  src="/image/DietNexa Nutrition Tools with Fresh Foods.png"
+                  src="/image/dietnexa-nutrition-tools-with-fresh-foods.webp"
                   alt="DietNexa Nutrition Tools with Fresh Foods"
                   fill
                   priority
@@ -525,7 +525,7 @@ export default function ToolsDirectoryClient() {
           {/* Decorative leafy branch in the background on the left */}
           <div className="absolute left-0 bottom-0 w-44 h-44 pointer-events-none select-none opacity-30 z-0">
             <Image
-              src="/image/Dewy Green Leafy Branch.png"
+              src="/image/dewy-green-leafy-branch.webp"
               alt=""
               fill
               unoptimized
@@ -538,7 +538,7 @@ export default function ToolsDirectoryClient() {
             <div className="md:col-span-4 flex justify-center md:justify-start">
               <div className="relative w-44 h-44 sm:w-52 sm:h-52 md:w-56 md:h-56 -mb-6 md:-mb-8">
                 <Image
-                  src="/image/Smiling South Asian Doctor Portrait.png"
+                  src="/image/smiling-south-asian-doctor-portrait.webp"
                   alt="DietNexa Certified Clinical Dietitian"
                   fill
                   priority

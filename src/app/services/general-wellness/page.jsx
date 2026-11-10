@@ -220,19 +220,19 @@ export default function GeneralWellnessPage() {
     {
       title: "Balanced Diet: The Key to Everyday Wellness",
       desc: "Learn how a balanced diet improves energy, immunity and overall health.",
-      image: "/image/Vibrant Garden-Fresh Feta Salad.png",
+      image: "/image/vibrant-garden-fresh-feta-salad.webp",
       slug: "balanced-diet-everyday-wellness",
     },
     {
       title: "Simple Daily Habits for Better Health",
       desc: "Easy, science-backed habits to stay active, fit and stress-free.",
-      image: "/image/Peaceful Park Stretching Portrait.png",
+      image: "/image/peaceful-park-stretching-portrait.webp",
       slug: "simple-daily-habits-better-health",
     },
     {
       title: "Foods That Naturally Boost Immunity",
       desc: "Add these nutrient-rich foods to support a stronger immune system.",
-      image: "/image/Vibrant Berry Nut Oatmeal Bowl.png",
+      image: "/image/vibrant-berry-nut-oatmeal-bowl.webp",
       slug: "foods-naturally-boost-immunity",
     },
   ];
@@ -271,7 +271,7 @@ export default function GeneralWellnessPage() {
           {/* Sunlit Green Park Bokeh Background — Spreads edge-to-edge */}
           <div className="absolute inset-0 z-0 pointer-events-none select-none">
             <Image
-              src="/image/Sunlit Green Park Bokeh.png"
+              src="/image/sunlit-green-park-bokeh.webp"
               alt="Sunlit Green Park Wellness Background"
               fill
               priority
@@ -298,7 +298,7 @@ export default function GeneralWellnessPage() {
           {/* Leaf accents on edges */}
           <div className="absolute left-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Dewy Green Leafy Branch.png"
+              src="/image/dewy-green-leafy-branch.webp"
               alt=""
               fill
               unoptimized
@@ -307,7 +307,7 @@ export default function GeneralWellnessPage() {
           </div>
           <div className="absolute right-0 top-1/2 -translate-y-1/2 w-16 sm:w-24 h-52 pointer-events-none opacity-40 z-0">
             <Image
-              src="/image/Glossy Green Leaf Branch.png"
+              src="/image/glossy-green-leaf-branch.webp"
               alt=""
               fill
               unoptimized
@@ -403,7 +403,7 @@ export default function GeneralWellnessPage() {
                 {/* Main Hero Visual: Blissful Woman in Open Embrace — Large & Prominent */}
                 <div className="relative w-[500px] sm:w-[640px] lg:w-[750px] h-[325px] sm:h-[365px] lg:h-[390px] z-10 flex items-end justify-center pointer-events-none">
                   <Image
-                    src="/image/Blissful Woman in Open Embrace.png"
+                    src="/image/blissful-woman-in-open-embrace.webp"
                     alt="Blissful Woman in Open Embrace — Holistic General Wellness Nutrition"
                     fill
                     priority
@@ -495,7 +495,7 @@ export default function GeneralWellnessPage() {
                   {/* High Quality Salad Bowl Image */}
                   <div className="relative w-[92%] h-[92%] rounded-full overflow-hidden shadow-2xl">
                     <Image
-                      src="/image/Colorful Grilled Chicken Salad Bowl.png"
+                      src="/image/colorful-grilled-chicken-salad-bowl.webp"
                       alt="Nutrient-dense balanced wellness salad bowl"
                       fill
                       className="object-contain p-1"
@@ -554,7 +554,7 @@ export default function GeneralWellnessPage() {
                 <div className="lg:col-span-4 flex justify-center relative">
                   <div className="relative w-full max-w-[280px] h-[220px] sm:h-[260px]">
                     <Image
-                      src="/image/Meditating Woman in Lotus Pose.png"
+                      src="/image/meditating-woman-in-lotus-pose.webp"
                       alt="Woman meditating in peaceful lotus pose for holistic wellness"
                       fill
                       className="object-contain object-bottom drop-shadow-lg"
@@ -669,7 +669,7 @@ export default function GeneralWellnessPage() {
                   {/* Doctor Cutout Overlap */}
                   <div className="absolute right-0 bottom-0 top-2 w-[48%] max-w-[210px] pointer-events-none">
                     <Image
-                      src="/image/Smiling South Asian Doctor Portrait.png"
+                      src="/image/smiling-south-asian-doctor-portrait.webp"
                       alt="Smiling expert DietNexa clinical dietitian"
                       fill
                       className="object-contain object-bottom drop-shadow-xl"

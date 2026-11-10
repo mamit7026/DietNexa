@@ -141,7 +141,7 @@ export default function ContactPage() {
           {/* Greenhouse Bokeh Background — Spreads edge-to-edge from left to right */}
           <div className="absolute inset-0 z-0">
             <Image
-              src="/image/Serene Greenhouse Bokeh Background.png"
+              src="/image/serene-greenhouse-bokeh-background.webp"
               alt="Clinic Greenhouse Setting"
               fill
               priority
@@ -163,7 +163,7 @@ export default function ContactPage() {
             className="absolute -top-4 -left-4 pointer-events-none z-10 hidden sm:block w-[180px] h-[220px] opacity-70"
           >
             <Image
-              src="/image/Dewy Green Leafy Branch.png"
+              src="/image/dewy-green-leafy-branch.webp"
               alt=""
               fill
               priority
@@ -279,7 +279,7 @@ export default function ContactPage() {
                 >
                   <div className="relative w-full h-full">
                     <Image
-                      src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                      src="/image/hero-section-smiling-doctor-in-green-scrubs.webp"
                       alt="DietNexa Doctor"
                       fill
                       priority
@@ -301,7 +301,7 @@ export default function ContactPage() {
                 >
                   <div className="relative w-full h-full">
                     <Image
-                      src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                      src="/image/hero-sectionfresh-vegetable-medley-cutout.webp"
                       alt="Fresh Produce"
                       fill
                       priority
@@ -330,7 +330,7 @@ export default function ContactPage() {
                 >
                   <div className="relative w-full h-full">
                     <Image
-                      src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                      src="/image/hero-section-smiling-doctor-in-green-scrubs.webp"
                       alt="DietNexa Doctor"
                       fill
                       priority
@@ -352,7 +352,7 @@ export default function ContactPage() {
                 >
                   <div className="relative w-full h-full">
                     <Image
-                      src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                      src="/image/hero-sectionfresh-vegetable-medley-cutout.webp"
                       alt="Fresh Produce"
                       fill
                       priority
@@ -656,7 +656,7 @@ export default function ContactPage() {
                 className="absolute -top-10 -right-6 pointer-events-none z-0 hidden lg:block w-[180px] h-[260px] opacity-85 rotate-12"
               >
                 <Image
-                  src="/image/Glossy Green Leaf Branch.png"
+                  src="/image/glossy-green-leaf-branch.webp"
                   alt=""
                   fill
                   priority

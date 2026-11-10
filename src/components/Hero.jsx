@@ -18,7 +18,7 @@ export default function Hero({ onOpenModal }) {
         style={{ top: "-20px", left: "-22px", width: "220px", height: "270px" }}
       >
         <Image
-          src="/image/Dewy Green Leafy Branch.png"
+          src="/image/dewy-green-leafy-branch.webp"
           alt=""
           fill
           unoptimized
@@ -294,7 +294,7 @@ export default function Hero({ onOpenModal }) {
             >
               <div className="relative w-full h-full">
                 <Image
-                  src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                  src="/image/hero-section-smiling-doctor-in-green-scrubs.webp"
                   alt="DietNexa Expert Dietitian"
                   fill
                   priority
@@ -316,7 +316,7 @@ export default function Hero({ onOpenModal }) {
             >
               <div className="relative w-full h-full">
                 <Image
-                  src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                  src="/image/hero-sectionfresh-vegetable-medley-cutout.webp"
                   alt="Fresh Vegetable Medley"
                   fill
                   priority
@@ -345,7 +345,7 @@ export default function Hero({ onOpenModal }) {
             {/* Doctor */}
             <div className="absolute inset-0 z-10 pointer-events-none">
               <Image
-                src="/image/hero section Smiling Doctor in Green Scrubs.png"
+                src="/image/hero-section-smiling-doctor-in-green-scrubs.webp"
                 alt="DietNexa Expert Dietitian"
                 fill
                 priority
@@ -360,7 +360,7 @@ export default function Hero({ onOpenModal }) {
             >
               <div className="relative w-full h-full">
                 <Image
-                  src="/image/hero sectionFresh Vegetable Medley Cutout.png"
+                  src="/image/hero-sectionfresh-vegetable-medley-cutout.webp"
                   alt="Fresh Vegetable Medley"
                   fill
                   priority
