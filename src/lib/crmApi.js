@@ -131,12 +131,12 @@ export async function submitContactLead(leadData) {
 }
 
 // 2. Staff Login (Admin / Sales)
-export async function staffLogin(email, password) {
+export async function staffLogin(email, password, recaptchaToken = "") {
   try {
     const res = await fetch(`${API_BASE_URL}/auth/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ email, password, recaptchaToken }),
     });
 
     const data = await res.json();

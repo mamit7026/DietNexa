@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
@@ -15,6 +15,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
+import ReCaptchaV2 from "@/components/ReCaptchaV2";
 import { staffLogin, getCurrentStaffUser } from "@/lib/crmApi";
 
 export default function AdminLoginPage() {
@@ -24,6 +25,10 @@ export default function AdminLoginPage() {
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+
+  // Google reCAPTCHA v2 State
+  const recaptchaRef = useRef(null);
+  const [recaptchaToken, setRecaptchaToken] = useState("");
 
   // Redirect if already logged in
   useEffect(() => {
@@ -35,16 +40,25 @@ export default function AdminLoginPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Verify reCAPTCHA token is obtained
+    if (!recaptchaToken) {
+      setErrorMessage("Please complete the reCAPTCHA verification to proceed.");
+      return;
+    }
+
     setErrorMessage("");
     setLoading(true);
 
     try {
-      await staffLogin(email, password);
+      await staffLogin(email, password, recaptchaToken);
       router.push("/admin");
     } catch (err) {
       setErrorMessage(
         err.message || "Invalid credentials. Please verify your email and password."
       );
+      recaptchaRef.current?.reset();
+      setRecaptchaToken("");
     } finally {
       setLoading(false);
     }
@@ -132,6 +146,23 @@ export default function AdminLoginPage() {
                 {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
               </button>
             </div>
+          </div>
+
+          {/* Google reCAPTCHA v2 */}
+          <div className="pt-1 flex justify-center">
+            <ReCaptchaV2
+              ref={recaptchaRef}
+              onVerify={(token) => {
+                setRecaptchaToken(token);
+                setErrorMessage("");
+              }}
+              onExpire={() => setRecaptchaToken("")}
+              onError={() =>
+                setErrorMessage(
+                  "reCAPTCHA failed to load. Please verify your connection or refresh the page."
+                )
+              }
+            />
           </div>
 
           <button

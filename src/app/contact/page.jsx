@@ -66,17 +66,6 @@ export default function ContactPage() {
     e.preventDefault();
     if (!formData.fullName || !formData.email || !formData.message) return;
     setIsSubmitting(true);
-
-    let detectedSource = "contact_page";
-    if (typeof window !== "undefined") {
-      const urlParams = new URLSearchParams(window.location.search);
-      detectedSource =
-        urlParams.get("utm_source") ||
-        urlParams.get("source") ||
-        urlParams.get("ref") ||
-        "contact_page";
-    }
-
     try {
       await submitContactLead({
         fullName: formData.fullName,
@@ -84,7 +73,7 @@ export default function ContactPage() {
         phone: formData.phone,
         subject: formData.subject,
         message: formData.message,
-        source: detectedSource,
+        source: "contact_page",
       });
       setSubmitted(true);
     } catch (err) {

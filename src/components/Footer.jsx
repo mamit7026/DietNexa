@@ -43,18 +43,13 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#services" className="hover:text-white transition-colors">
-                  Services
-                </Link>
-              </li>
-              <li>
                 <Link href="/dietitians" className="hover:text-white transition-colors">
                   Dietitians
                 </Link>
               </li>
               <li>
-                <Link href="/#why-dietnexa" className="hover:text-white transition-colors">
-                  Plans
+                <Link href="/tools" className="hover:text-white transition-colors">
+                  Tools &amp; Calculators
                 </Link>
               </li>
               <li>
@@ -67,6 +62,11 @@ export default function Footer() {
                   }
                 >
                   About Us
+                </Link>
+              </li>
+              <li>
+                <Link href="/contact" className="hover:text-white transition-colors">
+                  Contact Us
                 </Link>
               </li>
             </ul>
@@ -176,7 +176,7 @@ export default function Footer() {
                     d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"
                   />
                 </svg>
-                <span>Kolkata, West Bengal</span>
+                <span>Nandakumar, West Bengal, India 721632</span>
               </li>
 
               <li>
@@ -203,7 +203,7 @@ export default function Footer() {
 
               <li>
                 <a
-                  href="tel:+919876543210"
+                  href="tel:+917319328962"
                   className="flex items-center gap-2.5 hover:text-white transition-colors"
                 >
                   <svg
@@ -219,7 +219,7 @@ export default function Footer() {
                       d="M3 5a2 2 0 012-2h3.28a1 1 0 01.948.684l1.498 4.493a1 1 0 01-.502 1.21l-2.257 1.13a11.042 11.042 0 005.516 5.516l1.13-2.257a1 1 0 011.21-.502l4.493 1.498a1 1 0 01.684.949V19a2 2 0 01-2 2h-1C9.716 21 3 14.284 3 6V5z"
                     />
                   </svg>
-                  <span>+91 98765 43210</span>
+                  <span>+91 7319328962</span>
                 </a>
               </li>
             </ul>
@@ -232,7 +232,7 @@ export default function Footer() {
               <div className="flex items-center gap-2.5">
                 {/* Instagram */}
                 <a
-                  href="https://instagram.com"
+                  href="https://instagram.com/dietnexa"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Instagram"
@@ -245,7 +245,7 @@ export default function Footer() {
 
                 {/* Facebook */}
                 <a
-                  href="https://facebook.com"
+                  href="https://facebook.com/dietnexa"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="Facebook"
@@ -258,7 +258,7 @@ export default function Footer() {
 
                 {/* YouTube */}
                 <a
-                  href="https://youtube.com"
+                  href="https://youtube.com/@dietnexa"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="YouTube"
@@ -271,7 +271,7 @@ export default function Footer() {
 
                 {/* LinkedIn */}
                 <a
-                  href="https://linkedin.com"
+                  href="https://linkedin.com/company/dietnexa"
                   target="_blank"
                   rel="noreferrer"
                   aria-label="LinkedIn"
