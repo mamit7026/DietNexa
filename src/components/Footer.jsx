@@ -147,6 +147,11 @@ export default function Footer() {
                   FAQs &amp; Help
                 </Link>
               </li>
+              <li>
+                <Link href="/sitemap" className="hover:text-white transition-colors">
+                  Visual Sitemap
+                </Link>
+              </li>
             </ul>
           </div>
 
@@ -289,7 +294,7 @@ export default function Footer() {
         {/* Bottom Bar: Copyright & Legal Links */}
         <div className="pt-6 flex flex-col sm:flex-row items-center justify-between text-xs text-emerald-100/70 gap-3">
           <p>© 2026 DietNexa. All Rights Reserved.</p>
-          <div className="flex items-center gap-4 sm:gap-6 font-medium">
+          <div className="flex flex-wrap items-center justify-center gap-3 sm:gap-4 lg:gap-5 font-medium">
             <Link href="/privacy" className="hover:text-white transition-colors">
               Privacy Policy
             </Link>
@@ -298,9 +303,25 @@ export default function Footer() {
               Terms &amp; Conditions
             </Link>
             <span className="text-emerald-100/40">|</span>
-            <Link href="/contact" className="hover:text-white transition-colors">
-              Contact Us
+            <Link href="/refund-policy" className="hover:text-white transition-colors">
+              Refund Policy
             </Link>
+            <span className="text-emerald-100/40">|</span>
+            <Link href="/sitemap" className="hover:text-white transition-colors">
+              Sitemap
+            </Link>
+            <span className="text-emerald-100/40">|</span>
+            <button
+              type="button"
+              onClick={() => {
+                if (typeof window !== "undefined") {
+                  window.dispatchEvent(new CustomEvent("dietnexa-open-cookie-settings"));
+                }
+              }}
+              className="hover:text-white transition-colors cursor-pointer bg-transparent border-0 p-0 text-inherit font-inherit"
+            >
+              Cookie Settings
+            </button>
           </div>
         </div>
       </div>

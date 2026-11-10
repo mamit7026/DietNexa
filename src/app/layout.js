@@ -1,4 +1,5 @@
 import "./globals.css";
+import CookieConsent from "@/components/CookieConsent";
 
 export const metadata = {
   metadataBase: new URL("https://dietnexa.com"),
@@ -79,14 +80,14 @@ export default function RootLayout({ children }) {
     image: "https://dietnexa.com/image/dietnexa-logo.webp",
     description:
       "DietNexa provides evidence-based personalized nutrition therapy, certified clinical dietitian consultations, and 100 scientific health calculators.",
-    telephone: "+91 98765 43210",
+    telephone: "+91 7319328962",
     email: "support@dietnexa.com",
     address: {
       "@type": "PostalAddress",
-      streetAddress: "Park Street",
-      addressLocality: "Kolkata",
+      streetAddress: "Nandakumar",
+      addressLocality: "Nandakumar",
       addressRegion: "West Bengal",
-      postalCode: "700016",
+      postalCode: "721632",
       addressCountry: "IN",
     },
     medicalSpecialty: ["DietNutrition", "Endocrine", "Pediatric"],
@@ -142,6 +143,7 @@ export default function RootLayout({ children }) {
       </head>
       <body className="min-h-screen bg-white text-gray-900 antialiased">
         {children}
+        <CookieConsent />
       </body>
     </html>
   );
