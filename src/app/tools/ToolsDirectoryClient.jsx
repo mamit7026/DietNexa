@@ -438,14 +438,6 @@ export default function ToolsDirectoryClient() {
         ) : (
           filteredCategories.map((cat) => {
             const CatIcon = CATEGORY_ICONS[cat.icon] || Calculator;
-            const isExpanded =
-              expandedCategories[cat.id] ||
-              activeCategory === cat.id ||
-              searchQuery.length > 0;
-            // In default view, display top 4 cards per row as in the screenshot!
-            const displayedTools = isExpanded
-              ? cat.tools
-              : cat.tools.slice(0, 4);
 
             return (
               <section
@@ -475,26 +467,15 @@ export default function ToolsDirectoryClient() {
                     </div>
                   </div>
 
-                  {/* View All Button */}
-                  {cat.tools.length > 4 && (
-                    <button
-                      type="button"
-                      onClick={() => toggleExpandCategory(cat.id)}
-                      className="text-xs font-bold text-[#10793f] hover:text-[#0d6333] flex items-center gap-1 shrink-0 transition-colors cursor-pointer"
-                    >
-                      <span>{isExpanded ? "Show Less" : "View All"}</span>
-                      <ArrowRight
-                        className={`w-3.5 h-3.5 transition-transform ${
-                          isExpanded ? "rotate-90" : ""
-                        }`}
-                      />
-                    </button>
-                  )}
+                  {/* Category Tools Count Badge */}
+                  <span className="text-xs font-bold text-[#10793f] bg-emerald-50 border border-emerald-200/80 px-3 py-1 rounded-full whitespace-nowrap shadow-2xs">
+                    {cat.tools.length} Tools Available
+                  </span>
                 </div>
 
-                {/* 4 Cards Grid Row (Identical to Screenshot) */}
+                {/* All Tool Cards Grid (All Tools Visible, None Hidden) */}
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-                  {displayedTools.map((tool) => {
+                  {cat.tools.map((tool) => {
                     const ToolIconComponent = getToolIcon(tool.name, cat.id);
                     return (
                       <Link
