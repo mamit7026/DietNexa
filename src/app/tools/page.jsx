@@ -298,18 +298,18 @@ export default function ToolsListingPage() {
                       className="group relative bg-white rounded-2xl border border-gray-200/80 p-4 hover:border-[#10793f] hover:shadow-md transition-all duration-200 flex flex-col justify-between"
                     >
                       <div>
-                        {/* Top Row: Tool Number & Category Pill */}
+                        {/* Top Row: Calculation & Status Pill */}
                         <div className="flex items-center justify-between gap-2 mb-2.5">
                           <span
-                            className="text-[11px] font-black px-2 py-0.5 rounded-md"
+                            className="text-[11px] font-semibold px-2 py-0.5 rounded-md truncate max-w-[170px]"
                             style={{
                               background: cat.themeBg,
                               color: cat.themeColor,
                             }}
                           >
-                            #{tool.id}
+                            {cat.name}
                           </span>
-                          <span className="text-[10px] font-medium text-gray-400 truncate max-w-[140px]">
+                          <span className="text-[10px] font-medium text-gray-400 truncate max-w-[130px]">
                             {tool.calculation}
                           </span>
                         </div>

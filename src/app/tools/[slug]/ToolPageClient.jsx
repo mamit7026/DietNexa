@@ -134,9 +134,6 @@ export default function ToolPageClient({ tool, relatedTools = [] }) {
                 <IconComponent className="w-3.5 h-3.5 text-emerald-300" />
                 <span>{tool.categoryName}</span>
               </span>
-              <span className="px-2.5 py-1 rounded-full bg-emerald-400/20 text-emerald-200 text-xs font-bold border border-emerald-400/30">
-                Tool #{tool.id}
-              </span>
               <span className="px-2.5 py-1 rounded-full bg-white/10 text-emerald-200 text-xs font-medium border border-white/20">
                 {tool.calculation}
               </span>
@@ -519,13 +516,13 @@ export default function ToolPageClient({ tool, relatedTools = [] }) {
                   <div>
                     <div className="flex items-center justify-between gap-2 mb-2">
                       <span
-                        className="text-[10px] font-black px-2 py-0.5 rounded-md"
+                        className="text-[10px] font-semibold px-2 py-0.5 rounded-md truncate max-w-[150px]"
                         style={{
                           background: rel.themeBg,
                           color: rel.themeColor,
                         }}
                       >
-                        #{rel.id}
+                        {rel.categoryName}
                       </span>
                       <span className="text-[10px] text-gray-400 font-medium truncate max-w-[140px]">
                         {rel.calculation}
