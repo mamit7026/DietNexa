@@ -136,8 +136,8 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="/#why-dietnexa" className="hover:text-white transition-colors">
-                  Plans
+                <Link href="/tools" className="hover:text-white transition-colors">
+                  Tools & Calculators
                 </Link>
               </li>
               <li>

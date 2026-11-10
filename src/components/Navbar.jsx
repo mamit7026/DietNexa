@@ -455,7 +455,8 @@ export default function Navbar({ onOpenModal }) {
               {navLinks.map((link) => {
                 const isActive =
                   pathname === link.href ||
-                  (link.href === "/" && pathname === "/");
+                  (link.href === "/" && pathname === "/") ||
+                  (link.href === "/tools" && pathname?.startsWith("/tools"));
                 const isServices = link.label === "Services";
                 const isResources = link.label === "Resources";
                 const isDropdownOpen = openDropdown === link.label;
@@ -845,7 +846,8 @@ export default function Navbar({ onOpenModal }) {
               {navLinks.map((link) => {
                 const isActive =
                   pathname === link.href ||
-                  (link.href === "/" && pathname === "/");
+                  (link.href === "/" && pathname === "/") ||
+                  (link.href === "/tools" && pathname?.startsWith("/tools"));
                 const hasDropdown = !!link.dropdown;
                 const isExpanded = expandedMobileDropdown === link.label;
 
