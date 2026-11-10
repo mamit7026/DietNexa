@@ -119,49 +119,99 @@ export default function ToolPageClient({ tool, relatedTools = [] }) {
         </div>
       </div>
 
-      {/* 3. HERO BANNER */}
+      {/* 3. PROFESSIONAL HERO BANNER */}
       <section
-        className="relative overflow-hidden text-white pt-10 pb-12 md:pt-14 md:pb-16"
+        className="relative overflow-hidden border-b border-emerald-100/60"
         style={{
-          background: "linear-gradient(135deg, #07361e 0%, #0d5c32 50%, #10793f 100%)",
+          background:
+            "linear-gradient(115deg, #f2faf4 0%, #f7fcf9 40%, #edf8f1 75%, #e6f5eb 100%)",
         }}
       >
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl">
-            {/* Badges */}
-            <div className="flex flex-wrap items-center gap-2 mb-4">
-              <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-200 text-xs font-semibold">
-                <IconComponent className="w-3.5 h-3.5 text-emerald-300" />
-                <span>{tool.categoryName}</span>
-              </span>
-              <span className="px-2.5 py-1 rounded-full bg-white/10 text-emerald-200 text-xs font-medium border border-white/20">
-                {tool.calculation}
-              </span>
+        {/* Decorative blur glows */}
+        <div
+          className="absolute -top-24 right-1/4 w-[420px] h-[420px] rounded-full pointer-events-none blur-3xl opacity-35 z-0"
+          style={{
+            background:
+              "radial-gradient(circle, #bbf7d0 0%, #86efac 40%, transparent 70%)",
+          }}
+        />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-14 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 items-center">
+            {/* Left Column: Title & Context */}
+            <div className="lg:col-span-8">
+              {/* Badges */}
+              <div className="flex flex-wrap items-center gap-2 mb-3.5">
+                <span
+                  className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold border shadow-2xs"
+                  style={{
+                    background: tool.themeBg,
+                    color: tool.themeColor,
+                    borderColor: "rgba(16,121,63,0.18)",
+                  }}
+                >
+                  <IconComponent className="w-3.5 h-3.5" />
+                  <span>{tool.categoryName}</span>
+                </span>
+
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full bg-white text-gray-700 text-xs font-semibold border border-gray-200/80 shadow-2xs">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#10793f]"></span>
+                  <span>Formula: {tool.calculation}</span>
+                </span>
+              </div>
+
+              {/* H1 Title */}
+              <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-gray-900 tracking-tight leading-[1.14] mb-3">
+                {tool.name}
+              </h1>
+
+              {/* Subtitle */}
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed max-w-2xl font-normal mb-6">
+                {tool.shortDesc} Evaluated using standard clinical equations recognized by the WHO, ICMR, and clinical dietetics associations.
+              </p>
+
+              {/* Trust highlights */}
+              <div className="flex flex-wrap items-center gap-4 text-xs font-semibold text-gray-600">
+                <div className="flex items-center gap-1.5 text-gray-800">
+                  <ShieldCheck className="w-4 h-4 text-[#10793f]" />
+                  <span>Evidence-Based Formula</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-gray-800">
+                  <CheckCircle2 className="w-4 h-4 text-[#10793f]" />
+                  <span>Real-time Calculation</span>
+                </div>
+                <div className="flex items-center gap-1.5 text-gray-800">
+                  <Sparkles className="w-4 h-4 text-[#10793f]" />
+                  <span>Free Clinical Tool</span>
+                </div>
+              </div>
             </div>
 
-            {/* H1 Title */}
-            <h1 className="text-2xl sm:text-3xl md:text-4xl font-black text-white tracking-tight leading-tight mb-3">
-              {tool.name}
-            </h1>
-
-            {/* Subtitle */}
-            <p className="text-emerald-100/90 text-sm sm:text-base leading-relaxed max-w-2xl font-normal mb-6">
-              {tool.shortDesc} Built on verified clinical algorithms and WHO / ICMR reference equations.
-            </p>
-
-            {/* Trust highlights */}
-            <div className="flex flex-wrap items-center gap-4 text-xs text-emerald-100">
-              <div className="flex items-center gap-1.5">
-                <ShieldCheck className="w-4 h-4 text-emerald-300" />
-                <span>Clinical Grade Accuracy</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <CheckCircle2 className="w-4 h-4 text-emerald-300" />
-                <span>Instant Inline Results</span>
-              </div>
-              <div className="flex items-center gap-1.5">
-                <Sparkles className="w-4 h-4 text-emerald-300" />
-                <span>Free & No Registration</span>
+            {/* Right Column: Mini Metric Summary Box */}
+            <div className="lg:col-span-4 hidden lg:block">
+              <div className="bg-white/90 backdrop-blur-md rounded-2xl border border-emerald-200/80 p-5 shadow-sm space-y-3">
+                <div className="flex items-center justify-between pb-2 border-b border-gray-100">
+                  <span className="text-[11px] font-bold text-gray-400 uppercase tracking-wider">
+                    Quick Facts
+                  </span>
+                  <span className="text-[10px] font-bold text-[#10793f] bg-emerald-50 px-2 py-0.5 rounded-md">
+                    Verified
+                  </span>
+                </div>
+                <div className="text-xs space-y-2">
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Discipline</span>
+                    <span className="font-semibold text-gray-900">{tool.categoryName}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Protocol</span>
+                    <span className="font-semibold text-gray-900">{tool.calculation}</span>
+                  </div>
+                  <div className="flex justify-between">
+                    <span className="text-gray-500">Method</span>
+                    <span className="font-semibold text-gray-900">Direct Interactive Math</span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

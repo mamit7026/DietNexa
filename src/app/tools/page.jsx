@@ -24,6 +24,10 @@ import {
   CheckCircle2,
   Sparkles,
   ChevronRight,
+  ShieldCheck,
+  Activity,
+  Award,
+  Zap,
 } from "lucide-react";
 
 // Icon mapping
@@ -56,6 +60,13 @@ export default function ToolsListingPage() {
 
   const handleCloseModal = () => {
     setModalOpen(false);
+  };
+
+  const scrollToTools = () => {
+    const el = document.getElementById("tools-directory");
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
   };
 
   const filteredCategories = useMemo(() => {
@@ -91,59 +102,294 @@ export default function ToolsListingPage() {
       {/* 1. NAVBAR */}
       <Navbar onOpenModal={handleOpenModal} />
 
-      {/* 2. HERO SECTION */}
+      {/* 2. PROFESSIONAL REDESIGNED HERO SECTION */}
       <section
-        className="relative overflow-hidden text-white pt-14 pb-16 md:pt-20 md:pb-24"
+        className="relative overflow-hidden border-b border-emerald-100/60"
         style={{
           background:
-            "linear-gradient(135deg, #07361e 0%, #0d5c32 50%, #10793f 100%)",
+            "linear-gradient(115deg, #f2faf4 0%, #f7fcf9 40%, #edf8f1 75%, #e6f5eb 100%)",
         }}
       >
+        {/* Subtle decorative glow effects */}
         <div
-          className="absolute inset-0 opacity-10 pointer-events-none"
+          className="absolute -top-24 right-1/4 w-[480px] h-[480px] rounded-full pointer-events-none blur-3xl opacity-40 z-0"
           style={{
-            backgroundImage:
-              "radial-gradient(circle at 20% 40%, #ffffff 1px, transparent 1px), radial-gradient(circle at 80% 80%, #ffffff 1px, transparent 1px)",
-            backgroundSize: "48px 48px",
+            background:
+              "radial-gradient(circle, #bbf7d0 0%, #86efac 40%, transparent 70%)",
+          }}
+        />
+        <div
+          className="absolute -bottom-20 left-10 w-[360px] h-[360px] rounded-full pointer-events-none blur-3xl opacity-30 z-0"
+          style={{
+            background:
+              "radial-gradient(circle, #a7f3d0 0%, #6ee7b7 40%, transparent 70%)",
           }}
         />
 
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="max-w-3xl">
-            {/* Pill Badge */}
-            <div className="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-white/10 backdrop-blur-md border border-white/20 text-emerald-200 text-xs font-semibold mb-5 shadow-xs">
-              <Sparkles className="w-3.5 h-3.5 text-emerald-300" />
-              <span>100 Free Scientific Nutrition & Diet Calculators</span>
+        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 pb-14 md:pt-16 md:pb-20">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+            {/* ── LEFT COLUMN: Text & Actions ── */}
+            <div className="lg:col-span-7 flex flex-col items-start text-left">
+              {/* Premium Pill Badge with Live Pulse */}
+              <div
+                className="inline-flex items-center gap-2.5 mb-5 px-3.5 py-1.5 rounded-full border transition-all duration-300 shadow-2xs cursor-default"
+                style={{
+                  background:
+                    "linear-gradient(135deg, rgba(255,255,255,0.95) 0%, rgba(240,253,244,0.95) 100%)",
+                  borderColor: "rgba(16,121,63,0.22)",
+                  boxShadow:
+                    "0 4px 18px -2px rgba(16,121,63,0.12), 0 1px 3px rgba(0,0,0,0.04)",
+                  backdropFilter: "blur(10px)",
+                }}
+              >
+                {/* Pulsing Beacon */}
+                <span className="relative flex h-2.5 w-2.5 shrink-0">
+                  <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+                  <span className="relative inline-flex rounded-full h-2.5 w-2.5 bg-[#10793f]"></span>
+                </span>
+
+                <Sparkles className="w-3.5 h-3.5 text-[#10793f] shrink-0" />
+
+                <span className="text-xs sm:text-[13px] font-bold text-gray-800 tracking-tight">
+                  100 Evidence-Based Nutrition Calculators
+                </span>
+
+                <span
+                  className="hidden sm:inline-flex items-center text-[10.5px] font-bold text-[#10793f] px-2 py-0.5 rounded-full border"
+                  style={{
+                    background: "rgba(16,121,63,0.08)",
+                    borderColor: "rgba(16,121,63,0.18)",
+                  }}
+                >
+                  Clinical Grade
+                </span>
+              </div>
+
+              {/* Bold Headline */}
+              <h1 className="font-extrabold text-gray-900 tracking-tight text-3xl sm:text-4xl lg:text-5xl leading-[1.12] mb-4">
+                Scientific Nutrition Tools &{" "}
+                <span className="block mt-1 bg-gradient-to-r from-[#10793f] via-[#15803d] to-[#16a34a] bg-clip-text text-transparent">
+                  Dietary Calculators
+                </span>
+              </h1>
+
+              {/* Sub-headline */}
+              <p className="text-gray-600 text-sm sm:text-base leading-relaxed mb-7 max-w-xl font-normal">
+                Formulated using peer-reviewed WHO, ICMR, and ADA clinical equations.
+                Accurately assess your body composition, energy expenditure (BMR & TDEE),
+                macronutrient targets, hydration status, and clinical dietary needs.
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap items-center gap-3.5 mb-8 w-full sm:w-auto">
+                <button
+                  type="button"
+                  onClick={scrollToTools}
+                  className="px-6 py-3.5 rounded-full text-white text-xs sm:text-sm font-bold transition-all hover:opacity-95 active:scale-95 shadow-md flex items-center justify-center gap-2 cursor-pointer"
+                  style={{
+                    background: "#10793f",
+                    boxShadow: "0 4px 16px rgba(16,121,63,0.3)",
+                  }}
+                >
+                  <Calculator className="w-4 h-4" />
+                  <span>Browse All 100 Calculators</span>
+                </button>
+
+                <button
+                  type="button"
+                  onClick={() => handleOpenModal("consultation")}
+                  className="px-5 py-3.5 rounded-full text-gray-700 hover:text-[#10793f] text-xs sm:text-sm font-bold bg-white/90 hover:bg-white border border-gray-200 hover:border-[#10793f]/40 transition-all shadow-2xs active:scale-95 cursor-pointer flex items-center justify-center gap-1.5"
+                >
+                  <span>Consult Expert Dietitian</span>
+                  <ArrowRight className="w-3.5 h-3.5 text-[#10793f]" />
+                </button>
+              </div>
+
+              {/* Trust Badges Row */}
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 pt-6 border-t border-emerald-200/50 w-full text-left">
+                <div>
+                  <div className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                    100
+                  </div>
+                  <div className="text-[11px] font-semibold text-gray-500 mt-0.5">
+                    Dedicated Tools
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                    10
+                  </div>
+                  <div className="text-[11px] font-semibold text-gray-500 mt-0.5">
+                    Clinical Disciplines
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-black text-[#10793f] tracking-tight">
+                    100%
+                  </div>
+                  <div className="text-[11px] font-semibold text-gray-500 mt-0.5">
+                    Free & Instant
+                  </div>
+                </div>
+                <div>
+                  <div className="text-xl sm:text-2xl font-black text-gray-900 tracking-tight">
+                    Zero
+                  </div>
+                  <div className="text-[11px] font-semibold text-gray-500 mt-0.5">
+                    Signup Required
+                  </div>
+                </div>
+              </div>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tight leading-[1.15] mb-4">
-              Scientific Nutrition Tools &{" "}
-              <span className="text-emerald-300">Clinical Calculators</span>
-            </h1>
+            {/* ── RIGHT COLUMN: Visual Live Showcase Card ── */}
+            <div className="lg:col-span-5 relative">
+              <div className="relative mx-auto max-w-md lg:max-w-none">
+                {/* Floating Top Trust Badge */}
+                <div
+                  className="absolute -top-3.5 -right-2 sm:right-4 z-20 bg-white/95 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-emerald-200 shadow-md flex items-center gap-2 text-xs font-bold text-gray-800"
+                >
+                  <ShieldCheck className="w-4 h-4 text-[#10793f]" />
+                  <span>WHO / ICMR Equations</span>
+                </div>
 
-            <p className="text-emerald-100/90 text-sm sm:text-base md:text-lg leading-relaxed mb-8 max-w-2xl font-normal">
-              Evidence-based clinical formulas trusted by certified dietitians.
-              Calculate your BMI, body fat, caloric expenditure, macros,
-              hydration, and meal portions with clinical precision.
-            </p>
+                {/* Main Card */}
+                <div className="bg-white/90 backdrop-blur-md rounded-3xl border border-emerald-200/80 p-6 sm:p-7 shadow-xl shadow-emerald-950/5 relative">
+                  {/* Card Header */}
+                  <div className="flex items-center justify-between pb-4 mb-4 border-b border-gray-100">
+                    <div className="flex items-center gap-2.5">
+                      <div className="w-9 h-9 rounded-xl bg-[#edf8f1] flex items-center justify-center">
+                        <Activity className="w-5 h-5 text-[#10793f]" />
+                      </div>
+                      <div>
+                        <div className="text-xs font-bold text-gray-900">
+                          Clinical Nutrition Suite
+                        </div>
+                        <div className="text-[10px] text-gray-400">
+                          Real-time Physiological Metrics
+                        </div>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[10px] font-bold bg-[#edf8f1] text-[#10793f]">
+                      <span className="w-1.5 h-1.5 rounded-full bg-[#10793f] animate-pulse"></span>
+                      Active Engine
+                    </span>
+                  </div>
 
-            {/* Quick Metrics */}
-            <div className="flex flex-wrap gap-5 text-xs sm:text-sm text-emerald-100/90">
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
-                <span>100 Dedicated Calculator Pages</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
-                <span>10 Clinical Categories</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
-                <span>WHO & ICMR Certified Formulas</span>
-              </div>
-              <div className="flex items-center gap-2">
-                <CheckCircle2 className="w-4 h-4 text-emerald-300 shrink-0" />
-                <span>100% Free & Instant</span>
+                  {/* 4 Representative Metric Cards */}
+                  <div className="space-y-2.5">
+                    {/* 1. BMI Metric */}
+                    <div className="p-3 rounded-2xl bg-gray-50/80 border border-gray-100 flex items-center justify-between hover:bg-emerald-50/40 transition-colors">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-emerald-100 text-[#10793f] flex items-center justify-center shrink-0">
+                          <Scale className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-800">
+                            Body Mass Index (BMI)
+                          </div>
+                          <div className="text-[10px] text-gray-500">
+                            WHO Anthropometry
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-black text-gray-900">
+                          22.4 <span className="text-[10px] font-medium text-gray-500">kg/m²</span>
+                        </div>
+                        <span className="text-[10px] font-bold text-emerald-700 bg-emerald-100 px-1.5 py-0.2 rounded-md">
+                          Normal Weight
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 2. TDEE Metric */}
+                    <div className="p-3 rounded-2xl bg-gray-50/80 border border-gray-100 flex items-center justify-between hover:bg-emerald-50/40 transition-colors">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-amber-100 text-amber-700 flex items-center justify-center shrink-0">
+                          <Flame className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-800">
+                            Total Daily Energy (TDEE)
+                          </div>
+                          <div className="text-[10px] text-gray-500">
+                            Mifflin-St Jeor
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-black text-gray-900">
+                          2,150 <span className="text-[10px] font-medium text-gray-500">kcal</span>
+                        </div>
+                        <span className="text-[10px] font-bold text-amber-800 bg-amber-100 px-1.5 py-0.2 rounded-md">
+                          Maintenance
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 3. Protein Requirement */}
+                    <div className="p-3 rounded-2xl bg-gray-50/80 border border-gray-100 flex items-center justify-between hover:bg-emerald-50/40 transition-colors">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-700 flex items-center justify-center shrink-0">
+                          <Beef className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-800">
+                            Target Daily Protein
+                          </div>
+                          <div className="text-[10px] text-gray-500">
+                            Lean Mass Sparing
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-black text-gray-900">
+                          105 <span className="text-[10px] font-medium text-gray-500">g/day</span>
+                        </div>
+                        <span className="text-[10px] font-bold text-purple-800 bg-purple-100 px-1.5 py-0.2 rounded-md">
+                          1.5 g/kg
+                        </span>
+                      </div>
+                    </div>
+
+                    {/* 4. Hydration Target */}
+                    <div className="p-3 rounded-2xl bg-gray-50/80 border border-gray-100 flex items-center justify-between hover:bg-emerald-50/40 transition-colors">
+                      <div className="flex items-center gap-2.5">
+                        <div className="w-8 h-8 rounded-lg bg-sky-100 text-sky-700 flex items-center justify-center shrink-0">
+                          <Droplets className="w-4 h-4" />
+                        </div>
+                        <div>
+                          <div className="text-xs font-bold text-gray-800">
+                            Hydration Requirement
+                          </div>
+                          <div className="text-[10px] text-gray-500">
+                            Weight & Climate
+                          </div>
+                        </div>
+                      </div>
+                      <div className="text-right">
+                        <div className="text-sm font-black text-gray-900">
+                          2.8 <span className="text-[10px] font-medium text-gray-500">Liters</span>
+                        </div>
+                        <span className="text-[10px] font-bold text-sky-800 bg-sky-100 px-1.5 py-0.2 rounded-md">
+                          Optimal
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Bottom Endorsement Footer inside Card */}
+                  <div className="mt-4 pt-3.5 border-t border-gray-100 flex items-center justify-between text-xs text-gray-500">
+                    <span className="flex items-center gap-1.5 text-[11px] font-semibold text-gray-700">
+                      <CheckCircle2 className="w-3.5 h-3.5 text-[#10793f]" />
+                      Inline Interactive UI
+                    </span>
+                    <span className="text-[11px] font-bold text-[#10793f]">
+                      100 Dedicated Pages
+                    </span>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -151,7 +397,10 @@ export default function ToolsListingPage() {
       </section>
 
       {/* 3. STICKY FILTER & SEARCH BAR */}
-      <div className="sticky top-[68px] sm:top-[76px] z-30 bg-white/95 backdrop-blur-md border-b border-gray-200/80 shadow-xs">
+      <div
+        id="tools-directory"
+        className="sticky top-[68px] sm:top-[76px] z-30 bg-white/95 backdrop-blur-md border-b border-gray-200/80 shadow-xs"
+      >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3.5">
           <div className="flex flex-col md:flex-row md:items-center justify-between gap-3">
             {/* Search Input */}
@@ -361,7 +610,7 @@ export default function ToolsListingPage() {
             <div className="flex flex-wrap items-center gap-3">
               <button
                 onClick={() => handleOpenModal("consultation")}
-                className="px-6 py-3 rounded-full bg-white text-[#10793f] text-xs sm:text-sm font-bold hover:bg-emerald-50 transition-all shadow-md active:scale-95"
+                className="px-6 py-3 rounded-full bg-white text-[#10793f] text-xs sm:text-sm font-bold hover:bg-emerald-50 transition-all shadow-md active:scale-95 cursor-pointer"
               >
                 Book Free Dietitian Consultation
               </button>
