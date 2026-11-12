@@ -440,7 +440,7 @@ export default function Navbar({ onOpenModal }) {
                   alt="DietNexa — Your Health, Our Nutrition Expertise"
                   fill
                   priority
-                  unoptimized
+                  sizes="200px"
                   className="object-contain object-left"
                 />
               </div>
@@ -576,7 +576,7 @@ export default function Navbar({ onOpenModal }) {
                                 src="/image/glossy-green-leaf-branch.webp"
                                 alt=""
                                 fill
-                                unoptimized
+                                sizes="80px"
                                 className="object-contain object-top-right"
                               />
                             </div>
@@ -596,7 +596,7 @@ export default function Navbar({ onOpenModal }) {
                                 src="/image/services-menu-salad.webp"
                                 alt="Our Services Healthy Nutrition"
                                 fill
-                                unoptimized
+                                sizes="220px"
                                 className="object-contain object-bottom drop-shadow-sm"
                               />
                             </div>
@@ -667,7 +667,7 @@ export default function Navbar({ onOpenModal }) {
                                 src="/image/glossy-green-leaf-branch.webp"
                                 alt=""
                                 fill
-                                unoptimized
+                                sizes="80px"
                                 className="object-contain object-top-right"
                               />
                             </div>
@@ -687,7 +687,7 @@ export default function Navbar({ onOpenModal }) {
                                 src="/image/healthy-foods-and-fresh-fruit-arrangement.webp"
                                 alt="Healthy Foods & Nutrition Resources"
                                 fill
-                                unoptimized
+                                sizes="220px"
                                 className="object-contain object-bottom drop-shadow-sm"
                               />
                             </div>

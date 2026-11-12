@@ -31,8 +31,7 @@ export default function NotFound() {
           src="/image/dewy-green-leafy-branch.webp"
           alt="Green Leaves"
           fill
-          priority
-          unoptimized
+          sizes="220px"
           className="object-contain object-left-top drop-shadow-xs opacity-95"
         />
       </div>
@@ -45,8 +44,7 @@ export default function NotFound() {
           src="/image/glossy-green-leaf-branch.webp"
           alt="Glossy Leaves"
           fill
-          priority
-          unoptimized
+          sizes="260px"
           className="object-contain object-right drop-shadow-xs opacity-95"
         />
       </div>
@@ -60,7 +58,7 @@ export default function NotFound() {
               alt="DietNexa Logo"
               fill
               priority
-              unoptimized
+              sizes="185px"
               className="object-contain object-left"
             />
           </div>
@@ -263,8 +261,7 @@ export default function NotFound() {
                 src="/image/hero-sectionfresh-vegetable-medley-cutout.webp"
                 alt="Fresh produce"
                 fill
-                priority
-                unoptimized
+                sizes="(max-width: 768px) 100vw, 400px"
                 className="object-contain object-bottom drop-shadow-[0_10px_20px_rgba(0,0,0,0.22)]"
               />
             </div>

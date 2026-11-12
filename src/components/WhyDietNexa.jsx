@@ -56,8 +56,7 @@ export default function WhyDietNexa() {
                 src="/image/glossy-green-leaf-branch.webp"
                 alt=""
                 fill
-                unoptimized
-                priority
+                sizes="150px"
                 className="object-contain"
               />
             </div>
@@ -71,8 +70,7 @@ export default function WhyDietNexa() {
                 src="/image/dewy-green-leafy-branch.webp"
                 alt=""
                 fill
-                unoptimized
-                priority
+                sizes="110px"
                 className="object-contain"
               />
             </div>
@@ -83,8 +81,7 @@ export default function WhyDietNexa() {
                 src="/image/dietnexa-healthy-meal-planner-mockup.webp"
                 alt="DietNexa app today's plan calorie tracker"
                 fill
-                unoptimized
-                priority
+                sizes="250px"
                 className="object-contain drop-shadow-2xl"
               />
             </div>

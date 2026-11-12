@@ -124,6 +124,22 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en" className="scroll-smooth">
       <head>
+        {/* Preload Variable Font to eliminate critical path latency & CLS */}
+        <link
+          rel="preload"
+          href="/font/Inter,Plus_Jakarta_Sans,Poppins/Plus_Jakarta_Sans/PlusJakartaSans-VariableFont_wght.ttf"
+          as="font"
+          type="font/ttf"
+          crossOrigin="anonymous"
+        />
+        {/* Preload LCP Hero Image for immediate discovery */}
+        <link
+          rel="preload"
+          as="image"
+          href="/image/hero-section-smiling-doctor-in-green-scrubs.webp"
+          type="image/webp"
+          fetchPriority="high"
+        />
         {/* Link to LLM Index for AI Search Engines (ChatGPT, Perplexity, Claude, Gemini) */}
         <link
           rel="alternate"

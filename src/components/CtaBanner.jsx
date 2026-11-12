@@ -51,8 +51,7 @@ export default function CtaBanner({ onOpenModal }) {
               src="/image/vibrant-healthy-foods-with-measuring-tape.webp"
               alt="Fresh healthy fruits, vegetables, measuring tape and smoothie"
               fill
-              unoptimized
-              priority
+              sizes="(max-width: 768px) 100vw, 360px"
               className="object-contain object-right-bottom"
             />
           </div>

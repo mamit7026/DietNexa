@@ -55,15 +55,19 @@ const ReCaptchaV2 = forwardRef(function ReCaptchaV2(
 
   useEffect(() => {
     let isMounted = true;
+    let pollInterval = null;
 
     const renderWidget = () => {
       if (!isMounted || !containerRef.current) return;
-      if (!window.grecaptcha || !window.grecaptcha.render) return;
-
-      // Avoid double render
       if (widgetIdRef.current !== null) return;
+      if (!window.grecaptcha || typeof window.grecaptcha.render !== "function") return;
 
       try {
+        // Clear any old child elements in case of re-mount
+        if (containerRef.current.innerHTML !== "") {
+          containerRef.current.innerHTML = "";
+        }
+
         const id = window.grecaptcha.render(containerRef.current, {
           sitekey: siteKey,
           theme: theme,
@@ -80,22 +84,39 @@ const ReCaptchaV2 = forwardRef(function ReCaptchaV2(
         });
         widgetIdRef.current = id;
         setIsReady(true);
+
+        if (pollInterval) {
+          clearInterval(pollInterval);
+          pollInterval = null;
+        }
       } catch (err) {
-        // May happen in fast HMR, ignore gracefully
+        console.warn("reCAPTCHA render notice:", err.message);
       }
     };
 
-    // Check if grecaptcha is already available
-    if (typeof window !== "undefined" && window.grecaptcha && window.grecaptcha.render) {
-      renderWidget();
+    const tryReadyAndRender = () => {
+      if (window.grecaptcha) {
+        if (typeof window.grecaptcha.ready === "function") {
+          window.grecaptcha.ready(() => {
+            if (isMounted) renderWidget();
+          });
+        } else if (typeof window.grecaptcha.render === "function") {
+          renderWidget();
+        }
+      }
+    };
+
+    // If already loaded on window
+    if (typeof window !== "undefined" && window.grecaptcha && typeof window.grecaptcha.render === "function") {
+      tryReadyAndRender();
     } else {
-      // Create callback
+      // Setup global callback
       const callbackName = "onRecaptchaV2LoadCallback";
       window[callbackName] = () => {
-        if (isMounted) renderWidget();
+        if (isMounted) tryReadyAndRender();
       };
 
-      // Inject script if not already in document
+      // Check if script tag is in document
       let script = document.getElementById("recaptcha-v2-script");
       if (!script) {
         script = document.createElement("script");
@@ -103,15 +124,34 @@ const ReCaptchaV2 = forwardRef(function ReCaptchaV2(
         script.src = `https://www.google.com/recaptcha/api.js?onload=${callbackName}&render=explicit`;
         script.async = true;
         script.defer = true;
+        script.onload = () => {
+          if (isMounted) tryReadyAndRender();
+        };
         document.head.appendChild(script);
-      } else if (window.grecaptcha && window.grecaptcha.render) {
-        renderWidget();
+      } else {
+        // Script is already in DOM: poll until window.grecaptcha.render is ready
+        tryReadyAndRender();
       }
+
+      // Interval fallback for SPAs where script tag exists but window.grecaptcha is still initializing
+      let attempts = 0;
+      pollInterval = setInterval(() => {
+        attempts++;
+        if (window.grecaptcha && typeof window.grecaptcha.render === "function") {
+          tryReadyAndRender();
+        }
+        if (attempts > 50 || widgetIdRef.current !== null) {
+          clearInterval(pollInterval);
+          pollInterval = null;
+        }
+      }, 100);
     }
 
     return () => {
       isMounted = false;
-      // Do not remove script to allow re-navigation across pages
+      if (pollInterval) {
+        clearInterval(pollInterval);
+      }
     };
   }, [siteKey, theme, size, onVerify, onExpire, onError]);
 
@@ -126,4 +166,3 @@ const ReCaptchaV2 = forwardRef(function ReCaptchaV2(
 });
 
 export default ReCaptchaV2;
-

@@ -51,7 +51,7 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
           src="/image/glossy-green-leaf-branch.webp"
           alt=""
           fill
-          unoptimized
+          sizes="260px"
           className="object-contain object-left opacity-70"
         />
       </div>
@@ -75,8 +75,7 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
                 src="/image/colorful-grilled-chicken-salad-bowl.webp"
                 alt="Nutritious colourful salad bowl"
                 fill
-                unoptimized
-                priority
+                sizes="(max-width: 768px) 150px, 190px"
                 className="object-cover"
               />
             </div>
@@ -197,7 +196,7 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
                       }}
                     >
                       <div className="relative w-full overflow-hidden bg-slate-50" style={{ height: "180px" }}>
-                        <Image src={doc.image} alt={doc.name} fill unoptimized priority className="object-cover object-top transition-transform duration-300 group-hover:scale-105" />
+                        <Image src={doc.image} alt={doc.name} fill sizes="(max-width: 768px) 50vw, 220px" className="object-cover object-top transition-transform duration-300 group-hover:scale-105" />
                         {isActive && <div className="absolute top-0 left-0 right-0 h-1 z-10" style={{ background: "#10793f" }} />}
                       </div>
                       <div className="px-3 py-3 w-full">
@@ -230,7 +229,7 @@ export default function ExpertDietitians({ onSelectDietitian, onOpenModal }) {
                       }}
                     >
                       <div className="relative w-full overflow-hidden bg-slate-50" style={{ height: "195px" }}>
-                        <Image src={doc.image} alt={doc.name} fill unoptimized priority className="object-cover object-top transition-transform duration-300 group-hover:scale-105" />
+                        <Image src={doc.image} alt={doc.name} fill sizes="(max-width: 1024px) 33vw, 280px" className="object-cover object-top transition-transform duration-300 group-hover:scale-105" />
                         {isActive && <div className="absolute top-0 left-0 right-0 h-1 z-10" style={{ background: "#10793f" }} />}
                       </div>
                       <div className="px-4 py-4 w-full">

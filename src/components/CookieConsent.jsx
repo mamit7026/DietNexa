@@ -185,22 +185,22 @@ export default function CookieConsent() {
                   <span className="font-extrabold text-[#0d2a1d] text-sm sm:text-base tracking-tight">
                     We use cookies
                   </span>
-                  <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-[#16a34a] bg-[#dcfce7] border border-[#bbf7d0] px-2 py-0.5 rounded-full">
-                    <ShieldCheck className="w-3 h-3 text-[#16a34a]" /> GDPR Compliant
+                  <span className="inline-flex items-center gap-1 text-[10px] sm:text-[11px] font-bold text-[#14532d] bg-[#dcfce7] border border-[#86efac] px-2 py-0.5 rounded-full">
+                    <ShieldCheck className="w-3 h-3 text-[#15803d]" /> GDPR Compliant
                   </span>
                 </div>
-                <p className="text-xs text-gray-600 font-normal">
+                <p className="text-xs text-gray-700 font-normal">
                   to improve your experience.{" "}
                   <Link
                     href="/privacy"
-                    className="text-[#15803d] font-semibold underline underline-offset-2 hover:text-[#0c4e2a] transition-colors"
+                    className="text-[#14532d] font-bold underline underline-offset-2 hover:text-[#0c4e2a] transition-colors"
                   >
                     Privacy Policy
                   </Link>
                   {" "}and{" "}
                   <Link
                     href="/terms"
-                    className="text-[#15803d] font-semibold underline underline-offset-2 hover:text-[#0c4e2a] transition-colors"
+                    className="text-[#14532d] font-bold underline underline-offset-2 hover:text-[#0c4e2a] transition-colors"
                   >
                     Terms
                   </Link>
@@ -214,9 +214,9 @@ export default function CookieConsent() {
               <button
                 type="button"
                 onClick={() => setShowSettings(true)}
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold text-[#15803d] bg-white hover:bg-emerald-50 border border-[#16a34a] transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold text-[#14532d] bg-white hover:bg-emerald-50 border border-[#16a34a] transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
               >
-                <Settings className="w-3.5 h-3.5 text-[#16a34a]" />
+                <Settings className="w-3.5 h-3.5 text-[#15803d]" />
                 <span>Settings</span>
               </button>
 
@@ -224,7 +224,7 @@ export default function CookieConsent() {
               <button
                 type="button"
                 onClick={handleRejectAll}
-                className="flex-1 sm:flex-none inline-flex items-center justify-center px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-semibold text-[#15803d] bg-[#dcfce7] hover:bg-[#bbf7d0] transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center px-3.5 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold text-[#14532d] bg-[#dcfce7] hover:bg-[#bbf7d0] transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
               >
                 Reject All
               </button>
@@ -233,10 +233,10 @@ export default function CookieConsent() {
               <button
                 type="button"
                 onClick={handleAcceptAll}
-                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold text-white bg-[#059669] hover:bg-[#047857] shadow-sm transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
+                className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1 px-4 sm:px-5 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-bold text-white bg-[#047857] hover:bg-[#065f46] shadow-sm transition-all cursor-pointer whitespace-nowrap active:scale-[0.98]"
               >
                 <Check className="w-3.5 h-3.5 stroke-[2.5]" />
-                <span>Accept All</span>
+                <span className="text-white font-bold">Accept All</span>
               </button>
             </div>
           </div>
@@ -269,8 +269,7 @@ export default function CookieConsent() {
                     src="/image/dietnexa-white-logo.webp"
                     alt="DietNexa - Your Health, Our Nutrition Expertise"
                     fill
-                    unoptimized
-                    priority
+                    sizes="150px"
                     className="object-contain object-left"
                   />
                 </div>
@@ -396,8 +395,7 @@ export default function CookieConsent() {
                     src="/image/dewy-green-leafy-branch.webp"
                     alt="DietNexa Botanical Leaves"
                     fill
-                    unoptimized
-                    priority
+                    sizes="112px"
                     className="object-contain object-bottom-left drop-shadow-md select-none"
                   />
                 </div>
@@ -552,16 +550,16 @@ export default function CookieConsent() {
                 <div className="flex items-center gap-4 text-xs">
                   <Link
                     href="/privacy"
-                    className="inline-flex items-center gap-1.5 text-[#15803d] font-semibold hover:underline"
+                    className="inline-flex items-center gap-1.5 text-[#14532d] font-bold hover:underline"
                   >
-                    <Shield className="w-3.5 h-3.5 text-[#16a34a]" />
+                    <Shield className="w-3.5 h-3.5 text-[#15803d]" />
                     <span>Privacy Policy</span>
                   </Link>
                   <Link
                     href="/terms"
-                    className="inline-flex items-center gap-1.5 text-[#15803d] font-semibold hover:underline"
+                    className="inline-flex items-center gap-1.5 text-[#14532d] font-bold hover:underline"
                   >
-                    <FileText className="w-3.5 h-3.5 text-[#16a34a]" />
+                    <FileText className="w-3.5 h-3.5 text-[#15803d]" />
                     <span>Terms of Service</span>
                   </Link>
                 </div>
@@ -572,7 +570,7 @@ export default function CookieConsent() {
                   <button
                     type="button"
                     onClick={handleRejectAll}
-                    className="flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-full text-xs font-semibold text-gray-700 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-300 transition-colors cursor-pointer whitespace-nowrap"
+                    className="flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-semibold text-gray-800 hover:text-gray-900 bg-white hover:bg-gray-50 border border-gray-300 transition-colors cursor-pointer whitespace-nowrap"
                   >
                     Reject All
                   </button>
@@ -581,7 +579,7 @@ export default function CookieConsent() {
                   <button
                     type="button"
                     onClick={handleSavePreferences}
-                    className="flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-full text-xs font-bold text-[#15803d] bg-[#dcfce7] hover:bg-[#bbf7d0] transition-colors cursor-pointer whitespace-nowrap"
+                    className="flex-1 sm:flex-none px-4 sm:px-5 py-2 rounded-full text-xs sm:text-sm font-bold text-[#14532d] bg-[#dcfce7] hover:bg-[#bbf7d0] transition-colors cursor-pointer whitespace-nowrap"
                   >
                     Save Preferences
                   </button>
@@ -590,10 +588,10 @@ export default function CookieConsent() {
                   <button
                     type="button"
                     onClick={handleAcceptAll}
-                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-5 sm:px-6 py-2 rounded-full text-xs font-bold text-white bg-[#059669] hover:bg-[#047857] shadow-sm transition-all cursor-pointer whitespace-nowrap"
+                    className="flex-1 sm:flex-none inline-flex items-center justify-center gap-1.5 px-5 sm:px-6 py-2 rounded-full text-xs sm:text-sm font-bold text-white bg-[#047857] hover:bg-[#065f46] shadow-sm transition-all cursor-pointer whitespace-nowrap"
                   >
                     <Check className="w-3.5 h-3.5 stroke-[3]" />
-                    <span>Accept All</span>
+                    <span className="text-white font-bold">Accept All</span>
                   </button>
                 </div>
               </div>

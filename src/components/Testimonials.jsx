@@ -8,7 +8,7 @@ const reviews = [
     text: "The personalized diet plan and regular guidance helped me lose 8 kg in 3 months. Highly recommend DietNexa!",
     name: "Arjun Mehta",
     city: "Bengaluru",
-    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=150&auto=format&fit=crop&q=80",
+    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=80&auto=format&fit=crop&q=75",
     rating: 5,
   },
   {
@@ -16,7 +16,7 @@ const reviews = [
     text: "The dietitian was very supportive and understood my health concerns perfectly. My energy and overall well-being have improved a lot.",
     name: "Priya Sharma",
     city: "Delhi",
-    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=150&auto=format&fit=crop&q=80",
+    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=80&auto=format&fit=crop&q=75",
     rating: 5,
   },
   {
@@ -24,7 +24,7 @@ const reviews = [
     text: "Easy to use, professional dietitians, and practical meal plans. DietNexa makes healthy living simple!",
     name: "Michael D'Souza",
     city: "UAE",
-    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=150&auto=format&fit=crop&q=80",
+    avatar: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?w=80&auto=format&fit=crop&q=75",
     rating: 5,
   },
 ];
@@ -71,8 +71,11 @@ export default function Testimonials() {
                     <img
                       src={r.avatar}
                       alt={r.name}
+                      width={40}
+                      height={40}
                       className="w-full h-full object-cover"
-                      loading="eager"
+                      loading="lazy"
+                      decoding="async"
                     />
                   </div>
                   <div>

@@ -12,28 +12,30 @@ export default function Hero({ onOpenModal }) {
         background: "linear-gradient(115deg, #f2faf4 0%, #f7fcf9 40%, #edf8f1 75%, #e6f5eb 100%)",
       }}
     >
-      {/* Decorative leaf — top-left, hidden on mobile */}
-      <div
-        className="absolute pointer-events-none select-none hidden lg:block z-0"
-        style={{ top: "-20px", left: "-22px", width: "220px", height: "270px" }}
-      >
-        <Image
-          src="/image/dewy-green-leafy-branch.webp"
-          alt=""
-          fill
-          unoptimized
-          priority
-          className="object-contain object-left-top opacity-50"
+      {/* Decorative background container strictly contained to prevent layout shifts */}
+      <div className="absolute inset-0 overflow-hidden pointer-events-none z-0" style={{ contain: "layout style paint" }} aria-hidden="true">
+        {/* Decorative leaf — top-left, hidden on mobile */}
+        <div
+          className="absolute pointer-events-none select-none hidden lg:block z-0"
+          style={{ top: "-20px", left: "-22px", width: "220px", height: "270px" }}
+        >
+          <Image
+            src="/image/dewy-green-leafy-branch.webp"
+            alt=""
+            fill
+            sizes="220px"
+            className="object-contain object-left-top opacity-50"
+          />
+        </div>
+
+        {/* Subtle modern background glow */}
+        <div
+          className="absolute top-1/4 right-1/4 w-[450px] h-[450px] rounded-full pointer-events-none z-0 blur-3xl opacity-35"
+          style={{
+            background: "radial-gradient(circle, #bbf7d0 0%, #86efac 40%, transparent 70%)",
+          }}
         />
       </div>
-
-      {/* Subtle modern background glow */}
-      <div
-        className="absolute top-1/4 right-1/4 w-[450px] h-[450px] rounded-full pointer-events-none z-0 blur-3xl opacity-35"
-        style={{
-          background: "radial-gradient(circle, #bbf7d0 0%, #86efac 40%, transparent 70%)",
-        }}
-      />
 
       {/* Main container */}
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-12">
@@ -298,7 +300,7 @@ export default function Hero({ onOpenModal }) {
                   alt="DietNexa Expert Dietitian"
                   fill
                   priority
-                  unoptimized
+                  sizes="(max-width: 1024px) 100vw, 550px"
                   className="object-contain object-bottom"
                 />
               </div>
@@ -320,7 +322,7 @@ export default function Hero({ onOpenModal }) {
                   alt="Fresh Vegetable Medley"
                   fill
                   priority
-                  unoptimized
+                  sizes="(max-width: 1024px) 100vw, 360px"
                   className="object-contain object-bottom-right drop-shadow-xl"
                 />
               </div>
@@ -349,7 +351,7 @@ export default function Hero({ onOpenModal }) {
                 alt="DietNexa Expert Dietitian"
                 fill
                 priority
-                unoptimized
+                sizes="(max-width: 768px) 100vw, 350px"
                 className="object-contain object-bottom"
               />
             </div>
@@ -364,7 +366,7 @@ export default function Hero({ onOpenModal }) {
                   alt="Fresh Vegetable Medley"
                   fill
                   priority
-                  unoptimized
+                  sizes="(max-width: 768px) 100vw, 240px"
                   className="object-contain object-bottom-right drop-shadow-lg"
                 />
               </div>

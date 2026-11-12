@@ -21,8 +21,7 @@ export default function Footer() {
                 src="/image/dietnexa-white-logo.webp"
                 alt="DietNexa - Your Health, Our Nutrition Expertise"
                 fill
-                unoptimized
-                priority
+                sizes="192px"
                 className="object-contain object-left hover:opacity-90 transition-opacity"
               />
             </Link>
