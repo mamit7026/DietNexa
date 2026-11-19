@@ -158,6 +158,10 @@ export default function RootLayout({ children }) {
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
 
+        <Script
+          src="https://www.googletagmanager.com/gtm.js?id=GTM-K49FC7K3"
+          strategy="afterInteractive"
+        />
 
 
         <Script id="google-tag-manager" strategy="afterInteractive">
