@@ -156,6 +156,15 @@ export default function RootLayout({ children }) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteSchema) }}
         />
+
+
+
+        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-K49FC7K3"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        </script>
       </head>
       <body className="min-h-screen bg-white text-gray-900 antialiased">
         {children}
