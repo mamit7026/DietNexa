@@ -1,5 +1,6 @@
 import "./globals.css";
 import CookieConsent from "@/components/CookieConsent";
+import Script from "next/script";
 
 export const metadata = {
   metadataBase: new URL("https://dietnexa.com"),
@@ -159,12 +160,14 @@ export default function RootLayout({ children }) {
 
 
 
-        <script async src="https://www.googletagmanager.com/gtm.js?id=GTM-K49FC7K3"></script>
-        <script>
-          window.dataLayer = window.dataLayer || [];
-          function gtag(){dataLayer.push(arguments);}
-          gtag('js', new Date());
-        </script>
+        <Script id="google-tag-manager" strategy="afterInteractive">
+          {`
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){window.dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', 'GTM-K49FC7K3');
+          `}
+        </Script>
       </head>
       <body className="min-h-screen bg-white text-gray-900 antialiased">
         {children}
